@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Build
+    - name: Build Next.js app
       run: npm run build
 
     - name: Deploy to GitHub Pages
@@ -31,5 +31,5 @@ jobs:
       if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
+        publish_dir: ./out
         cname: veloceai.co
