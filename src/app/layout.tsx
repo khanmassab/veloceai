@@ -11,6 +11,11 @@ export const metadata: Metadata = {
   description: 'Ship your AI support bot in 6 weeks. We build production-ready AI features while your competitors are still hiring teams.',
   keywords: ['AI', 'support bot', 'automation', 'machine learning', 'customer service'],
   authors: [{ name: 'VeloceAI' }],
+  icons: {
+    icon: '/logo.svg',
+    shortcut: '/logo.svg',
+    apple: '/logo.svg',
+  },
   openGraph: {
     title: 'VeloceAI - Ship AI features in weeks, not quarters',
     description: 'Ship your AI support bot in 6 weeks. We build production-ready AI features while your competitors are still hiring teams.',
@@ -54,6 +59,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/logo.svg" />
         <script
           src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
           async
