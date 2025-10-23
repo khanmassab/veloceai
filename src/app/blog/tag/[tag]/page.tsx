@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { getAllPosts, getAllTags } from '@/lib/blog'
 import BlogCard from '@/components/blog/BlogCard'
+import BlogPagination from '@/components/blog/BlogPagination'
 import { ArrowLeft, Tag } from 'lucide-react'
 import Link from 'next/link'
 
@@ -30,16 +31,25 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
   }
 }
 
-export default async function TagPage({ params }: TagPageProps) {
+export default async function TagPage({ params, searchParams }: TagPageProps & { searchParams: Promise<{ page?: string }> }) {
   const { tag } = await params
+  const { page } = await searchParams
   const tagName = tag.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
   
   const allPosts = getAllPosts()
-  const posts = allPosts.filter(post => 
+  const filteredPosts = allPosts.filter(post => 
     post.tags.some(postTag => 
       postTag.toLowerCase().replace(/\s+/g, '-') === tag.toLowerCase()
     )
   )
+
+  // Pagination
+  const postsPerPage = 6
+  const currentPage = parseInt(page || '1')
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage)
+  const startIndex = (currentPage - 1) * postsPerPage
+  const endIndex = startIndex + postsPerPage
+  const posts = filteredPosts.slice(startIndex, endIndex)
 
   return (
     <div className="min-h-screen neural-bg">
@@ -62,13 +72,13 @@ export default async function TagPage({ params }: TagPageProps) {
           </div>
           
           <p className="text-xl text-gray-300">
-            {posts.length} {posts.length === 1 ? 'post' : 'posts'} tagged with #{tagName}
+            {filteredPosts.length} {filteredPosts.length === 1 ? 'post' : 'posts'} tagged with #{tagName}
           </p>
         </div>
       </section>
 
       {/* Blog Posts */}
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-gradient-to-br from-slate-800 to-slate-900 text-white">
         <div className="container mx-auto px-6">
           {posts.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -78,8 +88,21 @@ export default async function TagPage({ params }: TagPageProps) {
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">No posts found with this tag.</p>
+              <p className="text-gray-400 text-lg">No posts found with this tag.</p>
             </div>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <BlogPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={(page) => {
+                const url = new URL(window.location.href)
+                url.searchParams.set('page', page.toString())
+                window.location.href = url.toString()
+              }}
+            />
           )}
         </div>
       </section>

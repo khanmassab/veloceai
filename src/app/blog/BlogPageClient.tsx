@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { BlogPostMeta } from '@/lib/blog'
 import BlogCard from '@/components/blog/BlogCard'
 import BlogSearch from '@/components/blog/BlogSearch'
+import BlogPagination from '@/components/blog/BlogPagination'
 import { Search, Filter, Tag, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
@@ -18,6 +19,8 @@ export default function BlogPageClient({ posts, categories, tags }: BlogPageClie
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedTag, setSelectedTag] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const postsPerPage = 6
 
   // Filter posts based on search and filters
   const filteredPosts = useMemo(() => {
@@ -37,10 +40,27 @@ export default function BlogPageClient({ posts, categories, tags }: BlogPageClie
     })
   }, [posts, searchQuery, selectedCategory, selectedTag])
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage)
+  const startIndex = (currentPage - 1) * postsPerPage
+  const endIndex = startIndex + postsPerPage
+  const paginatedPosts = filteredPosts.slice(startIndex, endIndex)
+
+  // Reset to page 1 when filters change
+  useMemo(() => {
+    setCurrentPage(1)
+  }, [searchQuery, selectedCategory, selectedTag])
+
   const clearFilters = () => {
     setSearchQuery('')
     setSelectedCategory('')
     setSelectedTag('')
+    setCurrentPage(1)
+  }
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
@@ -133,14 +153,14 @@ export default function BlogPageClient({ posts, categories, tags }: BlogPageClie
             </div>
           )}
 
-          {filteredPosts.length > 0 ? (
+          {paginatedPosts.length > 0 ? (
             <motion.div 
               className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              {filteredPosts.map((post) => (
+              {paginatedPosts.map((post) => (
                 <BlogCard key={post.slug} post={post} />
               ))}
             </motion.div>
@@ -156,6 +176,15 @@ export default function BlogPageClient({ posts, categories, tags }: BlogPageClie
                 </button>
               )}
             </div>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <BlogPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           )}
         </div>
       </section>

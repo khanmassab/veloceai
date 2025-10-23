@@ -153,7 +153,7 @@ export default function AboutPage() {
                   </div>
                   <p className="text-gray-300 leading-relaxed mb-4">
                     "We believe exceptional customer support shouldn't require a massive team or endless resources. 
-                    That's why we've built an AI chatbot platform that's powerful, affordable, and incredibly easy to use."
+                    That's why we're building AI chatbot platforms that are powerful, affordable, and incredibly easy to use."
                   </p>
                   <div className="flex space-x-4">
                     <a href="/contact" className="text-blue-400 hover:text-blue-300 transition-colors text-sm">
