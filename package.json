@@ -5,11 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:vercel": "cp next.config.vercel.js next.config.js && next build",
-    "build:github": "cp next.config.github.js next.config.js && next build && next export",
     "start": "next start",
-    "lint": "next lint",
-    "export": "next build"
+    "lint": "next lint"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",
