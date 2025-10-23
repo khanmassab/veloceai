@@ -1,16 +1,4 @@
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
-import { remark } from 'remark'
-import remarkHtml from 'remark-html'
-import remarkGfm from 'remark-gfm'
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkRehype from 'remark-rehype'
-import rehypeHighlight from 'rehype-highlight'
-import rehypeSlug from 'rehype-slug'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import rehypeStringify from 'rehype-stringify'
+// Removed markdown-related imports since we're using Sanity only
 import { client } from './sanity.client'
 import { 
   blogPostQuery, 
@@ -25,8 +13,7 @@ import {
 } from './sanity.queries'
 import { getImageUrl } from './sanity.image'
 
-const postsDirectory = path.join(process.cwd(), 'src/content/blogs')
-const authorsDirectory = path.join(process.cwd(), 'src/content/authors')
+// Removed directory constants since we're using Sanity only
 
 export interface BlogPost {
   slug: string
@@ -104,17 +91,14 @@ export interface BlogPostMeta {
   source?: 'markdown' | 'sanity' // Track content source
 }
 
-// Get all blog posts (markdown + Sanity combined)
+// Get all blog posts (Sanity only)
 export async function getAllPosts(): Promise<BlogPostMeta[]> {
   try {
-    // Get markdown posts
-    const markdownPosts = getMarkdownPosts()
-    
-    // Get Sanity posts
+    // Get Sanity posts only
     const sanityPosts = await getSanityPosts()
     
-    // Combine and sort by date
-    const allPosts = [...markdownPosts, ...sanityPosts]
+    // Sort by date
+    const allPosts = sanityPosts
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     
     return allPosts
@@ -124,41 +108,7 @@ export async function getAllPosts(): Promise<BlogPostMeta[]> {
   }
 }
 
-// Get markdown posts only
-function getMarkdownPosts(): BlogPostMeta[] {
-  try {
-    const fileNames = fs.readdirSync(postsDirectory)
-    const allPostsData = fileNames
-      .filter(name => name.endsWith('.md'))
-      .map(fileName => {
-        const slug = fileName.replace(/\.md$/, '')
-        const fullPath = path.join(postsDirectory, fileName)
-        const fileContents = fs.readFileSync(fullPath, 'utf8')
-        const { data } = matter(fileContents)
-        
-        return {
-          slug,
-          title: data.title || '',
-          date: data.date || '',
-          author: data.author || '',
-          excerpt: data.excerpt || '',
-          content: data.content || '',
-          tags: data.tags || [],
-          categories: data.categories || [],
-          coverImage: data.coverImage,
-          readTime: calculateReadTime(fileContents),
-          published: data.published !== false,
-          source: 'markdown' as const,
-        } as BlogPostMeta
-      })
-      .filter(post => post.published !== false)
-
-    return allPostsData
-  } catch (error) {
-    console.error('Error reading markdown posts:', error)
-    return []
-  }
-}
+// Removed getMarkdownPosts function - using Sanity only
 
 // Get Sanity posts
 async function getSanityPosts(): Promise<BlogPostMeta[]> {
@@ -193,68 +143,18 @@ function transformSanityPost(post: SanityBlogPost): BlogPostMeta {
   }
 }
 
-// Get a single blog post by slug (markdown or Sanity)
+// Get a single blog post by slug (Sanity only)
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
-    // First try to get from Sanity
-    const sanityPost = await getSanityPostBySlug(slug)
-    if (sanityPost) {
-      return sanityPost
-    }
-
-    // Fallback to markdown
-    return await getMarkdownPostBySlug(slug)
+    // Get from Sanity only
+    return await getSanityPostBySlug(slug)
   } catch (error) {
     console.error(`Error reading post ${slug}:`, error)
     return null
   }
 }
 
-// Get markdown post by slug
-async function getMarkdownPostBySlug(slug: string): Promise<BlogPost | null> {
-  try {
-    const fullPath = path.join(postsDirectory, `${slug}.md`)
-    const fileContents = fs.readFileSync(fullPath, 'utf8')
-    const { data, content } = matter(fileContents)
-
-    // Process markdown content with proper pipeline
-    const processedContent = await unified()
-      .use(remarkParse)
-      .use(remarkGfm)
-      .use(remarkRehype, { allowDangerousHtml: true })
-      .use(rehypeSlug)
-      .use(rehypeAutolinkHeadings, {
-        behavior: 'wrap',
-        properties: {
-          className: ['anchor-link'],
-          ariaLabel: 'Link to section'
-        }
-      })
-      .use(rehypeHighlight, { 
-        detect: true,
-        ignoreMissing: true 
-      })
-      .use(rehypeStringify, { allowDangerousHtml: true })
-      .process(content)
-
-    return {
-      slug,
-      title: data.title,
-      date: data.date,
-      author: data.author,
-      excerpt: data.excerpt,
-      content: processedContent.toString(),
-      tags: data.tags || [],
-      categories: data.categories || [],
-      coverImage: data.coverImage,
-      readTime: calculateReadTime(content),
-      published: data.published !== false,
-      source: 'markdown',
-    }
-  } catch (error) {
-    return null
-  }
-}
+// Removed getMarkdownPostBySlug function - using Sanity only
 
 // Get Sanity post by slug
 async function getSanityPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -281,49 +181,20 @@ async function getSanityPostBySlug(slug: string): Promise<BlogPost | null> {
   }
 }
 
-// Get all authors (markdown + Sanity combined)
+// Get all authors (Sanity only)
 export async function getAllAuthors(): Promise<Author[]> {
   try {
-    // Get markdown authors
-    const markdownAuthors = getMarkdownAuthors()
-    
-    // Get Sanity authors
+    // Get Sanity authors only
     const sanityAuthors = await getSanityAuthors()
     
-    // Combine authors
-    const allAuthors = [...markdownAuthors, ...sanityAuthors]
-    
-    return allAuthors
+    return sanityAuthors
   } catch (error) {
     console.error('Error reading authors:', error)
     return []
   }
 }
 
-// Get markdown authors only
-function getMarkdownAuthors(): Author[] {
-  try {
-    const fileNames = fs.readdirSync(authorsDirectory)
-    const allAuthors = fileNames
-      .filter(name => name.endsWith('.md'))
-      .map(fileName => {
-        const slug = fileName.replace(/\.md$/, '')
-        const fullPath = path.join(authorsDirectory, fileName)
-        const fileContents = fs.readFileSync(fullPath, 'utf8')
-        const { data } = matter(fileContents)
-        
-        return {
-          slug,
-          ...data,
-        } as Author
-      })
-
-    return allAuthors
-  } catch (error) {
-    console.error('Error reading markdown authors:', error)
-    return []
-  }
-}
+// Removed getMarkdownAuthors function - using Sanity only
 
 // Get Sanity authors
 async function getSanityAuthors(): Promise<Author[]> {
@@ -357,22 +228,7 @@ function transformSanityAuthor(author: SanityAuthor): Author {
   }
 }
 
-// Get author by slug
-export function getAuthorBySlug(slug: string): Author | null {
-  try {
-    const fullPath = path.join(authorsDirectory, `${slug}.md`)
-    const fileContents = fs.readFileSync(fullPath, 'utf8')
-    const { data } = matter(fileContents)
-    
-    return {
-      slug,
-      ...data,
-    } as Author
-  } catch (error) {
-    console.error(`Error reading author ${slug}:`, error)
-    return null
-  }
-}
+// Removed getAuthorBySlug function - using Sanity only
 
 // Get posts by category
 export async function getPostsByCategory(category: string): Promise<BlogPostMeta[]> {
