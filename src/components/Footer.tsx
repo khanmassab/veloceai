@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Mail, Linkedin, Github, Twitter } from 'lucide-react'
+import { Mail, Linkedin } from 'lucide-react'
 import Logo from './Logo'
 
 const Footer = () => {
@@ -40,24 +40,6 @@ const Footer = () => {
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://github.com/veloceai" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
-                aria-label="GitHub"
-              >
-                <Github className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://twitter.com/veloceai" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-5 h-5" />
               </a>
             </div>
           </div>
