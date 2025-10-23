@@ -3,6 +3,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
   "installCommand": "npm ci",
+  "source": ".",
   "functions": {
     "src/app/api/**/*.ts": {
       "runtime": "nodejs18.x"

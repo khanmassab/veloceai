@@ -1,0 +1,12 @@
+# Ignore static export files
+out/
+.next/
+node_modules/
+
+# Ignore GitHub Pages specific files
+CNAME
+.github/
+
+# Ignore build artifacts
+*.log
+.DS_Store
