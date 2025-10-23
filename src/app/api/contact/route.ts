@@ -17,17 +17,27 @@ export async function POST(request: NextRequest) {
     const isLocalhost = request.headers.get('host')?.includes('localhost') || request.headers.get('host')?.includes('127.0.0.1')
     
     if (!isLocalhost && recaptchaToken) {
-      const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
-      })
+      try {
+        const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
+        })
 
-      const recaptchaData = await recaptchaResponse.json()
-      
-      if (!recaptchaData.success) {
+        const recaptchaData = await recaptchaResponse.json()
+        
+        console.log('reCAPTCHA verification result:', recaptchaData)
+        
+        if (!recaptchaData.success) {
+          return NextResponse.json(
+            { error: 'reCAPTCHA verification failed', details: recaptchaData['error-codes'] },
+            { status: 400 }
+          )
+        }
+      } catch (error) {
+        console.error('reCAPTCHA verification error:', error)
         return NextResponse.json(
           { error: 'reCAPTCHA verification failed' },
           { status: 400 }

@@ -159,9 +159,10 @@ const ContactForm = () => {
           <div className="flex justify-center">
             <ReCAPTCHA
               ref={recaptchaRef}
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LfQrvQrAAAAAJtr1yvnn-dtsi3YPo6BoNtmX_n6'}
+              sitekey="6LfQrvQrAAAAAJtr1yvnn-dtsi3YPo6BoNtmX_n6"
               onChange={handleRecaptchaChange}
               theme="dark"
+              size="normal"
             />
           </div>
         )}
