@@ -163,6 +163,11 @@ function getMarkdownPosts(): BlogPostMeta[] {
 // Get Sanity posts
 async function getSanityPosts(): Promise<BlogPostMeta[]> {
   try {
+    // Check if Sanity is properly configured
+    if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.NEXT_PUBLIC_SANITY_PROJECT_ID === 'your-project-id') {
+      return []
+    }
+    
     const sanityPosts = await client.fetch(blogPostQuery)
     return sanityPosts.map(transformSanityPost)
   } catch (error) {
@@ -177,10 +182,10 @@ function transformSanityPost(post: SanityBlogPost): BlogPostMeta {
     slug: post.slug.current,
     title: post.title,
     date: post.date,
-    author: post.author.name,
+    author: post.author?.name || 'Unknown Author',
     excerpt: post.excerpt,
-    tags: post.tags.map((tag: any) => tag.name),
-    categories: post.categories.map((cat: any) => cat.name),
+    tags: post.tags?.map((tag: any) => tag.name) || [],
+    categories: post.categories?.map((cat: any) => cat.name) || [],
     coverImage: getImageUrl(post.coverImage),
     readTime: post.readTime || 5,
     published: post.published,
@@ -323,6 +328,11 @@ function getMarkdownAuthors(): Author[] {
 // Get Sanity authors
 async function getSanityAuthors(): Promise<Author[]> {
   try {
+    // Check if Sanity is properly configured
+    if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.NEXT_PUBLIC_SANITY_PROJECT_ID === 'your-project-id') {
+      return []
+    }
+    
     const sanityAuthors = await client.fetch(authorsQuery)
     return sanityAuthors.map(transformSanityAuthor)
   } catch (error) {
