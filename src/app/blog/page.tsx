@@ -1,10 +1,10 @@
 import { getAllPosts, getAllCategories, getAllTags } from '@/lib/blog'
 import BlogPageClient from './BlogPageClient'
 
-export default function BlogPage() {
-  const allPosts = getAllPosts()
-  const categories = getAllCategories()
-  const tags = getAllTags()
+export default async function BlogPage() {
+  const allPosts = await getAllPosts()
+  const categories = await getAllCategories()
+  const tags = await getAllTags()
 
   return (
     <BlogPageClient 

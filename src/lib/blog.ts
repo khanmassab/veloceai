@@ -11,6 +11,19 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeStringify from 'rehype-stringify'
+import { client } from './sanity.client'
+import { 
+  blogPostQuery, 
+  blogPostBySlugQuery, 
+  authorsQuery, 
+  authorBySlugQuery,
+  categoriesQuery,
+  tagsQuery,
+  postsByCategoryQuery,
+  postsByTagQuery,
+  postsByAuthorQuery
+} from './sanity.queries'
+import { getImageUrl } from './sanity.image'
 
 const postsDirectory = path.join(process.cwd(), 'src/content/blogs')
 const authorsDirectory = path.join(process.cwd(), 'src/content/authors')
@@ -21,12 +34,47 @@ export interface BlogPost {
   date: string
   author: string
   excerpt: string
-  content: string
+  content: string | any[] // Can be HTML string (markdown) or Portable Text array (Sanity)
   tags: string[]
   categories: string[]
   coverImage?: string
   readTime: number
   published: boolean
+  source?: 'markdown' | 'sanity' // Track content source
+}
+
+// Sanity-specific interfaces
+export interface SanityBlogPost {
+  _id: string
+  title: string
+  slug: { current: string }
+  date: string
+  author: {
+    name: string
+    slug: { current: string }
+    avatar?: any
+  }
+  excerpt: string
+  content?: any[]
+  tags: Array<{ name: string; slug: { current: string } }>
+  categories: Array<{ name: string; slug: { current: string } }>
+  coverImage?: any
+  readTime: number
+  published: boolean
+}
+
+export interface SanityAuthor {
+  _id: string
+  name: string
+  slug: { current: string }
+  bio: string
+  avatar?: any
+  social?: {
+    email?: string
+    linkedin?: string
+    github?: string
+    website?: string
+  }
 }
 
 export interface Author {
@@ -53,10 +101,31 @@ export interface BlogPostMeta {
   coverImage?: string
   readTime: number
   published: boolean
+  source?: 'markdown' | 'sanity' // Track content source
 }
 
-// Get all blog posts
-export function getAllPosts(): BlogPostMeta[] {
+// Get all blog posts (markdown + Sanity combined)
+export async function getAllPosts(): Promise<BlogPostMeta[]> {
+  try {
+    // Get markdown posts
+    const markdownPosts = getMarkdownPosts()
+    
+    // Get Sanity posts
+    const sanityPosts = await getSanityPosts()
+    
+    // Combine and sort by date
+    const allPosts = [...markdownPosts, ...sanityPosts]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    
+    return allPosts
+  } catch (error) {
+    console.error('Error reading blog posts:', error)
+    return []
+  }
+}
+
+// Get markdown posts only
+function getMarkdownPosts(): BlogPostMeta[] {
   try {
     const fileNames = fs.readdirSync(postsDirectory)
     const allPostsData = fileNames
@@ -69,22 +138,75 @@ export function getAllPosts(): BlogPostMeta[] {
         
         return {
           slug,
-          ...data,
+          title: data.title || '',
+          date: data.date || '',
+          author: data.author || '',
+          excerpt: data.excerpt || '',
+          content: data.content || '',
+          tags: data.tags || [],
+          categories: data.categories || [],
+          coverImage: data.coverImage,
           readTime: calculateReadTime(fileContents),
+          published: data.published !== false,
+          source: 'markdown' as const,
         } as BlogPostMeta
       })
       .filter(post => post.published !== false)
-      .sort((a, b) => (a.date < b.date ? 1 : -1))
 
     return allPostsData
   } catch (error) {
-    console.error('Error reading blog posts:', error)
+    console.error('Error reading markdown posts:', error)
     return []
   }
 }
 
-// Get a single blog post by slug
+// Get Sanity posts
+async function getSanityPosts(): Promise<BlogPostMeta[]> {
+  try {
+    const sanityPosts = await client.fetch(blogPostQuery)
+    return sanityPosts.map(transformSanityPost)
+  } catch (error) {
+    console.error('Error reading Sanity posts:', error)
+    return []
+  }
+}
+
+// Transform Sanity post to unified format
+function transformSanityPost(post: SanityBlogPost): BlogPostMeta {
+  return {
+    slug: post.slug.current,
+    title: post.title,
+    date: post.date,
+    author: post.author.name,
+    excerpt: post.excerpt,
+    tags: post.tags.map((tag: any) => tag.name),
+    categories: post.categories.map((cat: any) => cat.name),
+    coverImage: getImageUrl(post.coverImage),
+    readTime: post.readTime || 5,
+    published: post.published,
+    source: 'sanity' as const,
+  }
+}
+
+// Get a single blog post by slug (markdown or Sanity)
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+  try {
+    // First try to get from Sanity
+    const sanityPost = await getSanityPostBySlug(slug)
+    if (sanityPost) {
+      return sanityPost
+    }
+
+    // Fallback to markdown
+    return await getMarkdownPostBySlug(slug)
+  } catch (error) {
+    console.error(`Error reading post ${slug}:`, error)
+    return null
+  }
+}
+
+// Get markdown post by slug
+async function getMarkdownPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
     const fullPath = path.join(postsDirectory, `${slug}.md`)
     const fileContents = fs.readFileSync(fullPath, 'utf8')
@@ -122,15 +244,59 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       coverImage: data.coverImage,
       readTime: calculateReadTime(content),
       published: data.published !== false,
+      source: 'markdown',
     }
   } catch (error) {
-    console.error(`Error reading post ${slug}:`, error)
     return null
   }
 }
 
-// Get all authors
-export function getAllAuthors(): Author[] {
+// Get Sanity post by slug
+async function getSanityPostBySlug(slug: string): Promise<BlogPost | null> {
+  try {
+    const sanityPost = await client.fetch(blogPostBySlugQuery, { slug })
+    if (!sanityPost) return null
+
+    return {
+      slug: sanityPost.slug.current,
+      title: sanityPost.title,
+      date: sanityPost.date,
+      author: sanityPost.author.name,
+      excerpt: sanityPost.excerpt,
+      content: sanityPost.content, // Portable text content
+      tags: sanityPost.tags.map((tag: any) => tag.name),
+      categories: sanityPost.categories.map((cat: any) => cat.name),
+      coverImage: getImageUrl(sanityPost.coverImage),
+      readTime: sanityPost.readTime || 5,
+      published: sanityPost.published,
+      source: 'sanity',
+    }
+  } catch (error) {
+    return null
+  }
+}
+
+// Get all authors (markdown + Sanity combined)
+export async function getAllAuthors(): Promise<Author[]> {
+  try {
+    // Get markdown authors
+    const markdownAuthors = getMarkdownAuthors()
+    
+    // Get Sanity authors
+    const sanityAuthors = await getSanityAuthors()
+    
+    // Combine authors
+    const allAuthors = [...markdownAuthors, ...sanityAuthors]
+    
+    return allAuthors
+  } catch (error) {
+    console.error('Error reading authors:', error)
+    return []
+  }
+}
+
+// Get markdown authors only
+function getMarkdownAuthors(): Author[] {
   try {
     const fileNames = fs.readdirSync(authorsDirectory)
     const allAuthors = fileNames
@@ -149,8 +315,35 @@ export function getAllAuthors(): Author[] {
 
     return allAuthors
   } catch (error) {
-    console.error('Error reading authors:', error)
+    console.error('Error reading markdown authors:', error)
     return []
+  }
+}
+
+// Get Sanity authors
+async function getSanityAuthors(): Promise<Author[]> {
+  try {
+    const sanityAuthors = await client.fetch(authorsQuery)
+    return sanityAuthors.map(transformSanityAuthor)
+  } catch (error) {
+    console.error('Error reading Sanity authors:', error)
+    return []
+  }
+}
+
+// Transform Sanity author to unified format
+function transformSanityAuthor(author: SanityAuthor): Author {
+  return {
+    slug: author.slug.current,
+    name: author.name,
+    bio: author.bio,
+    avatar: getImageUrl(author.avatar),
+    social: {
+      twitter: author.social?.email, // Map email to twitter field for compatibility
+      linkedin: author.social?.linkedin,
+      github: author.social?.github,
+      website: author.social?.website,
+    },
   }
 }
 
@@ -172,32 +365,32 @@ export function getAuthorBySlug(slug: string): Author | null {
 }
 
 // Get posts by category
-export function getPostsByCategory(category: string): BlogPostMeta[] {
-  const allPosts = getAllPosts()
+export async function getPostsByCategory(category: string): Promise<BlogPostMeta[]> {
+  const allPosts = await getAllPosts()
   return allPosts.filter(post => 
     post.categories.some(cat => cat.toLowerCase() === category.toLowerCase())
   )
 }
 
 // Get posts by tag
-export function getPostsByTag(tag: string): BlogPostMeta[] {
-  const allPosts = getAllPosts()
+export async function getPostsByTag(tag: string): Promise<BlogPostMeta[]> {
+  const allPosts = await getAllPosts()
   return allPosts.filter(post => 
     post.tags.some(t => t.toLowerCase() === tag.toLowerCase())
   )
 }
 
 // Get posts by author
-export function getPostsByAuthor(author: string): BlogPostMeta[] {
-  const allPosts = getAllPosts()
+export async function getPostsByAuthor(author: string): Promise<BlogPostMeta[]> {
+  const allPosts = await getAllPosts()
   return allPosts.filter(post => 
     post.author.toLowerCase() === author.toLowerCase()
   )
 }
 
 // Get related posts
-export function getRelatedPosts(currentPost: BlogPostMeta, limit: number = 3): BlogPostMeta[] {
-  const allPosts = getAllPosts()
+export async function getRelatedPosts(currentPost: BlogPostMeta, limit: number = 3): Promise<BlogPostMeta[]> {
+  const allPosts = await getAllPosts()
   const currentTags = currentPost.tags
   const currentCategories = currentPost.categories
   
@@ -225,8 +418,8 @@ function calculateReadTime(content: string): number {
 }
 
 // Get all unique categories
-export function getAllCategories(): string[] {
-  const allPosts = getAllPosts()
+export async function getAllCategories(): Promise<string[]> {
+  const allPosts = await getAllPosts()
   const categories = new Set<string>()
   
   allPosts.forEach(post => {
@@ -237,8 +430,8 @@ export function getAllCategories(): string[] {
 }
 
 // Get all unique tags
-export function getAllTags(): string[] {
-  const allPosts = getAllPosts()
+export async function getAllTags(): Promise<string[]> {
+  const allPosts = await getAllPosts()
   const tags = new Set<string>()
   
   allPosts.forEach(post => {
@@ -249,8 +442,8 @@ export function getAllTags(): string[] {
 }
 
 // Search posts
-export function searchPosts(query: string): BlogPostMeta[] {
-  const allPosts = getAllPosts()
+export async function searchPosts(query: string): Promise<BlogPostMeta[]> {
+  const allPosts = await getAllPosts()
   const searchTerm = query.toLowerCase()
   
   return allPosts.filter(post => 

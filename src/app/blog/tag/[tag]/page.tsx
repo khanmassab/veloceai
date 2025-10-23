@@ -10,7 +10,7 @@ interface TagPageProps {
 }
 
 export async function generateStaticParams() {
-  const tags = getAllTags()
+  const tags = await getAllTags()
   return tags.map((tag) => ({
     tag: tag.toLowerCase().replace(/\s+/g, '-'),
   }))
@@ -36,7 +36,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps & {
   const { page } = await searchParams
   const tagName = tag.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
   
-  const allPosts = getAllPosts()
+  const allPosts = await getAllPosts()
   const filteredPosts = allPosts.filter(post => 
     post.tags.some(postTag => 
       postTag.toLowerCase().replace(/\s+/g, '-') === tag.toLowerCase()

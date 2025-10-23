@@ -5,6 +5,7 @@ import { formatDate, getSocialShareUrls } from '@/lib/utils'
 import AuthorCard from '@/components/blog/AuthorCard'
 import RelatedPosts from '@/components/blog/RelatedPosts'
 import SyntaxHighlighter from '@/components/SyntaxHighlighter'
+import PortableTextRenderer from '@/components/blog/PortableTextRenderer'
 import { Calendar, Clock, User, Share2, Twitter, Linkedin, Facebook } from 'lucide-react'
 
 interface BlogPostPageProps {
@@ -14,7 +15,7 @@ interface BlogPostPageProps {
 }
 
 export async function generateStaticParams() {
-  const posts = getAllPosts()
+  const posts = await getAllPosts()
   return posts.map((post) => ({
     slug: post.slug,
   }))
@@ -70,7 +71,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   const author = getAuthorBySlug(post.author.toLowerCase().replace(/\s+/g, '-'))
-  const relatedPosts = getRelatedPosts(post, 3)
+  const relatedPosts = await getRelatedPosts(post, 3)
   const socialUrls = getSocialShareUrls(`https://veloceai.co/blog/${post.slug}`, post.title)
 
   return (
@@ -178,9 +179,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <section className="py-12 bg-gradient-to-br from-slate-800 to-slate-900 text-white">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto">
-            <div className="prose prose-lg max-w-none prose-invert prose-headings:text-white prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-gray-300 prose-p:leading-relaxed prose-strong:text-white prose-strong:font-semibold prose-code:text-blue-400 prose-code:bg-slate-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-pre:bg-slate-900 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-lg prose-blockquote:border-l-blue-400 prose-blockquote:bg-slate-800/50 prose-blockquote:border-l-4 prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg prose-ul:text-gray-300 prose-ol:text-gray-300 prose-li:text-gray-300 prose-a:text-blue-400 prose-a:no-underline hover:prose-a:text-blue-300 prose-table:text-gray-300 prose-th:bg-slate-800 prose-th:text-white prose-td:border-slate-700 prose-img:rounded-lg prose-img:shadow-lg">
-              <div dangerouslySetInnerHTML={{ __html: post.content }} />
-            </div>
+            {post.source === 'sanity' ? (
+              <PortableTextRenderer content={post.content as any[]} />
+            ) : (
+              <div className="prose prose-lg max-w-none prose-invert prose-headings:text-white prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-gray-300 prose-p:leading-relaxed prose-strong:text-white prose-strong:font-semibold prose-code:text-blue-400 prose-code:bg-slate-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-pre:bg-slate-900 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-lg prose-blockquote:border-l-blue-400 prose-blockquote:bg-slate-800/50 prose-blockquote:border-l-4 prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg prose-ul:text-gray-300 prose-ol:text-gray-300 prose-li:text-gray-300 prose-a:text-blue-400 prose-a:no-underline hover:prose-a:text-blue-300 prose-table:text-gray-300 prose-th:bg-slate-800 prose-th:text-white prose-td:border-slate-700 prose-img:rounded-lg prose-img:shadow-lg">
+                <div dangerouslySetInnerHTML={{ __html: post.content as string }} />
+              </div>
+            )}
           </div>
         </div>
       </section>

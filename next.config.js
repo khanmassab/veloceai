@@ -3,7 +3,8 @@ const nextConfig = {
   // Vercel configuration - no output export needed
   trailingSlash: true,
   images: {
-    unoptimized: true
+    unoptimized: true,
+    domains: ['cdn.sanity.io', 'images.unsplash.com'],
   },
   async headers() {
     return [
@@ -14,11 +15,11 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://www.google.com https://www.gstatic.com https://www.recaptcha.net",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://core.sanity-cdn.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.gstatic.com",
               "font-src 'self' https://fonts.gstatic.com",
-              "img-src 'self' data: https: https://www.gstatic.com",
-              "connect-src 'self' https://www.google.com https://www.recaptcha.net",
+              "img-src 'self' data: https: https://www.gstatic.com https://cdn.sanity.io",
+              "connect-src 'self' https://www.google.com https://www.recaptcha.net https://*.api.sanity.io https://*.sanity.io",
               "frame-src 'self' https://www.google.com https://www.recaptcha.net",
               "object-src 'none'",
               "base-uri 'self'",

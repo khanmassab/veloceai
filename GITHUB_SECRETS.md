@@ -14,6 +14,9 @@ These are accessible in the browser and will be included in the static build.
 | `NEXT_PUBLIC_SITE_URL` | Your website URL | `https://veloceai.co` |
 | `NEXT_PUBLIC_GA_ID` | Google Analytics ID (optional) | `G-XXXXXXXXXX` |
 | `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | reCAPTCHA Site Key | `6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI` |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity Project ID | `your-project-id` |
+| `NEXT_PUBLIC_SANITY_DATASET` | Sanity Dataset | `production` |
+| `NEXT_PUBLIC_SANITY_API_VERSION` | Sanity API Version | `2024-01-01` |
 
 ### Server-side Environment Variables
 These are used for API routes and server-side functionality.
@@ -28,6 +31,8 @@ These are used for API routes and server-side functionality.
 | `SMTP_FROM` | From email address | `noreply@veloceai.co` |
 | `CONTACT_EMAIL` | Contact email for form submissions | `massab@veloceai.co` |
 | `RECAPTCHA_SECRET_KEY` | reCAPTCHA Secret Key | `6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe` |
+| `SANITY_API_TOKEN` | Sanity API Token for webhook revalidation | `your-sanity-token` |
+| `SANITY_WEBHOOK_SECRET` | Webhook secret for validation | `your-webhook-secret` |
 
 ## How to Add Secrets
 

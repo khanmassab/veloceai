@@ -10,7 +10,7 @@ interface CategoryPageProps {
 }
 
 export async function generateStaticParams() {
-  const categories = getAllCategories()
+  const categories = await getAllCategories()
   return categories.map((category) => ({
     category: category.toLowerCase().replace(/\s+/g, '-'),
   }))
@@ -36,7 +36,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   const { page } = await searchParams
   const categoryName = category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
   
-  const allPosts = getAllPosts()
+  const allPosts = await getAllPosts()
   const filteredPosts = allPosts.filter(post => 
     post.categories.some(cat => 
       cat.toLowerCase().replace(/\s+/g, '-') === category.toLowerCase()
