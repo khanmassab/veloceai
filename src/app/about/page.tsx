@@ -125,12 +125,12 @@ export default function AboutPage() {
                   <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                     Meet the{' '}
                     <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                      VeloceAI Founder
+                      VeloceAI Team
             </span>
           </h1>
                   <p className="text-xl text-gray-300 leading-relaxed">
-                    I'm a passionate AI engineer and customer support veteran who's experienced the pain of scaling support firsthand. 
-                    Now I'm building the solutions I wish I had - making AI support accessible to every business.
+                    We're a passionate team of AI engineers and customer support veterans who've experienced the pain of scaling support firsthand. 
+                    Now we're building the solutions we wish we had - making AI support accessible to every business.
                   </p>
                 </motion.div>
               </div>
@@ -144,11 +144,11 @@ export default function AboutPage() {
                 <div className="glass-dark rounded-2xl p-8">
                   <div className="flex items-center space-x-4 mb-6">
                     <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                      MK
+                      V
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-white">Massab Khan</h3>
-                      <p className="text-blue-400">Founder & CEO</p>
+                      <h3 className="text-xl font-bold text-white">VeloceAI Team</h3>
+                      <p className="text-blue-400">AI & Support Experts</p>
                     </div>
                   </div>
                   <p className="text-gray-300 leading-relaxed mb-4">
@@ -156,11 +156,11 @@ export default function AboutPage() {
                     That's why we've built an AI chatbot platform that's powerful, affordable, and incredibly easy to use."
                   </p>
                   <div className="flex space-x-4">
-                    <a href="mailto:massab@veloceai.co" className="text-blue-400 hover:text-blue-300 transition-colors text-sm">
-                      Email
+                    <a href="/contact" className="text-blue-400 hover:text-blue-300 transition-colors text-sm">
+                      Contact Us
                     </a>
-                    <a href="https://www.linkedin.com/in/massabkhan" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors text-sm">
-                      LinkedIn
+                    <a href="/blog" className="text-blue-400 hover:text-blue-300 transition-colors text-sm">
+                      Our Blog
                     </a>
                   </div>
                 </div>
@@ -543,50 +543,8 @@ export default function AboutPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            VeloceAI is built by a customer support veteran and AI engineer who's spent years solving support challenges at high-growth companies. I've experienced the pain of scaling support firsthand—and now I'm using that experience to build solutions that actually work.
+            VeloceAI is built by a team of customer support veterans and AI engineers who've spent years solving support challenges at high-growth companies. We've experienced the pain of scaling support firsthand—and now we're using that experience to build solutions that actually work.
           </motion.p>
-          <motion.div 
-            className="max-w-4xl mx-auto mb-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-          >
-            <div className="glass-dark rounded-xl p-8 group hover:bg-white/10 transition-all duration-300">
-              <div className="flex items-start space-x-6">
-                <div className="flex-shrink-0">
-                  <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-2xl group-hover:scale-110 transition-transform duration-300">
-                    MK
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-white mb-2">Massab Khan</h3>
-                  <p className="text-lg text-blue-400 mb-4">Founder & CEO</p>
-                  <p className="text-gray-300 leading-relaxed mb-4">
-                    Former AI engineer at Google and OpenAI. Passionate about making AI accessible 
-                    to businesses of all sizes. Expert in building production-ready AI systems, 
-                    RAG architectures, and agentic workflows.
-                  </p>
-                  <div className="flex space-x-4">
-                    <a 
-                      href="mailto:massab@veloceai.co" 
-                      className="text-blue-400 hover:text-blue-300 transition-colors"
-                    >
-                      Email
-                    </a>
-                    <a 
-                      href="https://www.linkedin.com/in/massabkhan" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-blue-400 hover:text-blue-300 transition-colors"
-                    >
-                      LinkedIn
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
           <motion.div 
             className="max-w-4xl mx-auto text-center"
             initial={{ opacity: 0, y: 30 }}
@@ -595,13 +553,13 @@ export default function AboutPage() {
             viewport={{ once: true }}
           >
             <p className="text-lg text-gray-300 leading-relaxed mb-6">
-              I combine expertise in natural language processing, machine learning, user experience design, and enterprise software to deliver a chatbot platform that's both powerful and practical.
+              We combine expertise in natural language processing, machine learning, user experience design, and enterprise software to deliver a chatbot platform that's both powerful and practical.
             </p>
             <p className="text-lg text-gray-300 leading-relaxed mb-6">
-              As a problem-solver, innovator, and customer advocate, I'm united by a common goal: making exceptional customer support accessible to every business, regardless of size or budget.
+              As problem-solvers, innovators, and customer advocates, we're united by a common goal: making exceptional customer support accessible to every business, regardless of size or budget.
             </p>
             <p className="text-lg text-gray-300 leading-relaxed">
-              <strong className="text-white">Interested in joining the journey?</strong> I'm always looking for talented individuals who share my passion for AI innovation and customer success as VeloceAI grows.
+              <strong className="text-white">Interested in joining the journey?</strong> We're always looking for talented individuals who share our passion for AI innovation and customer success as VeloceAI grows.
             </p>
           </motion.div>
         </div>
