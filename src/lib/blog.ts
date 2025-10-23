@@ -269,8 +269,8 @@ async function getSanityPostBySlug(slug: string): Promise<BlogPost | null> {
       author: sanityPost.author.name,
       excerpt: sanityPost.excerpt,
       content: sanityPost.content, // Portable text content
-      tags: sanityPost.tags.map((tag: any) => tag.name),
-      categories: sanityPost.categories.map((cat: any) => cat.name),
+      tags: sanityPost.tags?.map((tag: any) => tag.name) || [],
+      categories: sanityPost.categories?.map((cat: any) => cat.name) || [],
       coverImage: getImageUrl(sanityPost.coverImage),
       readTime: sanityPost.readTime || 5,
       published: sanityPost.published,
