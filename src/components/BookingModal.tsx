@@ -37,8 +37,11 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
       (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
     
     if (!isLocalhost && !recaptchaToken) {
-      alert('Please complete the reCAPTCHA verification')
-      return
+      // Trigger reCAPTCHA v3 programmatically
+      if (recaptchaRef.current) {
+        recaptchaRef.current.execute()
+        return
+      }
     }
 
     setIsSubmitting(true)
@@ -248,20 +251,18 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
                     />
                   </div>
 
-                  {/* reCAPTCHA - only show on production */}
+                  {/* reCAPTCHA v3 - invisible */}
                   {typeof window !== 'undefined' && 
                    window.location.hostname !== 'localhost' && 
                    window.location.hostname !== '127.0.0.1' && 
                    process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
-                    <div className="flex justify-center">
-                      <ReCAPTCHA
-                        ref={recaptchaRef}
-                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                        onChange={handleRecaptchaChange}
-                        theme="dark"
-                        size="normal"
-                      />
-                    </div>
+                    <ReCAPTCHA
+                      ref={recaptchaRef}
+                      sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                      onChange={handleRecaptchaChange}
+                      size="invisible"
+                      badge="bottomright"
+                    />
                   )}
 
                   <div className="flex space-x-4 pt-4">

@@ -28,11 +28,15 @@ export async function POST(request: NextRequest) {
 
         const recaptchaData = await recaptchaResponse.json()
         
-        console.log('reCAPTCHA verification result:', recaptchaData)
+        console.log('reCAPTCHA v3 verification result:', recaptchaData)
         
-        if (!recaptchaData.success) {
+        // v3 returns a score (0.0 to 1.0), typically accept scores > 0.5
+        if (!recaptchaData.success || recaptchaData.score < 0.5) {
           return NextResponse.json(
-            { error: 'reCAPTCHA verification failed', details: recaptchaData['error-codes'] },
+            { 
+              error: 'reCAPTCHA verification failed', 
+              details: recaptchaData['error-codes'] || `Score too low: ${recaptchaData.score}` 
+            },
             { status: 400 }
           )
         }
