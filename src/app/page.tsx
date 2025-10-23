@@ -15,7 +15,8 @@ import {
   Sparkles,
   Brain,
   Network,
-  Calendar
+  Calendar,
+  Rocket
 } from 'lucide-react'
 import Logo from '@/components/Logo'
 import BookingModal from '@/components/BookingModal'
@@ -181,11 +182,10 @@ const HeroSection = ({ onBookNow }: { onBookNow: () => void }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Ship your AI support bot in{' '}
+          Transform Customer Support with{' '}
           <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent glow-text">
-            6 weeks
-          </span>.{' '}
-          Not 6 months.
+            AI That Actually Works
+          </span>
         </motion.h1>
         
         <motion.p 
@@ -194,7 +194,7 @@ const HeroSection = ({ onBookNow }: { onBookNow: () => void }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          We build production-ready AI features while your competitors are still hiring teams.
+          Launch your intelligent AI chatbot in weeks, not months. Automate 70% of queries, reduce support costs by 60%, and delight your customers 24/7 across every channel.
         </motion.p>
         
         <motion.div
@@ -203,11 +203,11 @@ const HeroSection = ({ onBookNow }: { onBookNow: () => void }) => {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <Button size="lg" className="magnetic" onClick={onBookNow}>
-            <Calendar className="w-5 h-5 mr-2" />
-            Book a Call
+          <Button size="lg" className="magnetic" onClick={() => window.location.href = '/contact'}>
+            <Rocket className="w-5 h-5 mr-2" />
+            Get Started Free
           </Button>
-          <Button variant="ghost" size="lg">
+          <Button variant="ghost" size="lg" onClick={() => document.getElementById('solution-section')?.scrollIntoView({ behavior: 'smooth' })}>
             <Brain className="w-5 h-5 mr-2" />
             Learn More
           </Button>
@@ -226,6 +226,47 @@ const HeroSection = ({ onBookNow }: { onBookNow: () => void }) => {
   )
 }
 
+// Stats Section
+const StatsSection = () => {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-100px" })
+
+  const stats = [
+    { number: "70%", label: "Queries Automated" },
+    { number: "60%", label: "Cost Reduction" },
+    { number: "24/7", label: "Always Available" },
+    { number: "2 Sec", label: "Average Response Time" }
+  ]
+
+  return (
+    <section ref={ref} className="py-16 bg-gradient-to-r from-slate-800 to-slate-900 text-white">
+      <div className="container mx-auto px-6">
+        <motion.div 
+          className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto"
+          variants={staggerContainer}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
+        >
+          {stats.map((stat, index) => (
+            <motion.div 
+              key={index}
+              className="text-center"
+              variants={fadeInUp}
+            >
+              <div className="text-4xl md:text-5xl font-bold text-blue-400 mb-2">
+                {stat.number}
+              </div>
+              <div className="text-sm md:text-base text-gray-300">
+                {stat.label}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
 // Enhanced Problem Section
 const ProblemSection = () => {
   const ref = useRef(null)
@@ -234,17 +275,17 @@ const ProblemSection = () => {
   const problems = [
     {
       icon: Clock,
-      text: "Hiring takes 6+ months. $500K+ in salaries. They still might not ship.",
+      text: "Overwhelmed Support Teams - Your team drowns in repetitive questions about passwords, shipping, and billing instead of solving complex customer problems that actually need human expertise.",
       color: "from-red-500 to-pink-500"
     },
     {
       icon: DollarSign,
-      text: "Agencies bill for discovery. 20 weeks later, you get a prototype.",
+      text: "Rising Support Costs - Hiring more agents isn't scalable. Training costs, infrastructure expenses, and management overhead eat into your margins with every new team member.",
       color: "from-orange-500 to-red-500"
     },
     {
       icon: FileText,
-      text: "You need working features. Not meeting notes.",
+      text: "Frustrated Customers - Long wait times and inconsistent answers damage your brand reputation. Customers expect instant support on their preferred channels, any time of day.",
       color: "from-yellow-500 to-orange-500"
     }
   ]
@@ -258,8 +299,18 @@ const ProblemSection = () => {
           initial="initial"
           animate={isInView ? "animate" : "initial"}
         >
-          Most companies waste months on AI
+          Stop Losing Customers to Slow Support
         </motion.h2>
+        
+        <motion.p 
+          className="text-xl text-center mb-16 text-gray-300 max-w-4xl mx-auto"
+          variants={fadeInUp}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
+          transition={{ delay: 0.2 }}
+        >
+          Your customers expect instant answers. Every delayed response is a lost opportunity. Traditional support teams struggle to keep up, leading to frustrated customers and skyrocketing costs.
+        </motion.p>
         
         <motion.div 
           className="grid md:grid-cols-3 gap-12"
@@ -295,15 +346,35 @@ const SolutionSection = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
-  const timeline = [
-    { weeks: "Week 1-2", task: "Ticket analysis & architecture", color: "bg-blue-500", icon: Network },
-    { weeks: "Week 3-5", task: "Build & testing", color: "bg-cyan-500", icon: Zap },
-    { weeks: "Week 6-8", task: "Launch & tuning", color: "bg-purple-500", icon: Database },
-    { weeks: "Result", task: "Production-ready bot", color: "bg-green-500", icon: CheckCircle }
+  const features = [
+    { 
+      title: "Lightning-Fast Responses", 
+      description: "Answer customer queries in seconds, not hours. Our AI chatbot handles unlimited conversations simultaneously across all channels without breaking a sweat.",
+      color: "bg-blue-500", 
+      icon: Zap 
+    },
+    { 
+      title: "Smart & Accurate", 
+      description: "Powered by advanced AI and trained on your knowledge base, our chatbots provide accurate, contextual answers that truly help your customers get what they need.",
+      color: "bg-cyan-500", 
+      icon: Brain 
+    },
+    { 
+      title: "Reduce Costs by 60%", 
+      description: "Automate 70-80% of repetitive support queries. Free your team to focus on complex issues that require human expertise and empathy.",
+      color: "bg-purple-500", 
+      icon: DollarSign 
+    },
+    { 
+      title: "24/7 Multilingual Support", 
+      description: "Never miss a customer inquiry. Provide instant support in multiple languages, across time zones, any time of day or night.",
+      color: "bg-green-500", 
+      icon: Clock 
+    }
   ]
 
   return (
-    <section ref={ref} className="py-24 neural-bg text-white dark">
+    <section id="solution-section" ref={ref} className="py-24 neural-bg text-white dark">
       <div className="container mx-auto px-6">
         <motion.h2 
           className="text-5xl font-bold text-center mb-16"
@@ -311,31 +382,38 @@ const SolutionSection = () => {
           initial="initial"
           animate={isInView ? "animate" : "initial"}
         >
-          We ship in 6-10 weeks
+          Meet Your AI Support Assistant
         </motion.h2>
         
+        <motion.p 
+          className="text-xl text-center mb-16 text-gray-200 max-w-4xl mx-auto"
+          variants={fadeInUp}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
+          transition={{ delay: 0.2 }}
+        >
+          VeloceAI builds intelligent chatbots that understand your customers, solve problems instantly, and never sleep. It's like having a support team that scales infinitely without the costs.
+        </motion.p>
+        
         <motion.div 
-          className="max-w-4xl mx-auto"
+          className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto"
           variants={staggerContainer}
           initial="initial"
           animate={isInView ? "animate" : "initial"}
         >
-          {timeline.map((item, index) => (
+          {features.map((feature, index) => (
             <motion.div 
               key={index}
-              className="flex items-center mb-8 last:mb-0 group"
+              className="glass-dark rounded-xl p-8 group hover:bg-white/10 transition-all duration-300"
               variants={fadeInUp}
             >
-              <div className="flex-shrink-0 w-32 text-right mr-8">
-                <span className="text-blue-400 font-semibold">{item.weeks}</span>
-              </div>
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-400 mr-8 relative">
-                <div className={`absolute inset-0 rounded-full ${item.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-                <item.icon className="w-3 h-3 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-              </div>
-              <div className="flex-1">
-                <div className="glass-dark rounded-xl p-6 group-hover:bg-white/10 transition-all duration-300">
-                  <p className="text-lg">{item.task}</p>
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                  <feature.icon className="w-6 h-6 text-blue-400" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold mb-3 text-white">{feature.title}</h3>
+                  <p className="text-gray-300 leading-relaxed">{feature.description}</p>
                 </div>
               </div>
             </motion.div>
@@ -354,22 +432,22 @@ const FeaturesSection = () => {
   const features = [
     {
       icon: MessageSquare,
-      text: "Handles tier 1 questions (password resets, billing, how-to)",
+      text: "Intelligent Chatbot - Advanced AI that understands customer intent, answers questions accurately, and learns from every interaction to improve over time.",
       color: "from-blue-500 to-cyan-500"
     },
     {
       icon: Users,
-      text: "Routes to right human when uncertain",
+      text: "Omnichannel Support - One chatbot, every platform. Deploy across website, WhatsApp, Facebook Messenger, Instagram, and mobile apps seamlessly.",
       color: "from-cyan-500 to-teal-500"
     },
     {
       icon: Zap,
-      text: "Uses agentic workflows for escalation",
+      text: "Knowledge Base Integration - Connect your existing documentation and FAQs. The AI automatically learns from your content to provide accurate answers.",
       color: "from-teal-500 to-green-500"
     },
     {
       icon: Database,
-      text: "RAG for accurate retrieval",
+      text: "Real-Time Analytics - Monitor performance with detailed dashboards. Track resolution rates, customer satisfaction, peak hours, and common queries.",
       color: "from-green-500 to-emerald-500"
     }
   ]
@@ -383,7 +461,7 @@ const FeaturesSection = () => {
           initial="initial"
           animate={isInView ? "animate" : "initial"}
         >
-          Your support bot that actually works
+          Everything You Need for Exceptional Support
         </motion.h2>
         
         <motion.div 
@@ -412,6 +490,75 @@ const FeaturesSection = () => {
   )
 }
 
+// Use Cases Section
+const UseCasesSection = () => {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-100px" })
+
+  const useCases = [
+    {
+      title: "E-Commerce Support",
+      description: "Handle order tracking, returns, product questions, and checkout issues automatically. Reduce cart abandonment and increase customer lifetime value during peak seasons.",
+      icon: MessageSquare
+    },
+    {
+      title: "SaaS Customer Success", 
+      description: "Automate onboarding, feature explanations, troubleshooting, and billing inquiries. Let your CS team focus on expansion opportunities and strategic accounts.",
+      icon: Users
+    },
+    {
+      title: "Startup Growth",
+      description: "Scale support without scaling headcount. Launch customer support from day one without hiring a full team or sacrificing quality.",
+      icon: Zap
+    },
+    {
+      title: "Developer Tools",
+      description: "Provide instant API documentation, integration help, and technical support. Developers get answers fast without waiting for human agents to respond.",
+      icon: Database
+    }
+  ]
+
+  return (
+    <section ref={ref} className="py-24 neural-bg text-white dark">
+      <div className="container mx-auto px-6">
+        <motion.h2 
+          className="text-5xl font-bold text-center mb-16"
+          variants={fadeInUp}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
+        >
+          Built for Businesses That Move Fast
+        </motion.h2>
+        
+        <motion.div 
+          className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto"
+          variants={staggerContainer}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
+        >
+          {useCases.map((useCase, index) => (
+            <motion.div 
+              key={index}
+              className="glass-dark rounded-xl p-8 group hover:bg-white/10 transition-all duration-300"
+              variants={fadeInUp}
+            >
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                  <useCase.icon className="w-6 h-6 text-blue-400" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold mb-3 text-white">{useCase.title}</h3>
+                  <p className="text-gray-300 leading-relaxed">{useCase.description}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
 // Enhanced CTA Section
 const CTASection = ({ onBookNow }: { onBookNow: () => void }) => {
   const ref = useRef(null)
@@ -426,7 +573,7 @@ const CTASection = ({ onBookNow }: { onBookNow: () => void }) => {
           initial="initial"
           animate={isInView ? "animate" : "initial"}
         >
-          Ready to ship?
+          Ready to Transform Your Support?
         </motion.h2>
         
         <motion.p 
@@ -436,7 +583,7 @@ const CTASection = ({ onBookNow }: { onBookNow: () => void }) => {
           animate={isInView ? "animate" : "initial"}
           transition={{ delay: 0.2 }}
         >
-          Book a 20-minute call. We'll scope your bot and give you a timeline.
+          Get started with your AI chatbot today. Most businesses go live in 1-2 weeks with full automation running smoothly.
         </motion.p>
         
         <motion.div 
@@ -447,9 +594,9 @@ const CTASection = ({ onBookNow }: { onBookNow: () => void }) => {
           transition={{ delay: 0.4 }}
         >
           <div className="d-flex flex-column gap-4 mb-4">
-          <Button size="lg" className="magnetic mb-4" onClick={onBookNow}>
-            <Calendar className="w-5 h-5 mr-2" />
-            Book a Call
+          <Button size="lg" className="magnetic" onClick={() => window.location.href = '/contact'}>
+            <Rocket className="w-5 h-5 mr-2" />
+            Get Started Free
           </Button>
           </div>
         </motion.div>
@@ -467,15 +614,15 @@ export default function Home() {
 
   useEffect(() => {
     // Set page title and meta description
-    document.title = "VeloceAI - Ship AI features in weeks, not quarters"
+    document.title = "VeloceAI - AI Chatbot for Customer Support | 24/7 Automated Service"
     
     const metaDescription = document.querySelector('meta[name="description"]')
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Ship your AI support bot in 6 weeks. We build production-ready AI features while your competitors are still hiring teams.')
+      metaDescription.setAttribute('content', 'Transform your customer support with VeloceAI\'s intelligent chatbot. Automate 70% of queries, reduce costs by 60%, and delight customers 24/7. Perfect for startups and e-commerce.')
     } else {
       const meta = document.createElement('meta')
       meta.name = 'description'
-      meta.content = 'Ship your AI support bot in 6 weeks. We build production-ready AI features while your competitors are still hiring teams.'
+      meta.content = 'Transform your customer support with VeloceAI\'s intelligent chatbot. Automate 70% of queries, reduce costs by 60%, and delight customers 24/7. Perfect for startups and e-commerce.'
       document.head.appendChild(meta)
     }
   }, [])
@@ -483,9 +630,11 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <HeroSection onBookNow={() => setIsBookingOpen(true)} />
+      <StatsSection />
       <ProblemSection />
       <SolutionSection />
       <FeaturesSection />
+      <UseCasesSection />
       <CTASection onBookNow={() => setIsBookingOpen(true)} />
       <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
     </div>

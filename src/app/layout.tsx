@@ -7,9 +7,9 @@ import Footer from '@/components/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'VeloceAI - Ship AI features in weeks, not quarters',
-  description: 'Ship your AI support bot in 6 weeks. We build production-ready AI features while your competitors are still hiring teams.',
-  keywords: ['AI', 'support bot', 'automation', 'machine learning', 'customer service'],
+  title: 'VeloceAI - AI Chatbot for Customer Support | 24/7 Automated Service',
+  description: 'Transform your customer support with VeloceAI\'s intelligent chatbot. Automate 70% of queries, reduce costs by 60%, and delight customers 24/7. Perfect for startups and e-commerce.',
+  keywords: ['AI chatbot', 'customer support', 'automation', '24/7 support', 'e-commerce', 'startup', 'customer service'],
   authors: [{ name: 'VeloceAI' }],
   icons: {
     icon: '/logo.svg',
@@ -17,8 +17,8 @@ export const metadata: Metadata = {
     apple: '/logo.svg',
   },
   openGraph: {
-    title: 'VeloceAI - Ship AI features in weeks, not quarters',
-    description: 'Ship your AI support bot in 6 weeks. We build production-ready AI features while your competitors are still hiring teams.',
+    title: 'VeloceAI - AI Chatbot for Customer Support | 24/7 Automated Service',
+    description: 'Transform your customer support with VeloceAI\'s intelligent chatbot. Automate 70% of queries, reduce costs by 60%, and delight customers 24/7. Perfect for startups and e-commerce.',
     url: 'https://veloceai.co',
     siteName: 'VeloceAI',
     images: [
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'VeloceAI - Ship AI features in weeks, not quarters',
-    description: 'Ship your AI support bot in 6 weeks. We build production-ready AI features while your competitors are still hiring teams.',
+    title: 'VeloceAI - AI Chatbot for Customer Support | 24/7 Automated Service',
+    description: 'Transform your customer support with VeloceAI\'s intelligent chatbot. Automate 70% of queries, reduce costs by 60%, and delight customers 24/7. Perfect for startups and e-commerce.',
     images: ['/og-image.jpg'],
   },
   robots: {

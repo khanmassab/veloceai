@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Calendar, Clock, User, Mail, Building, MessageSquare } from 'lucide-react'
 import CalendarComponent from './Calendar'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 interface BookingModalProps {
   isOpen: boolean
@@ -21,30 +22,59 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
     time: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
+
+  const handleRecaptchaChange = (token: string | null) => {
+    setRecaptchaToken(token)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Check if we're on localhost (skip reCAPTCHA)
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    
+    if (!isLocalhost && !recaptchaToken) {
+      alert('Please complete the reCAPTCHA verification')
+      return
+    }
+
     setIsSubmitting(true)
     
     try {
-      // For static export, we'll use a simple mailto approach
-      const subject = `Booking Request - ${formData.name}`
-      const body = `
-Name: ${formData.name}
-Email: ${formData.email}
-Company: ${formData.company || 'Not provided'}
-Date: ${formData.date}
-Time: ${formData.time}
-Message: ${formData.message || 'No additional message'}
-      `.trim()
-      
-      const mailtoUrl = `mailto:massab@veloceai.co?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-      window.open(mailtoUrl, '_blank')
-      
-      setStep(3) // Success step
+      console.log('Attempting to send booking request...')
+      const response = await fetch('/api/booking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          recaptchaToken: isLocalhost ? null : recaptchaToken
+        }),
+      })
+
+      console.log('Response status:', response.status)
+      console.log('Response ok:', response.ok)
+
+      if (response.ok) {
+        console.log('Booking successful, moving to success step')
+        setRecaptchaToken(null)
+        if (recaptchaRef.current) {
+          recaptchaRef.current.reset()
+        }
+        setStep(3) // Success step
+      } else {
+        const errorData = await response.text()
+        console.error('API Error:', errorData)
+        alert('Failed to send booking request. Please try again or contact us directly.')
+        return
+      }
     } catch (error) {
       console.error('Booking error:', error)
-      // Handle error
+      alert('Network error. Please check your connection and try again.')
+      return
     } finally {
       setIsSubmitting(false)
     }
@@ -96,7 +126,7 @@ Message: ${formData.message || 'No additional message'}
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto glass rounded-2xl border border-white/20"
+            className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-900/95 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-white/10">
@@ -151,7 +181,7 @@ Message: ${formData.message || 'No additional message'}
                         required
                         value={formData.name}
                         onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="Your full name"
                       />
                     </div>
@@ -166,7 +196,7 @@ Message: ${formData.message || 'No additional message'}
                         required
                         value={formData.email}
                         onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="your@email.com"
                       />
                     </div>
@@ -180,7 +210,7 @@ Message: ${formData.message || 'No additional message'}
                         type="text"
                         value={formData.company}
                         onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="Your company name"
                       />
                     </div>
@@ -191,7 +221,7 @@ Message: ${formData.message || 'No additional message'}
                         <span>Time Zone</span>
                       </label>
                       <select
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         defaultValue="auto"
                       >
                         <option value="auto">Auto-detect</option>
@@ -212,10 +242,22 @@ Message: ${formData.message || 'No additional message'}
                       value={formData.message}
                       onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
                       rows={4}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                       placeholder="Tell us about your project or any specific questions..."
                     />
                   </div>
+
+                  {/* reCAPTCHA - only show on production */}
+                  {typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && (
+                    <div className="flex justify-center">
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LfQrvQrAAAAAJtr1yvnn-dtsi3YPo6BoNtmX_n6'}
+                        onChange={handleRecaptchaChange}
+                        theme="dark"
+                      />
+                    </div>
+                  )}
 
                   <div className="flex space-x-4 pt-4">
                     <button

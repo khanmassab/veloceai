@@ -25,6 +25,7 @@ const Header = () => {
     { name: 'Home', href: '/' },
     { name: 'Blog', href: '/blog' },
     { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' },
   ]
 
   return (
@@ -73,6 +74,7 @@ const Header = () => {
               ))}
             </nav>
 
+
             {/* Book Now Button */}
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -80,8 +82,8 @@ const Header = () => {
               onClick={() => setIsBookingOpen(true)}
               className="hidden md:flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-blue-500/25"
             >
-              <Calendar className="w-4 h-4" />
-              <span>Book Now</span>
+              <Calendar className="w-5 h-5 mr-2" />
+              Book Now
             </motion.button>
 
             {/* Mobile Menu Button */}
