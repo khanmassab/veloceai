@@ -11,11 +11,17 @@ interface CalendarProps {
 const Calendar = ({ onDateSelect }: CalendarProps) => {
   const [currentDate, setCurrentDate] = useState(() => {
     // Use a stable initial date to avoid hydration mismatch
-    const now = new Date()
-    return new Date(now.getFullYear(), now.getMonth(), 1)
+    // Use a fixed date instead of current date to prevent hydration issues
+    return new Date(2024, 0, 1) // January 2024 as default
   })
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [availableSlots, setAvailableSlots] = useState<string[]>([])
+
+  // Initialize with current date on client side to avoid hydration mismatch
+  useEffect(() => {
+    const now = new Date()
+    setCurrentDate(new Date(now.getFullYear(), now.getMonth(), 1))
+  }, [])
 
   // Business hours: 9 AM - 5 PM EST, Monday to Friday
   const businessHours = [

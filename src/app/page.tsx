@@ -613,17 +613,20 @@ export default function Home() {
   const [isBookingOpen, setIsBookingOpen] = useState(false)
 
   useEffect(() => {
-    // Set page title and meta description
-    document.title = "VeloceAI - AI Chatbot for Customer Support | 24/7 Automated Service"
-    
-    const metaDescription = document.querySelector('meta[name="description"]')
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Transform your customer support with VeloceAI\'s intelligent chatbot. Automate 70% of queries, reduce costs by 60%, and delight customers 24/7. Perfect for startups and e-commerce.')
-    } else {
-      const meta = document.createElement('meta')
-      meta.name = 'description'
-      meta.content = 'Transform your customer support with VeloceAI\'s intelligent chatbot. Automate 70% of queries, reduce costs by 60%, and delight customers 24/7. Perfect for startups and e-commerce.'
-      document.head.appendChild(meta)
+    // Only run on client side to avoid hydration mismatch
+    if (typeof window !== 'undefined') {
+      // Set page title and meta description
+      document.title = "VeloceAI - AI Chatbot for Customer Support | 24/7 Automated Service"
+      
+      const metaDescription = document.querySelector('meta[name="description"]')
+      if (metaDescription) {
+        metaDescription.setAttribute('content', 'Transform your customer support with VeloceAI\'s intelligent chatbot. Automate 70% of queries, reduce costs by 60%, and delight customers 24/7. Perfect for startups and e-commerce.')
+      } else {
+        const meta = document.createElement('meta')
+        meta.name = 'description'
+        meta.content = 'Transform your customer support with VeloceAI\'s intelligent chatbot. Automate 70% of queries, reduce costs by 60%, and delight customers 24/7. Perfect for startups and e-commerce.'
+        document.head.appendChild(meta)
+      }
     }
   }, [])
 

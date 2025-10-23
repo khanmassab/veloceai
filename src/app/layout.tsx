@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import EnvDebug from '@/components/EnvDebug'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -66,31 +67,6 @@ export default function RootLayout({
           src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
           async
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              document.addEventListener('DOMContentLoaded', function() {
-                if (typeof hljs !== 'undefined') {
-                  hljs.highlightAll();
-                } else {
-                  // Fallback: try again after a short delay
-                  setTimeout(function() {
-                    if (typeof hljs !== 'undefined') {
-                      hljs.highlightAll();
-                    }
-                  }, 100);
-                }
-              });
-              
-              // Also run on window load as backup
-              window.addEventListener('load', function() {
-                if (typeof hljs !== 'undefined') {
-                  hljs.highlightAll();
-                }
-              });
-            `,
-          }}
-        />
       </head>
       <body className={inter.className}>
         <Header />
@@ -98,6 +74,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <EnvDebug />
       </body>
     </html>
   )

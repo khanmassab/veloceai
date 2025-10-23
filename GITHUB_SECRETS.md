@@ -24,6 +24,9 @@ These are used for API routes and server-side functionality.
 | `SMTP_PORT` | SMTP server port | `587` |
 | `SMTP_USER` | SMTP username/email | `your-email@gmail.com` |
 | `SMTP_PASS` | SMTP password/app password | `your-app-password` |
+| `SMTP_SECURE` | Use secure connection (true/false) | `false` |
+| `SMTP_FROM` | From email address | `noreply@veloceai.co` |
+| `CONTACT_EMAIL` | Contact email for form submissions | `massab@veloceai.co` |
 | `RECAPTCHA_SECRET_KEY` | reCAPTCHA Secret Key | `6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe` |
 
 ## How to Add Secrets

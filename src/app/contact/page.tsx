@@ -155,11 +155,14 @@ const ContactForm = () => {
         </div>
 
         {/* reCAPTCHA - only show on production */}
-        {typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && (
+        {typeof window !== 'undefined' && 
+         window.location.hostname !== 'localhost' && 
+         window.location.hostname !== '127.0.0.1' && 
+         process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
           <div className="flex justify-center">
             <ReCAPTCHA
               ref={recaptchaRef}
-              sitekey="6LfQrvQrAAAAAJtr1yvnn-dtsi3YPo6BoNtmX_n6"
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
               onChange={handleRecaptchaChange}
               theme="dark"
               size="normal"

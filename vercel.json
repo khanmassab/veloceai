@@ -1,0 +1,30 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm ci",
+  "functions": {
+    "src/app/api/**/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "env": {
+    "SMTP_HOST": "@smtp_host",
+    "SMTP_PORT": "@smtp_port", 
+    "SMTP_USER": "@smtp_user",
+    "SMTP_PASS": "@smtp_pass",
+    "SMTP_SECURE": "@smtp_secure",
+    "SMTP_FROM": "@smtp_from",
+    "CONTACT_EMAIL": "@contact_email",
+    "RECAPTCHA_SECRET_KEY": "@recaptcha_secret_key",
+    "NEXT_PUBLIC_SITE_URL": "@next_public_site_url",
+    "NEXT_PUBLIC_GA_ID": "@next_public_ga_id",
+    "NEXT_PUBLIC_RECAPTCHA_SITE_KEY": "@next_public_recaptcha_site_key"
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    }
+  ]
+}
