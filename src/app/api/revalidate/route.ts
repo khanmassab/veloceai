@@ -2,15 +2,36 @@ import { revalidatePath } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
-  const secret = request.nextUrl.searchParams.get('secret')
+  // Check for secret in URL params (for backward compatibility)
+  const urlSecret = request.nextUrl.searchParams.get('secret')
+  
+  // Check for secret in headers
+  const headerSecret = request.headers.get('x-sanity-webhook-secret')
+  
+  // Parse request body once
+  let body = null
+  let bodySecret = null
+  try {
+    body = await request.json()
+    bodySecret = body.secret
+  } catch (err) {
+    // Body might not be JSON or might be empty
+    console.error('Failed to parse request body:', err)
+  }
+  
+  const secret = urlSecret || headerSecret || bodySecret
+  const expectedSecret = process.env.SANITY_WEBHOOK_SECRET
   
   // Verify the secret
-  if (secret !== process.env.SANITY_WEBHOOK_SECRET) {
+  if (!secret || secret !== expectedSecret) {
+    console.error('Webhook secret mismatch:', { 
+      provided: secret ? 'present' : 'missing', 
+      expected: expectedSecret ? 'present' : 'missing' 
+    })
     return NextResponse.json({ message: 'Invalid secret' }, { status: 401 })
   }
 
   try {
-    const body = await request.json()
     
     // Handle different document types
     if (body._type === 'blogPost') {
