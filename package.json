@@ -37,6 +37,7 @@
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
     "sanity": "^4.11.0",
+    "styled-components": "^6.1.19",
     "tailwind-merge": "^2.0.0",
     "unified": "^11.0.5",
     "zod": "^3.22.4"

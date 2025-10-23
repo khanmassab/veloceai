@@ -13,6 +13,9 @@ dist-ssr
 .next
 out
 *.local
+.package-lock.json
+.env
+.env.local
 
 # Sanity
 .sanity
