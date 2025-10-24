@@ -20,6 +20,18 @@ export interface BlogPost {
   title: string
   date: string
   author: string
+  authorDetails?: {
+    slug: string
+    name: string
+    bio: string
+    avatar?: string
+    social?: {
+      email?: string
+      linkedin?: string
+      github?: string
+      website?: string
+    }
+  }
   excerpt: string
   content: string | any[] // Can be HTML string (markdown) or Portable Text array (Sanity)
   tags: string[]
@@ -167,6 +179,13 @@ async function getSanityPostBySlug(slug: string): Promise<BlogPost | null> {
       title: sanityPost.title,
       date: sanityPost.date,
       author: sanityPost.author.name,
+      authorDetails: {
+        slug: sanityPost.author.slug.current,
+        name: sanityPost.author.name,
+        bio: sanityPost.author.bio || '',
+        avatar: getImageUrl(sanityPost.author.avatar),
+        social: sanityPost.author.social || {}
+      },
       excerpt: sanityPost.excerpt,
       content: sanityPost.content, // Portable text content
       tags: sanityPost.tags?.map((tag: any) => tag.name) || [],

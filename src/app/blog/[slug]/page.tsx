@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getPostBySlug, getRelatedPosts, getAuthorBySlug, getAllPosts } from '@/lib/blog'
+import { getPostBySlug, getRelatedPosts, getAllPosts } from '@/lib/blog'
 import { formatDate, getSocialShareUrls } from '@/lib/utils'
 import AuthorCard from '@/components/blog/AuthorCard'
 import RelatedPosts from '@/components/blog/RelatedPosts'
@@ -70,9 +70,22 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound()
   }
 
-  const author = getAuthorBySlug(post.author.toLowerCase().replace(/\s+/g, '-'))
   const relatedPosts = await getRelatedPosts(post, 3)
   const socialUrls = getSocialShareUrls(`https://veloceai.co/blog/${post.slug}`, post.title)
+  
+  // Use author details from Sanity post data
+  const author = post.authorDetails ? {
+    slug: post.authorDetails.slug,
+    name: post.authorDetails.name,
+    bio: post.authorDetails.bio,
+    avatar: post.authorDetails.avatar,
+    social: {
+      twitter: post.authorDetails.social?.email, // Map email to twitter field for compatibility
+      linkedin: post.authorDetails.social?.linkedin,
+      github: post.authorDetails.social?.github,
+      website: post.authorDetails.social?.website,
+    }
+  } : null
 
   return (
     <div className="min-h-screen neural-bg">
