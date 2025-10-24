@@ -231,7 +231,7 @@ const ContactInfo = () => {
       icon: Phone,
       title: "Call Us",
       description: "Speak with our team",
-      value: "+92 301 234 5678"
+      value: "+92 337 7004251"
     },
     {
       icon: MapPin,
