@@ -10,10 +10,15 @@ interface CategoryPageProps {
 }
 
 export async function generateStaticParams() {
-  const categories = await getAllCategories()
-  return categories.map((category) => ({
-    category: category.toLowerCase().replace(/\s+/g, '-'),
-  }))
+  try {
+    const categories = await getAllCategories()
+    return categories.map((category) => ({
+      category: category.toLowerCase().replace(/\s+/g, '-'),
+    }))
+  } catch (error) {
+    console.error('Error generating category params:', error)
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
@@ -36,12 +41,21 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   const { page } = await searchParams
   const categoryName = category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
   
-  const allPosts = await getAllPosts()
-  const filteredPosts = allPosts.filter(post => 
-    post.categories.some(cat => 
-      cat.toLowerCase().replace(/\s+/g, '-') === category.toLowerCase()
+  let allPosts = []
+  let filteredPosts = []
+  
+  try {
+    allPosts = await getAllPosts()
+    filteredPosts = allPosts.filter(post => 
+      post.categories.some(cat => 
+        cat.toLowerCase().replace(/\s+/g, '-') === category.toLowerCase()
+      )
     )
-  )
+  } catch (error) {
+    console.error('Error loading posts for category:', error)
+    allPosts = []
+    filteredPosts = []
+  }
 
   // Pagination
   const postsPerPage = 6

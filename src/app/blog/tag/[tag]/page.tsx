@@ -10,10 +10,15 @@ interface TagPageProps {
 }
 
 export async function generateStaticParams() {
-  const tags = await getAllTags()
-  return tags.map((tag) => ({
-    tag: tag.toLowerCase().replace(/\s+/g, '-'),
-  }))
+  try {
+    const tags = await getAllTags()
+    return tags.map((tag) => ({
+      tag: tag.toLowerCase().replace(/\s+/g, '-'),
+    }))
+  } catch (error) {
+    console.error('Error generating tag params:', error)
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
@@ -36,12 +41,21 @@ export default async function TagPage({ params, searchParams }: TagPageProps & {
   const { page } = await searchParams
   const tagName = tag.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
   
-  const allPosts = await getAllPosts()
-  const filteredPosts = allPosts.filter(post => 
-    post.tags.some(postTag => 
-      postTag.toLowerCase().replace(/\s+/g, '-') === tag.toLowerCase()
+  let allPosts = []
+  let filteredPosts = []
+  
+  try {
+    allPosts = await getAllPosts()
+    filteredPosts = allPosts.filter(post => 
+      post.tags.some(postTag => 
+        postTag.toLowerCase().replace(/\s+/g, '-') === tag.toLowerCase()
+      )
     )
-  )
+  } catch (error) {
+    console.error('Error loading posts for tag:', error)
+    allPosts = []
+    filteredPosts = []
+  }
 
   // Pagination
   const postsPerPage = 6
