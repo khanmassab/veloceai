@@ -1,5 +1,25 @@
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
+
+// Helper function to revalidate all blog-related paths
+async function revalidateAllBlogPaths() {
+  const paths = [
+    '/blog',
+    '/blog/',
+    '/rss.xml',
+    '/sitemap.xml.bak'
+  ]
+  
+  for (const path of paths) {
+    try {
+      revalidatePath(path)
+      revalidatePath(path, 'page')
+      revalidatePath(path, 'layout')
+    } catch (error) {
+      console.error(`Failed to revalidate ${path}:`, error)
+    }
+  }
+}
 
 export async function POST(request: NextRequest) {
   // Check for secret in URL params (for backward compatibility)
@@ -32,33 +52,80 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    console.log('Webhook received:', { type: body._type, slug: body.slug?.current })
     
     // Handle different document types
     if (body._type === 'blogPost') {
-      // Revalidate blog pages
-      revalidatePath('/blog')
-      revalidatePath(`/blog/${body.slug?.current}`)
+      const slug = body.slug?.current
       
-      // Revalidate category and tag pages if they exist
-      if (body.categories) {
+      // Revalidate all blog paths first
+      await revalidateAllBlogPaths()
+      
+      // Revalidate specific blog post
+      if (slug) {
+        revalidatePath(`/blog/${slug}`)
+        revalidatePath(`/blog/${slug}/`)
+      }
+      
+      // Revalidate category pages
+      if (body.categories && Array.isArray(body.categories)) {
         body.categories.forEach((category: any) => {
-          revalidatePath(`/blog/category/${category.slug?.current}`)
+          if (category.slug?.current) {
+            revalidatePath(`/blog/category/${category.slug.current}`)
+            revalidatePath(`/blog/category/${category.slug.current}/`)
+          }
         })
       }
       
-      if (body.tags) {
+      // Revalidate tag pages
+      if (body.tags && Array.isArray(body.tags)) {
         body.tags.forEach((tag: any) => {
-          revalidatePath(`/blog/tag/${tag.slug?.current}`)
+          if (tag.slug?.current) {
+            revalidatePath(`/blog/tag/${tag.slug.current}`)
+            revalidatePath(`/blog/tag/${tag.slug.current}/`)
+          }
         })
       }
+      
+      console.log('Revalidated blog post:', slug)
     }
     
     if (body._type === 'author') {
-      // Revalidate author pages
-      revalidatePath(`/blog/author/${body.slug?.current}`)
+      const slug = body.slug?.current
+      if (slug) {
+        revalidatePath(`/blog/author/${slug}`)
+        console.log('Revalidated author:', slug)
+      }
+    }
+    
+    // Revalidate tags and categories
+    if (body._type === 'tag' || body._type === 'category') {
+      await revalidateAllBlogPaths()
+      console.log('Revalidated blog due to tag/category change')
+    }
+    
+    // Force revalidation of all blog content (nuclear option)
+    if (body._type === 'blogPost') {
+      // Also revalidate the home page in case it shows recent posts
+      revalidatePath('/')
+      revalidatePath('/about')
+      
+      // Force revalidation with different cache types
+      try {
+        revalidateTag('blog-posts')
+        revalidateTag('blog-categories')
+        revalidateTag('blog-tags')
+      } catch (error) {
+        console.log('Tag revalidation not available:', error)
+      }
     }
 
-    return NextResponse.json({ revalidated: true })
+    return NextResponse.json({ 
+      revalidated: true, 
+      type: body._type,
+      slug: body.slug?.current,
+      timestamp: new Date().toISOString()
+    })
   } catch (err) {
     console.error('Revalidation error:', err)
     return NextResponse.json({ message: 'Error revalidating' }, { status: 500 })
