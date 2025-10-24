@@ -2,9 +2,7 @@ export const dynamic = 'force-static'
 
 export async function GET() {
   const robots = `User-agent: *
-Allow: /
-
-Sitemap: https://veloceai.co/sitemap.xml
+Disallow: /
 `
 
   return new Response(robots, {
