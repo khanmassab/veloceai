@@ -41,13 +41,13 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   const { page } = await searchParams
   const categoryName = category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
   
-  let allPosts = []
-  let filteredPosts = []
+  let allPosts: any[] = []
+  let filteredPosts: any[] = []
   
   try {
     allPosts = await getAllPosts()
-    filteredPosts = allPosts.filter(post => 
-      post.categories.some(cat => 
+    filteredPosts = allPosts.filter((post: any) => 
+      post.categories.some((cat: any) => 
         cat.toLowerCase().replace(/\s+/g, '-') === category.toLowerCase()
       )
     )

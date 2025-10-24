@@ -41,13 +41,13 @@ export default async function TagPage({ params, searchParams }: TagPageProps & {
   const { page } = await searchParams
   const tagName = tag.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
   
-  let allPosts = []
-  let filteredPosts = []
+  let allPosts: any[] = []
+  let filteredPosts: any[] = []
   
   try {
     allPosts = await getAllPosts()
-    filteredPosts = allPosts.filter(post => 
-      post.tags.some(postTag => 
+    filteredPosts = allPosts.filter((post: any) => 
+      post.tags.some((postTag: any) => 
         postTag.toLowerCase().replace(/\s+/g, '-') === tag.toLowerCase()
       )
     )
