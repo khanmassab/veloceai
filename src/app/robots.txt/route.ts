@@ -2,7 +2,7 @@ export const dynamic = 'force-static'
 
 export async function GET() {
   const robots = `User-agent: *
-Allow: /
+Disallow: /
 `
   
   return new Response(robots, {
