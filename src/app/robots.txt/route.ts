@@ -12,6 +12,15 @@ Allow: /
 
 User-agent: claude-ai
 Allow: /
+
+User-agent: Claude-Web-Search
+Allow: /
+
+User-agent: Claude-Web-Search-Preview-* 
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
 `
 
   return new Response(robots, {
