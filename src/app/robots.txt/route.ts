@@ -4,6 +4,9 @@ export async function GET() {
   const robots = `User-agent: *
 Disallow: /
 
+User-agent: ClaudeBot
+Allow: /
+
 User-agent: Claude-Web
 Allow: /
 
@@ -13,13 +16,7 @@ Allow: /
 User-agent: claude-ai
 Allow: /
 
-User-agent: Claude-Web-Search
-Allow: /
-
-User-agent: Claude-Web-Search-Preview-* 
-Allow: /
-
-User-agent: ClaudeBot
+User-agent: Anthropic-AI
 Allow: /
 `
 
