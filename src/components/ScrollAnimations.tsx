@@ -28,7 +28,7 @@ export const ScrollAnimation = ({
   const ref = useRef(null)
   const isInView = useInView(ref, { 
     once, 
-    margin: `-${Math.round(threshold * 100)}px` 
+    margin: `-${Math.round(threshold * 100)}px` as string
   })
   const shouldReduceMotion = useReducedMotion()
 
@@ -144,7 +144,7 @@ export const StaggerContainer = ({
   const ref = useRef(null)
   const isInView = useInView(ref, { 
     once: true, 
-    margin: `-${Math.round(threshold * 100)}px` 
+    margin: `-${Math.round(threshold * 100)}px` as string
   })
   const shouldReduceMotion = useReducedMotion()
 
@@ -332,7 +332,7 @@ export const Reveal = ({
   const ref = useRef(null)
   const isInView = useInView(ref, { 
     once: true, 
-    margin: `-${Math.round(threshold * 100)}px` 
+    margin: `-${Math.round(threshold * 100)}px` as string
   })
   const shouldReduceMotion = useReducedMotion()
 
