@@ -4,6 +4,8 @@ import BlogCard from '@/components/blog/BlogCard'
 import BlogPagination from '@/components/blog/BlogPagination'
 import { ArrowLeft, Filter } from 'lucide-react'
 import Link from 'next/link'
+import { PageWrapper } from '@/components/NeuralNetworkBackground'
+import { ScrollAnimation, StaggerContainer, StaggerItem, GradientText } from '@/components/ScrollAnimations'
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>
@@ -66,28 +68,40 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   const posts = filteredPosts.slice(startIndex, endIndex)
 
   return (
-    <div className="min-h-screen neural-bg">
+    <PageWrapper backgroundVariant="full" className="min-h-screen neural-bg">
       {/* Header */}
-      <section className="py-12 text-white">
+      <section className="pt-24 pb-12 text-white">
         <div className="container mx-auto px-6">
-          <Link 
-            href="/blog" 
-            className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Blog
-          </Link>
+          <ScrollAnimation direction="up" distance={30}>
+            <Link 
+              href="/blog" 
+              className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Blog
+            </Link>
+          </ScrollAnimation>
           
-          <div className="flex items-center mb-6">
-            <Filter className="w-8 h-8 mr-3 text-blue-400" />
-            <h1 className="text-4xl font-bold">
-              {categoryName}
-            </h1>
-          </div>
+          <ScrollAnimation direction="up" distance={40} delay={0.2}>
+            <div className="flex items-center mb-6">
+              <Filter className="w-8 h-8 mr-3 text-blue-400" />
+              <h1 className="text-4xl font-bold">
+                <GradientText 
+                  className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent"
+                  gradient="linear-gradient(45deg, #3b82f6, #06b6d4, #3b82f6)"
+                  duration={2}
+                >
+                  {categoryName}
+                </GradientText>
+              </h1>
+            </div>
+          </ScrollAnimation>
           
-          <p className="text-xl text-gray-300">
-            {filteredPosts.length} {filteredPosts.length === 1 ? 'post' : 'posts'} in this category
-          </p>
+          <ScrollAnimation direction="up" distance={30} delay={0.4}>
+            <p className="text-xl text-gray-300">
+              {filteredPosts.length} {filteredPosts.length === 1 ? 'post' : 'posts'} in this category
+            </p>
+          </ScrollAnimation>
         </div>
       </section>
 
@@ -95,31 +109,37 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
       <section className="py-12 bg-gradient-to-br from-slate-800 to-slate-900 text-white">
         <div className="container mx-auto px-6">
           {posts.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {posts.map((post) => (
-                <BlogCard key={post.slug} post={post} />
+                <StaggerItem key={post.slug}>
+                  <BlogCard post={post} />
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           ) : (
-            <div className="text-center py-12">
-              <p className="text-gray-400 text-lg">No posts found in this category.</p>
-            </div>
+            <ScrollAnimation direction="up" distance={30}>
+              <div className="text-center py-12">
+                <p className="text-gray-400 text-lg">No posts found in this category.</p>
+              </div>
+            </ScrollAnimation>
           )}
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <BlogPagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={(page) => {
-                const url = new URL(window.location.href)
-                url.searchParams.set('page', page.toString())
-                window.location.href = url.toString()
-              }}
-            />
+            <ScrollAnimation direction="up" distance={30} delay={0.2}>
+              <BlogPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={(page) => {
+                  const url = new URL(window.location.href)
+                  url.searchParams.set('page', page.toString())
+                  window.location.href = url.toString()
+                }}
+              />
+            </ScrollAnimation>
           )}
         </div>
       </section>
-    </div>
+    </PageWrapper>
   )
 }

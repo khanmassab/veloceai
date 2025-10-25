@@ -19,6 +19,8 @@ import {
   ArrowRight,
   Rocket
 } from 'lucide-react'
+import { PageWrapper } from '@/components/NeuralNetworkBackground'
+import { ScrollAnimation, StaggerContainer, StaggerItem, GradientText, MagneticButton } from '@/components/ScrollAnimations'
 
 // Animation variants
 const fadeInUp = {
@@ -101,72 +103,67 @@ export default function AboutPage() {
   const y = useTransform(scrollY, [0, 500], [0, 150])
 
   return (
-    <div className="min-h-screen">
+    <PageWrapper backgroundVariant="full" className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-24 bg-gradient-to-br from-slate-800 to-slate-900 text-white overflow-hidden">
+      <section className="relative pt-24 pb-24 bg-gradient-to-br from-slate-800 to-slate-900 text-white overflow-hidden">
         <div className="container mx-auto px-6">
-          <motion.div 
-            className="max-w-6xl mx-auto"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <div className="max-w-6xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <motion.div 
-                  className="mb-8"
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                >
-                  <div className="w-20 h-20 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mb-6">
+              <ScrollAnimation direction="right" distance={50}>
+                <div className="mb-8">
+                  <motion.div 
+                    className="w-20 h-20 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mb-6"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     <Brain className="w-10 h-10 text-blue-400" />
-                  </div>
+                  </motion.div>
                   <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                     Meet the{' '}
-                    <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                    <GradientText 
+                      className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent"
+                      gradient="linear-gradient(45deg, #3b82f6, #06b6d4, #8b5cf6, #3b82f6)"
+                      duration={3}
+                    >
                       VeloceAI Team
-            </span>
-          </h1>
+                    </GradientText>
+                  </h1>
                   <p className="text-xl text-gray-300 leading-relaxed">
                     We're a passionate team of AI engineers and customer support veterans who've experienced the pain of scaling support firsthand. 
                     Now we're building the solutions we wish we had - making AI support accessible to every business.
                   </p>
-                </motion.div>
-              </div>
+                </div>
+              </ScrollAnimation>
               
-              <motion.div 
-                className="relative"
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <div className="glass-dark rounded-2xl p-8">
-                  <div className="flex items-center space-x-4 mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                      V
+              <ScrollAnimation direction="left" distance={50} delay={0.2}>
+                <div className="relative">
+                  <div className="glass-dark rounded-2xl p-8">
+                    <div className="flex items-center space-x-4 mb-6">
+                      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                        V
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-white">VeloceAI Team</h3>
+                        <p className="text-blue-400">AI & Support Experts</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-white">VeloceAI Team</h3>
-                      <p className="text-blue-400">AI & Support Experts</p>
+                    <p className="text-gray-300 leading-relaxed mb-4">
+                      "We believe exceptional customer support shouldn't require a massive team or endless resources. 
+                      That's why we're building AI chatbot platforms that are powerful, affordable, and incredibly easy to use."
+                    </p>
+                    <div className="flex space-x-4">
+                      <a href="/contact" className="text-blue-400 hover:text-blue-300 transition-colors text-sm">
+                        Contact Us
+                      </a>
+                      <a href="/blog" className="text-blue-400 hover:text-blue-300 transition-colors text-sm">
+                        Our Blog
+                      </a>
                     </div>
-                  </div>
-                  <p className="text-gray-300 leading-relaxed mb-4">
-                    "We believe exceptional customer support shouldn't require a massive team or endless resources. 
-                    That's why we're building AI chatbot platforms that are powerful, affordable, and incredibly easy to use."
-                  </p>
-                  <div className="flex space-x-4">
-                    <a href="/contact" className="text-blue-400 hover:text-blue-300 transition-colors text-sm">
-                      Contact Us
-                    </a>
-                    <a href="/blog" className="text-blue-400 hover:text-blue-300 transition-colors text-sm">
-                      Our Blog
-                    </a>
                   </div>
                 </div>
-              </motion.div>
+              </ScrollAnimation>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -694,7 +691,7 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section>
-    </div>
+    </PageWrapper>
   )
 }
 

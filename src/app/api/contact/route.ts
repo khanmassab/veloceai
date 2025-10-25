@@ -1,60 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 
-export async function POST(request: NextRequest) {
+// Async function to send emails in background
+async function sendEmailsAsync({ 
+  name, 
+  email, 
+  phone, 
+  requirements 
+}: { 
+  name: string
+  email: string
+  phone: string
+  requirements: string
+}) {
   try {
-    const { name, email, phone, requirements, recaptchaToken } = await request.json()
+    console.log('Starting background email sending...')
 
-    // Validate required fields
-    if (!name || !email || !phone || !requirements) {
-      return NextResponse.json(
-        { error: 'All fields are required' },
-        { status: 400 }
-      )
-    }
-
-    // Verify reCAPTCHA (skip on localhost)
-    const isLocalhost = request.headers.get('host')?.includes('localhost') || request.headers.get('host')?.includes('127.0.0.1')
-    
-    if (!isLocalhost && recaptchaToken) {
-      try {
-        const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
-        })
-
-        const recaptchaData = await recaptchaResponse.json()
-        
-        console.log('reCAPTCHA v3 verification result:', recaptchaData)
-        
-        // v3 returns a score (0.0 to 1.0), typically accept scores > 0.5
-        if (!recaptchaData.success || recaptchaData.score < 0.5) {
-          return NextResponse.json(
-            { 
-              error: 'reCAPTCHA verification failed', 
-              details: recaptchaData['error-codes'] || `Score too low: ${recaptchaData.score}` 
-            },
-            { status: 400 }
-          )
-        }
-      } catch (error) {
-        console.error('reCAPTCHA verification error:', error)
-        return NextResponse.json(
-          { error: 'reCAPTCHA verification failed' },
-          { status: 400 }
-        )
-      }
-    }
-
-    // Debug environment variables
-    console.log('SMTP_HOST:', process.env.SMTP_HOST)
-    console.log('SMTP_USER:', process.env.SMTP_USER)
-    console.log('SMTP_PASS:', process.env.SMTP_PASS ? 'Set' : 'Not set')
-
-    // Create transporter using environment variables
+    // Create transporter
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || '587'),
@@ -128,26 +90,97 @@ export async function POST(request: NextRequest) {
       </div>
     `
 
-    // Send email to business owner
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM || process.env.SMTP_USER,
-      to: process.env.CONTACT_EMAIL || 'massab@veloceai.co',
-      subject: `New Contact Form Submission from ${name}`,
-      html: businessEmailHtml,
-    })
+    // Send both emails in parallel for better performance
+    await Promise.all([
+      // Send to business owner
+      transporter.sendMail({
+        from: process.env.SMTP_FROM || process.env.SMTP_USER,
+        to: process.env.CONTACT_EMAIL || 'massab@veloceai.co',
+        subject: `New Contact Form Submission from ${name}`,
+        html: businessEmailHtml,
+      }),
+      // Send confirmation to customer
+      transporter.sendMail({
+        from: process.env.SMTP_FROM || process.env.SMTP_USER,
+        to: email,
+        subject: 'Thank you for contacting VeloceAI!',
+        html: customerEmailHtml,
+      })
+    ])
 
-    // Send confirmation email to customer
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM || process.env.SMTP_USER,
-      to: email,
-      subject: 'Thank you for contacting VeloceAI!',
-      html: customerEmailHtml,
-    })
+    console.log('✅ Background emails sent successfully')
+  } catch (error) {
+    console.error('❌ Background email sending failed:', error)
+    throw error
+  }
+}
 
-    return NextResponse.json(
-      { message: 'Email sent successfully' },
+export async function POST(request: NextRequest) {
+  try {
+    const { name, email, phone, requirements, recaptchaToken } = await request.json()
+
+    // Validate required fields
+    if (!name || !email || !phone || !requirements) {
+      return NextResponse.json(
+        { error: 'All fields are required' },
+        { status: 400 }
+      )
+    }
+
+    // Verify reCAPTCHA (skip on localhost)
+    const isLocalhost = request.headers.get('host')?.includes('localhost') || request.headers.get('host')?.includes('127.0.0.1')
+    
+    if (!isLocalhost && recaptchaToken) {
+      try {
+        const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
+        })
+
+        const recaptchaData = await recaptchaResponse.json()
+        
+        console.log('reCAPTCHA v3 verification result:', recaptchaData)
+        
+        // v3 returns a score (0.0 to 1.0), typically accept scores > 0.5
+        if (!recaptchaData.success || recaptchaData.score < 0.5) {
+          return NextResponse.json(
+            { 
+              error: 'reCAPTCHA verification failed', 
+              details: recaptchaData['error-codes'] || `Score too low: ${recaptchaData.score}` 
+            },
+            { status: 400 }
+          )
+        }
+      } catch (error) {
+        console.error('reCAPTCHA verification error:', error)
+        return NextResponse.json(
+          { error: 'reCAPTCHA verification failed' },
+          { status: 400 }
+        )
+      }
+    }
+
+    // Return success immediately to user
+    // Email sending happens asynchronously in background
+    const response = NextResponse.json(
+      { 
+        message: 'Form submitted successfully! We\'ll contact you within 24 hours.',
+        status: 'queued'
+      },
       { status: 200 }
     )
+
+    // Send emails asynchronously without blocking response
+    // This continues in background on serverless platforms
+    sendEmailsAsync({ name, email, phone, requirements }).catch(error => {
+      console.error('Background email sending failed:', error)
+      // Error is logged but doesn't affect user experience
+    })
+
+    return response
 
   } catch (error) {
     console.error('Error sending email:', error)
