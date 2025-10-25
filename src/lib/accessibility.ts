@@ -49,12 +49,12 @@ export const useFocusManagement = () => {
     focusableElements.current[currentFocusIndex.current]?.focus()
   }, [updateFocusableElements])
 
-  return { focusNext, focusPrevious, updateFocusableElements }
+  return { focusNext, focusPrevious, updateFocusableElements, focusableElements }
 }
 
 // Screen reader announcements
 export const useAnnouncements = () => {
-  const announcementRef = useRef<HTMLElement>()
+  const announcementRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     // Create live region for announcements
@@ -83,7 +83,7 @@ export const useAnnouncements = () => {
 
 // Keyboard navigation for animated elements
 export const useKeyboardNavigation = () => {
-  const { focusNext, focusPrevious } = useFocusManagement()
+  const { focusNext, focusPrevious, focusableElements } = useFocusManagement()
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -216,7 +216,7 @@ export const useSkipLinks = () => {
 
 // ARIA live regions for dynamic content
 export const useLiveRegion = (type: 'polite' | 'assertive' = 'polite') => {
-  const liveRegionRef = useRef<HTMLElement>()
+  const liveRegionRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     const liveRegion = document.createElement('div')
@@ -244,9 +244,9 @@ export const useLiveRegion = (type: 'polite' | 'assertive' = 'polite') => {
 
 // Focus trap for modals and overlays
 export const useFocusTrap = (isActive: boolean) => {
-  const trapRef = useRef<HTMLElement>()
-  const firstFocusableRef = useRef<HTMLElement>()
-  const lastFocusableRef = useRef<HTMLElement>()
+  const trapRef = useRef<HTMLElement | null>(null)
+  const firstFocusableRef = useRef<HTMLElement | null>(null)
+  const lastFocusableRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     if (!isActive || !trapRef.current) return

@@ -27,8 +27,7 @@ export const ScrollAnimation = ({
 }: ScrollAnimationProps) => {
   const ref = useRef(null)
   const isInView = useInView(ref, { 
-    once, 
-    margin: `-${Math.round(threshold * 100)}px` as string
+    once
   })
   const shouldReduceMotion = useReducedMotion()
 
@@ -143,8 +142,7 @@ export const StaggerContainer = ({
 }: StaggerContainerProps) => {
   const ref = useRef(null)
   const isInView = useInView(ref, { 
-    once: true, 
-    margin: `-${Math.round(threshold * 100)}px` as string
+    once: true
   })
   const shouldReduceMotion = useReducedMotion()
 
@@ -331,8 +329,7 @@ export const Reveal = ({
 }: RevealProps) => {
   const ref = useRef(null)
   const isInView = useInView(ref, { 
-    once: true, 
-    margin: `-${Math.round(threshold * 100)}px` as string
+    once: true
   })
   const shouldReduceMotion = useReducedMotion()
 

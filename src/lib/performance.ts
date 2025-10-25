@@ -115,7 +115,7 @@ export const useDeviceCapabilities = () => {
     // Simple heuristic for low-end devices
     const connection = (navigator as any).connection
     const isSlowConnection = connection && (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g')
-    const isLowMemory = navigator.deviceMemory && navigator.deviceMemory <= 2
+    const isLowMemory = (navigator as any).deviceMemory && (navigator as any).deviceMemory <= 2
     const isSlowCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2
 
     isLowEndDevice.current = isMobile.current || isSlowConnection || isLowMemory || isSlowCPU
@@ -227,7 +227,7 @@ export const useAnimationCleanup = () => {
 
 // Optimize scroll performance
 export const useOptimizedScroll = (callback: (scrollY: number) => void, deps: any[] = []) => {
-  const rafId = useRef<number>()
+  const rafId = useRef<number | null>(null)
   const lastScrollY = useRef(0)
 
   const handleScroll = useCallback(
@@ -263,7 +263,7 @@ export const useOptimizedScroll = (callback: (scrollY: number) => void, deps: an
 // Memory-efficient particle system
 export const useParticleSystem = (particleCount: number, isActive: boolean) => {
   const particlesRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; life: number }>>([])
-  const animationId = useRef<number>()
+  const animationId = useRef<number | null>(null)
 
   useEffect(() => {
     if (!isActive) return

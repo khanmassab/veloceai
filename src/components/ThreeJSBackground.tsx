@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, ReactNode } from 'react'
 import * as THREE from 'three'
-import { useScroll, useFrame, motion } from 'framer-motion'
+import { useScroll, motion } from 'framer-motion'
 
 interface ThreeJSBackgroundProps {
   className?: string
@@ -18,11 +18,11 @@ export const ThreeJSBackground = ({
   scrollSpeed = 0.5
 }: ThreeJSBackgroundProps) => {
   const mountRef = useRef<HTMLDivElement>(null)
-  const sceneRef = useRef<THREE.Scene>()
-  const rendererRef = useRef<THREE.WebGLRenderer>()
-  const cameraRef = useRef<THREE.PerspectiveCamera>()
-  const particlesRef = useRef<THREE.Points>()
-  const animationIdRef = useRef<number>()
+  const sceneRef = useRef<THREE.Scene | null>(null)
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null)
+  const particlesRef = useRef<THREE.Points | null>(null)
+  const animationIdRef = useRef<number | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
 
   const { scrollYProgress } = useScroll()
