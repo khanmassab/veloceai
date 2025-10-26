@@ -513,6 +513,8 @@ h1, h2, h3, h4, h5, h6 {
   outline: none;
   transition: all 0.2s;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .phone-input-custom .PhoneInputInput::placeholder {
@@ -571,6 +573,9 @@ h1, h2, h3, h4, h5, h6 {
 .phone-input-custom {
   display: flex;
   align-items: center;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 /* Dark theme consistency - ensure all sections use proper contrast */

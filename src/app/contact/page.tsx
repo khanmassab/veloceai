@@ -90,7 +90,7 @@ const ContactInfo = () => {
 export default function ContactPage() {
   return (
     <PageWrapper backgroundVariant="full" className="neural-bg text-white dark">
-      <div className="container mx-auto px-6 pt-24 pb-24">
+      <div className="container mx-auto px-6 pt-24 pb-24 max-w-full overflow-x-hidden">
         <ScrollAnimation direction="up" distance={50}>
           <div className="relative text-center mb-16">
             {/* Enhanced decorative background glow */}
@@ -117,7 +117,7 @@ export default function ContactPage() {
           </div>
         </ScrollAnimation>
 
-        <div className="grid lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-3 gap-12 max-w-7xl mx-auto overflow-x-hidden">
           {/* Left Section - Contact Info */}
           <StaggerContainer className="lg:col-span-2">
             <ContactInfo />
