@@ -1271,78 +1271,6 @@ const UseCasesSection = () => {
   )
 }
 
-// Testimonials Section
-const TestimonialsSection = () => {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
-
-  const testimonials = [
-    {
-      text: "VeloceAI helped us scale from 100 to 10,000 customers without adding a single support agent. Our response time dropped from hours to seconds.",
-      author: "Sarah Chen",
-      role: "Founder at TechStart"
-    },
-    {
-      text: "We reduced support tickets by 70% in the first month. The ROI was immediate and the setup was surprisingly easy.",
-      author: "Marcus Rodriguez", 
-      role: "Head of Operations at ShopNow"
-    },
-    {
-      text: "Our customers love the instant responses. CSAT scores increased by 45% since implementing VeloceAI.",
-      author: "Jennifer Park",
-      role: "Customer Success Lead at CloudSync"
-    }
-  ]
-
-  const stats = [
-    { number: "90%", label: "Query Resolution" },
-    { number: "2 Sec", label: "Average Response" },
-    { number: "45%", label: "Higher CSAT" },
-    { number: "60%", label: "Cost Reduction" }
-  ]
-
-  return (
-    <section ref={ref} className="py-24 neural-bg text-white dark relative overflow-hidden">
-      {/* Enhanced 3D Background */}
-      <ThreeJSBackground intensity={0.25} particleCount={120} />
-      
-      <div className="container mx-auto px-6 relative z-10">
-        <motion.h2 
-          className="text-5xl font-bold text-center mb-16 text-white"
-          variants={fadeInUp}
-          initial="initial"
-          animate={isInView ? "animate" : "initial"}
-        >
-          Trusted by Growing Businesses
-        </motion.h2>
-        
-        <motion.div 
-          className="grid md:grid-cols-3 gap-8 mb-16"
-          variants={staggerContainer}
-          initial="initial"
-          animate={isInView ? "animate" : "initial"}
-        >
-          {testimonials.map((testimonial, index) => (
-            <motion.div 
-              key={index}
-              className="glass-dark rounded-xl p-8 hover:bg-white/10 transition-all duration-300 relative overflow-hidden"
-              variants={fadeInUp}
-            >
-              <p className="text-lg text-gray-200 italic mb-6 leading-relaxed">
-                "{testimonial.text}"
-              </p>
-              <div>
-                <p className="font-semibold text-white">{testimonial.author}</p>
-                <p className="text-sm text-gray-400">{testimonial.role}</p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-      </div>
-    </section>
-  )
-}
 
 // Enhanced CTA Section with Advanced Animations
 const CTASection = ({ onBookNow }: { onBookNow: () => void }) => {
@@ -1487,7 +1415,6 @@ export default function Home() {
       <HeroSection onBookNow={() => setIsBookingOpen(true)} />
       <MainValuePropositionSection />
       <StatsSection />
-      <TestimonialsSection />
       <ProblemSection />
       <SolutionSection />
       <HowItWorksSection />
