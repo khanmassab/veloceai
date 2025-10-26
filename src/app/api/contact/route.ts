@@ -163,24 +163,28 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Return success immediately to user
-    // Email sending happens asynchronously in background
-    const response = NextResponse.json(
+    // Send emails synchronously to ensure they're sent
+    try {
+      await sendEmailsAsync({ name, email, phone, requirements })
+      console.log('✅ Contact emails sent successfully')
+    } catch (error) {
+      console.error('❌ Contact email sending failed:', error)
+      return NextResponse.json(
+        { 
+          error: 'Failed to send confirmation email',
+          details: 'Please try again or contact us directly'
+        },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json(
       { 
         message: 'Form submitted successfully! We\'ll contact you within 24 hours.',
-        status: 'queued'
+        status: 'sent'
       },
       { status: 200 }
     )
-
-    // Send emails asynchronously without blocking response
-    // This continues in background on serverless platforms
-    sendEmailsAsync({ name, email, phone, requirements }).catch(error => {
-      console.error('Background email sending failed:', error)
-      // Error is logged but doesn't affect user experience
-    })
-
-    return response
 
   } catch (error) {
     console.error('Error sending email:', error)

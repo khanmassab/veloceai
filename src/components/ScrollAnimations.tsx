@@ -290,6 +290,26 @@ export const ScrollProgress = ({
 }: ScrollProgressProps) => {
   const { scrollYProgress } = useScroll()
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1])
+  
+  // Only show progress bar if there's actually scrollable content
+  const [hasScrollableContent, setHasScrollableContent] = useState(false)
+
+  useEffect(() => {
+    const checkScrollableContent = () => {
+      const documentHeight = document.documentElement.scrollHeight
+      const windowHeight = window.innerHeight
+      setHasScrollableContent(documentHeight > windowHeight)
+    }
+
+    checkScrollableContent()
+    window.addEventListener('resize', checkScrollableContent)
+    
+    return () => window.removeEventListener('resize', checkScrollableContent)
+  }, [])
+
+  if (!hasScrollableContent) {
+    return null
+  }
 
   return (
     <motion.div

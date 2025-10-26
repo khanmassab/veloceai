@@ -23,6 +23,7 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
+  const [hasSubmitted, setHasSubmitted] = useState(false)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
 
   const handleRecaptchaChange = (token: string | null) => {
@@ -31,6 +32,12 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Prevent duplicate submissions
+    if (isSubmitting || hasSubmitted) {
+      console.log('Form already submitting or submitted, ignoring')
+      return
+    }
     
     // Check if we're on localhost (skip reCAPTCHA) - only on client side
     const isLocalhost = typeof window !== 'undefined' && 
@@ -45,6 +52,7 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
     }
 
     setIsSubmitting(true)
+    setHasSubmitted(true)
     
     try {
       console.log('Attempting to send booking request...')
@@ -100,6 +108,7 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
       time: ''
     })
     setIsSubmitting(false)
+    setHasSubmitted(false)
   }
 
   const handleClose = () => {

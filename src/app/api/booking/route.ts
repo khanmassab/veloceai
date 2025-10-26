@@ -137,21 +137,28 @@ export async function POST(request: NextRequest) {
       </div>
     `
 
-    // Send email to business owner
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM || process.env.SMTP_USER,
-      to: process.env.CONTACT_EMAIL || 'massab@veloceai.co',
-      subject: `New Booking Request from ${name} - ${new Date(date).toLocaleDateString()} at ${time}`,
-      html: businessEmailHtml,
-    })
+    // Send emails in parallel to avoid delays
+    console.log('Sending booking emails...')
+    
+    const emailPromises = [
+      // Send to business owner
+      transporter.sendMail({
+        from: process.env.SMTP_FROM || process.env.SMTP_USER,
+        to: process.env.CONTACT_EMAIL || 'massab@veloceai.co',
+        subject: `New Booking Request from ${name} - ${new Date(date).toLocaleDateString()} at ${time}`,
+        html: businessEmailHtml,
+      }),
+      // Send confirmation to customer
+      transporter.sendMail({
+        from: process.env.SMTP_FROM || process.env.SMTP_USER,
+        to: email,
+        subject: 'Booking Confirmed - VeloceAI Consultation',
+        html: customerEmailHtml,
+      })
+    ]
 
-    // Send confirmation email to customer
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM || process.env.SMTP_USER,
-      to: email,
-      subject: 'Booking Confirmed - VeloceAI Consultation',
-      html: customerEmailHtml,
-    })
+    await Promise.all(emailPromises)
+    console.log('✅ Booking emails sent successfully')
 
     return NextResponse.json(
       { message: 'Booking confirmed and emails sent successfully' },

@@ -30,7 +30,7 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import PhoneInput, { Country } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 import { getCountryFromTimezone } from '@/lib/countryDetection'
-import { ScrollAnimation, ParallaxScroll, StaggerContainer, StaggerItem, MagneticButton, ScrollProgress, Reveal, GradientText } from '@/components/ScrollAnimations'
+import { ScrollAnimation, ParallaxScroll, StaggerContainer, StaggerItem, MagneticButton, Reveal, GradientText } from '@/components/ScrollAnimations'
 import { ThreeJSBackground, Card3D } from '@/components/ThreeJSBackground'
 import { fadeInUp, staggerContainer, staggerItem, hoverScale, magnetic, gradientText } from '@/lib/animations'
 
@@ -436,8 +436,6 @@ const HeroSection = ({ onBookNow }: { onBookNow: () => void }) => {
         <NeuralNetworkBackground />
       </div>
       
-      {/* Scroll Progress Indicator */}
-      <ScrollProgress color="#3b82f6" height={3} />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10">
         <div className="max-w-7xl mx-auto">
@@ -485,13 +483,15 @@ const HeroSection = ({ onBookNow }: { onBookNow: () => void }) => {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
                 >
-                  Transform Customer Support with{' '}
+                  VeloceAI{' '}
+                  <span className="text-2xl sm:text-3xl lg:text-4xl text-gray-300 align-middle">|</span>{' '}
+                  Your Strategic{' '}
                   <GradientText 
                     className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent glow-text"
                     gradient="linear-gradient(45deg, #3b82f6, #06b6d4, #8b5cf6, #3b82f6)"
                     duration={3}
                   >
-                    AI That Actually Works
+                    Digital Solutions Partner
                   </GradientText>
                 </motion.h1>
                 
@@ -501,7 +501,7 @@ const HeroSection = ({ onBookNow }: { onBookNow: () => void }) => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                  Launch your intelligent AI chatbot in weeks, not months. Automate 70% of queries, reduce support costs by 60%, and delight your customers 24/7 across every channel.
+                  Revolutionize support with VeloceAI's Digital Solutions. Our AI integration services automate conversations, enhance customer experiences, and scale your business.
                 </motion.p>
               </div>
 
@@ -566,6 +566,43 @@ const HeroSection = ({ onBookNow }: { onBookNow: () => void }) => {
       >
         <ArrowDown className="w-6 h-6 text-white/60" />
       </motion.div>
+    </section>
+  )
+}
+
+// Main Value Proposition Section
+const MainValuePropositionSection = () => {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const shouldReduceMotion = useReducedMotion()
+
+  return (
+    <section ref={ref} className="py-24 neural-bg text-white dark relative overflow-hidden">
+      {/* Enhanced 3D Background */}
+      <ThreeJSBackground intensity={0.2} particleCount={100} />
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <Reveal direction="up" distance={60}>
+          <div className="max-w-4xl mx-auto text-center">
+            <h3 className="text-2xl font-semibold text-blue-400 mb-6">
+              Digital Solutions & AI Integration Services for Smart Customer Support
+            </h3>
+            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-8 leading-tight">
+              Transform Customer Support with{' '}
+              <GradientText 
+                className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent"
+                gradient="linear-gradient(45deg, #3b82f6, #06b6d4, #8b5cf6, #3b82f6)"
+                duration={2}
+              >
+                AI Digital Solutions That Actually Work
+              </GradientText>
+            </h2>
+            <p className="text-xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
+              Launch AI digital solutions for customer support in weeks, not months. Automate 70% of queries, reduce support costs by 60%, and delight your customers 24/7 across every channel.
+            </p>
+          </div>
+        </Reveal>
+      </div>
     </section>
   )
 }
@@ -743,7 +780,7 @@ const ProblemSection = () => {
         
         <Reveal direction="up" distance={30} delay={0.2}>
           <p className="text-xl text-center mb-16 text-gray-300 max-w-4xl mx-auto">
-            Your customers expect instant answers. Every delayed response is a lost opportunity. Traditional support teams struggle to keep up, leading to frustrated customers and skyrocketing costs.
+            Your customers expect instant answers. Every delayed response is a lost opportunity. Traditional support teams struggle to keep up, leading to frustrated customers and skyrocketing costs. You need digital solutions that scale.
           </p>
         </Reveal>
         
@@ -797,6 +834,20 @@ const ProblemSection = () => {
             </StaggerItem>
           ))}
         </StaggerContainer>
+
+        {/* Highlight Box */}
+        <Reveal direction="up" distance={40} delay={0.6}>
+          <div className="mt-16 max-w-4xl mx-auto">
+            <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border-l-4 border-blue-500 rounded-lg p-8 backdrop-blur-sm">
+              <h3 className="text-2xl font-bold text-blue-300 mb-4">
+                You need intelligent automation that works around the clock—not just another tool that creates more work.
+              </h3>
+              <p className="text-lg text-gray-200 leading-relaxed">
+                That's exactly what VeloceAI delivers. An AI-powered chatbot that understands your customers, solves problems instantly, and escalates complex issues to human agents with full context.
+              </p>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
@@ -980,6 +1031,87 @@ const SolutionSection = () => {
   )
 }
 
+// How It Works Section
+const HowItWorksSection = () => {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-100px" })
+
+  const steps = [
+    {
+      number: 1,
+      title: "Connect Your Data",
+      description: "Upload your FAQs, knowledge base, or product information. Our AI analyzes and learns from your content in minutes, understanding your business context."
+    },
+    {
+      number: 2,
+      title: "Customize & Train",
+      description: "Personalize your chatbot's personality, conversation flows, and escalation rules. Train it to handle your specific use cases and brand voice."
+    },
+    {
+      number: 3,
+      title: "Launch & Scale",
+      description: "Deploy across all your channels with one click. Monitor performance in real-time and watch your AI assistant handle thousands of conversations effortlessly."
+    }
+  ]
+
+  return (
+    <section id="how-it-works" ref={ref} className="py-24 neural-bg text-white dark relative overflow-hidden">
+      {/* Enhanced 3D Background */}
+      <ThreeJSBackground intensity={0.15} particleCount={80} />
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <motion.h2 
+          className="text-5xl font-bold text-center mb-6 text-white"
+          variants={fadeInUp}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
+        >
+          Get Started in 3 Simple Steps
+        </motion.h2>
+        
+        <motion.p 
+          className="text-xl text-center mb-16 text-gray-200 max-w-3xl mx-auto"
+          variants={fadeInUp}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
+        >
+          Most businesses go live in 1-2 weeks with full automation running smoothly. No technical expertise required.
+        </motion.p>
+        
+        <motion.div 
+          className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto"
+          variants={staggerContainer}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
+        >
+          {steps.map((step, index) => (
+            <motion.div 
+              key={index}
+              className="text-center group"
+              variants={fadeInUp}
+            >
+              <div className="relative mb-8">
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto group-hover:scale-110 transition-transform duration-300">
+                  {step.number}
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
+              </div>
+              
+              <h3 className="text-2xl font-semibold mb-4 text-white">
+                {step.title}
+              </h3>
+              
+              <p className="text-lg text-gray-300 leading-relaxed">
+                {step.description}
+              </p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
 // Enhanced Features Section
 const FeaturesSection = () => {
   const ref = useRef(null)
@@ -1005,23 +1137,36 @@ const FeaturesSection = () => {
       icon: Database,
       text: "Real-Time Analytics - Monitor performance with detailed dashboards. Track resolution rates, customer satisfaction, peak hours, and common queries.",
       color: "from-green-500 to-emerald-500"
+    },
+    {
+      icon: Sparkles,
+      text: "Customizable Design - Match your brand perfectly. Customize colors, logos, chat widgets, and conversation flows to reflect your unique identity.",
+      color: "from-purple-500 to-pink-500"
+    },
+    {
+      icon: Shield,
+      text: "Enterprise Security - Bank-level encryption, GDPR compliant, and SOC 2 ready. Your customer data stays private and secure at all times.",
+      color: "from-indigo-500 to-blue-500"
     }
   ]
 
   return (
-    <section ref={ref} className="py-24 bg-gradient-to-br from-slate-700 to-slate-800 text-white">
-      <div className="container mx-auto px-6">
+    <section ref={ref} className="py-24 neural-bg text-white dark relative overflow-hidden">
+      {/* Enhanced 3D Background */}
+      <ThreeJSBackground intensity={0.2} particleCount={100} />
+      
+      <div className="container mx-auto px-6 relative z-10">
         <motion.h2 
           className="text-5xl font-bold text-center mb-16 text-white"
           variants={fadeInUp}
           initial="initial"
           animate={isInView ? "animate" : "initial"}
         >
-          Everything You Need for Exceptional Support
+          Everything You Need in One Digital Solutions Platform
         </motion.h2>
         
         <motion.div 
-          className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
           variants={staggerContainer}
           initial="initial"
           animate={isInView ? "animate" : "initial"}
@@ -1029,15 +1174,26 @@ const FeaturesSection = () => {
           {features.map((feature, index) => (
             <motion.div 
               key={index}
-              className="flex items-start space-x-4 group"
+              className="glass-dark rounded-xl p-6 group hover:bg-white/10 transition-all duration-300 relative overflow-hidden"
               variants={fadeInUp}
+              whileHover={{ scale: 1.02, y: -5 }}
             >
-              <div className="w-14 h-14 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                <feature.icon className="w-7 h-7 text-blue-400" />
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                  <feature.icon className="w-6 h-6 text-blue-400" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold mb-2 text-white">
+                    {feature.text.split(' - ')[0]}
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed text-sm">
+                    {feature.text.split(' - ')[1]}
+                  </p>
+                </div>
               </div>
-              <p className="text-lg text-gray-300 leading-relaxed">
-                {feature.text}
-              </p>
+              
+              {/* Hover glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 opacity-0 rounded-xl group-hover:opacity-100 transition-opacity duration-300" />
             </motion.div>
           ))}
         </motion.div>
@@ -1115,6 +1271,79 @@ const UseCasesSection = () => {
   )
 }
 
+// Testimonials Section
+const TestimonialsSection = () => {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-100px" })
+
+  const testimonials = [
+    {
+      text: "VeloceAI helped us scale from 100 to 10,000 customers without adding a single support agent. Our response time dropped from hours to seconds.",
+      author: "Sarah Chen",
+      role: "Founder at TechStart"
+    },
+    {
+      text: "We reduced support tickets by 70% in the first month. The ROI was immediate and the setup was surprisingly easy.",
+      author: "Marcus Rodriguez", 
+      role: "Head of Operations at ShopNow"
+    },
+    {
+      text: "Our customers love the instant responses. CSAT scores increased by 45% since implementing VeloceAI.",
+      author: "Jennifer Park",
+      role: "Customer Success Lead at CloudSync"
+    }
+  ]
+
+  const stats = [
+    { number: "90%", label: "Query Resolution" },
+    { number: "2 Sec", label: "Average Response" },
+    { number: "45%", label: "Higher CSAT" },
+    { number: "60%", label: "Cost Reduction" }
+  ]
+
+  return (
+    <section ref={ref} className="py-24 neural-bg text-white dark relative overflow-hidden">
+      {/* Enhanced 3D Background */}
+      <ThreeJSBackground intensity={0.25} particleCount={120} />
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <motion.h2 
+          className="text-5xl font-bold text-center mb-16 text-white"
+          variants={fadeInUp}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
+        >
+          Trusted by Growing Businesses
+        </motion.h2>
+        
+        <motion.div 
+          className="grid md:grid-cols-3 gap-8 mb-16"
+          variants={staggerContainer}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
+        >
+          {testimonials.map((testimonial, index) => (
+            <motion.div 
+              key={index}
+              className="glass-dark rounded-xl p-8 hover:bg-white/10 transition-all duration-300 relative overflow-hidden"
+              variants={fadeInUp}
+            >
+              <p className="text-lg text-gray-200 italic mb-6 leading-relaxed">
+                "{testimonial.text}"
+              </p>
+              <div>
+                <p className="font-semibold text-white">{testimonial.author}</p>
+                <p className="text-sm text-gray-400">{testimonial.role}</p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+      </div>
+    </section>
+  )
+}
+
 // Enhanced CTA Section with Advanced Animations
 const CTASection = ({ onBookNow }: { onBookNow: () => void }) => {
   const ref = useRef(null)
@@ -1160,14 +1389,14 @@ const CTASection = ({ onBookNow }: { onBookNow: () => void }) => {
               gradient="linear-gradient(45deg, #3b82f6, #06b6d4, #8b5cf6, #3b82f6)"
               duration={2}
             >
-              Support?
+              Customer Support?
             </GradientText>
           </h2>
         </Reveal>
         
         <Reveal direction="up" distance={40} delay={0.2}>
           <p className="text-xl mb-12 text-gray-200 max-w-2xl mx-auto">
-            Get started with your AI chatbot today. Most businesses go live in 1-2 weeks with full automation running smoothly.
+            Join hundreds of businesses delivering exceptional customer experiences with our AI digital solutions. Get started in minutes, no credit card required.
           </p>
         </Reveal>
         
@@ -1194,14 +1423,36 @@ const CTASection = ({ onBookNow }: { onBookNow: () => void }) => {
         </Reveal>
 
         <Reveal direction="up" distance={20} delay={0.6}>
+          <div className="flex flex-wrap justify-center gap-6 mt-8 text-sm">
+            <div className="flex items-center space-x-2 text-green-400">
+              <CheckCircle className="w-4 h-4" />
+              <span>14-Day Free Trial</span>
+            </div>
+            <div className="flex items-center space-x-2 text-green-400">
+              <CheckCircle className="w-4 h-4" />
+              <span>No Credit Card Required</span>
+            </div>
+            <div className="flex items-center space-x-2 text-green-400">
+              <CheckCircle className="w-4 h-4" />
+              <span>Cancel Anytime</span>
+            </div>
+            <div className="flex items-center space-x-2 text-green-400">
+              <CheckCircle className="w-4 h-4" />
+              <span>Setup in Minutes</span>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal direction="up" distance={20} delay={0.8}>
           <p className="text-gray-300 text-center mt-8">
-            Or email{' '}
+            Have questions? Contact us at{' '}
             <a 
               href="mailto:massab@veloceai.co" 
-              className="text-blue-400 hover:text-cyan-400 transition-colors duration-300 hover:underline"
+              className="text-blue-400 hover:text-cyan-400 transition-colors duration-300 hover:underline font-semibold"
             >
               massab@veloceai.co
             </a>
+            {' '}| We respond within 24 hours
           </p>
         </Reveal>
       </div>
@@ -1234,9 +1485,12 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <HeroSection onBookNow={() => setIsBookingOpen(true)} />
+      <MainValuePropositionSection />
       <StatsSection />
+      <TestimonialsSection />
       <ProblemSection />
       <SolutionSection />
+      <HowItWorksSection />
       <FeaturesSection />
       <UseCasesSection />
       <CTASection onBookNow={() => setIsBookingOpen(true)} />

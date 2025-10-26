@@ -8,7 +8,7 @@ Disallow: /
   return new Response(robots, {
     headers: {
       'Content-Type': 'text/plain',
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Cache-Control':  'no-cache, no-store, must-revalidate',
     },
   })
 }
