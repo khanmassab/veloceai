@@ -840,7 +840,7 @@ const ProblemSection = () => {
           <div className="mt-16 max-w-4xl mx-auto">
             <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border-l-4 border-blue-500 rounded-lg p-8 backdrop-blur-sm">
               <h3 className="text-2xl font-bold text-blue-300 mb-4">
-                You need intelligent automation that works around the clock—not just another tool that creates more work.
+                You need intelligent automation that works around the clock, not just another tool that creates more work.
               </h3>
               <p className="text-lg text-gray-200 leading-relaxed">
                 That's exactly what VeloceAI delivers. An AI-powered chatbot that understands your customers, solves problems instantly, and escalates complex issues to human agents with full context.
