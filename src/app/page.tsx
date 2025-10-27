@@ -843,7 +843,7 @@ const ProblemSection = () => {
                 You need intelligent automation that works around the clock, not just another tool that creates more work.
               </h3>
               <p className="text-lg text-gray-200 leading-relaxed">
-                That's exactly what VeloceAI delivers. An AI-powered chatbot that understands your customers, solves problems instantly, and escalates complex issues to human agents with full context.
+                That’s exactly what VeloceAI delivers through its AI chatbot development services, an AI-powered chatbot that understands your customers, solves problems instantly, and escalates complex issues to human agents with full context.
               </p>
             </div>
           </div>
