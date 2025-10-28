@@ -231,7 +231,7 @@ export const useOptimizedScroll = (callback: (scrollY: number) => void, deps: an
   const rafId = useRef<number | null>(null)
   const lastScrollY = useRef(0)
 
-  const handleScroll = useCallback(
+  const handleScroll = useCallback(() => {
     throttle(() => {
       if (rafId.current) {
         cancelAnimationFrame(rafId.current)
@@ -244,9 +244,8 @@ export const useOptimizedScroll = (callback: (scrollY: number) => void, deps: an
           lastScrollY.current = scrollY
         }
       })
-    }, 16), // ~60fps
-    [callback, ...deps]
-  )
+    }, 16)() // ~60fps
+  }, [callback, ...deps])
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })

@@ -139,7 +139,7 @@ export default function ContactForm({ variant = 'page', onSuccess }: ContactForm
             </div>
           </div>
           <p className="text-gray-300 text-sm">
-            Fill out the form and we'll get back to you within 24 hours
+            Fill out the form and we&apos;ll get back to you within 24 hours
           </p>
         </div>
 
@@ -244,7 +244,7 @@ export default function ContactForm({ variant = 'page', onSuccess }: ContactForm
               className="flex items-center space-x-2 text-green-400 bg-green-500/10 border border-green-500/30 p-3 rounded-lg"
             >
               <CheckCircle className="w-5 h-5 flex-shrink-0" />
-              <span className="text-sm">Success! We'll contact you within 24 hours.</span>
+              <span className="text-sm">Success! We&apos;ll contact you within 24 hours.</span>
             </motion.div>
           )}
 

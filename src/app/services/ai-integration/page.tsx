@@ -189,7 +189,7 @@ const HeroSection = ({ onBookNow }: { onBookNow: () => void }) => {
             </p>
             
             <p className="text-lg sm:text-xl text-gray-300 leading-relaxed max-w-5xl mx-auto">
-              Disconnected tools slow businesses down. VeloceAI's AI Integration Services unify your data, systems, and automation platforms into one intelligent ecosystem that works seamlessly across every touchpoint.
+              Disconnected tools slow businesses down. VeloceAI&apos;s AI Integration Services unify your data, systems, and automation platforms into one intelligent ecosystem that works seamlessly across every touchpoint.
             </p>
           </motion.div>
 
@@ -237,7 +237,7 @@ const MainValuePropositionSection = () => {
               </GradientText>
             </h2>
             <p className="text-xl text-gray-200 leading-relaxed max-w-3xl mx-auto">
-              Whether you're scaling a startup, optimizing eCommerce operations, or leading a tech team, we help you integrate AI where it creates the biggest impact: efficiency, personalization, and customer satisfaction.
+              Whether you&apos;re scaling a startup, optimizing eCommerce operations, or leading a tech team, we help you integrate AI where it creates the biggest impact: efficiency, personalization, and customer satisfaction.
             </p>
           </div>
         </Reveal>
@@ -903,7 +903,7 @@ const WhyChooseVeloceAISection = () => {
         
         <Reveal direction="up" distance={40} delay={0.2}>
           <p className="text-xl text-center mb-16 text-gray-200 max-w-4xl mx-auto">
-            Our integrations don't just connect tools. They connect intelligence, empowering your business to move faster and serve customers better.
+            Our integrations don&apos;t just connect tools. They connect intelligence, empowering your business to move faster and serve customers better.
           </p>
         </Reveal>
         

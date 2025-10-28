@@ -304,7 +304,7 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Booking Confirmed!</h3>
                   <p className="text-gray-400 mb-6">
-                    We've sent you a calendar invite and confirmation email.
+                    We&apos;ve sent you a calendar invite and confirmation email.
                   </p>
                   <button
                     onClick={handleClose}

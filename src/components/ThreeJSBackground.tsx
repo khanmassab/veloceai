@@ -189,8 +189,9 @@ export const ThreeJSBackground = ({
       if (animationIdRef.current) {
         cancelAnimationFrame(animationIdRef.current)
       }
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement)
+      const currentMount = mountRef.current
+      if (currentMount && renderer.domElement) {
+        currentMount.removeChild(renderer.domElement)
       }
       renderer.dispose()
       geometry.dispose()

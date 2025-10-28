@@ -1,6 +1,7 @@
 'use client'
 
 import { Metadata } from 'next'
+import Link from 'next/link'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { 
@@ -129,8 +130,8 @@ export default function AboutPage() {
                     </GradientText>
                   </h1>
                   <p className="text-xl text-gray-300 leading-relaxed">
-                    We're a passionate team of AI engineers and customer support veterans who've experienced the pain of scaling support firsthand. 
-                    Now we're building the solutions we wish we had - making AI support accessible to every business.
+                    We&apos;re a passionate team of AI engineers and customer support veterans who&apos;ve experienced the pain of scaling support firsthand. 
+                    Now we&apos;re building the solutions we wish we had - making AI support accessible to every business.
                   </p>
                 </div>
               </ScrollAnimation>
@@ -148,16 +149,16 @@ export default function AboutPage() {
                       </div>
                     </div>
                     <p className="text-gray-300 leading-relaxed mb-4">
-                      "We believe exceptional customer support shouldn't require a massive team or endless resources. 
-                      That's why we're building AI chatbot platforms that are powerful, affordable, and incredibly easy to use."
+                      &ldquo;We believe exceptional customer support shouldn&apos;t require a massive team or endless resources. 
+                      That&apos;s why we&apos;re building AI chatbot platforms that are powerful, affordable, and incredibly easy to use.&rdquo;
                     </p>
                     <div className="flex space-x-4">
-                      <a href="/contact" className="text-blue-400 hover:text-blue-300 transition-colors text-sm">
+                      <Link href="/contact" className="text-blue-400 hover:text-blue-300 transition-colors text-sm">
                         Contact Us
-                      </a>
-                      <a href="/blog" className="text-blue-400 hover:text-blue-300 transition-colors text-sm">
+                      </Link>
+                      <Link href="/blog" className="text-blue-400 hover:text-blue-300 transition-colors text-sm">
                         Our Blog
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -218,7 +219,7 @@ export default function AboutPage() {
                 We focused on what matters most: making AI that actually understands customers, provides accurate answers, and seamlessly hands off complex issues to humans when needed. No buzzwords, no complexity—just intelligent automation that works.
               </p>
               <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-                Today, we're proud to help hundreds of businesses deliver exceptional customer experiences while reducing costs and scaling efficiently. From early-stage startups to established e-commerce brands, VeloceAI powers support conversations that delight customers and drive growth.
+                Today, we&apos;re proud to help hundreds of businesses deliver exceptional customer experiences while reducing costs and scaling efficiently. From early-stage startups to established e-commerce brands, VeloceAI powers support conversations that delight customers and drive growth.
               </p>
             </motion.div>
           </div>
@@ -253,7 +254,7 @@ export default function AboutPage() {
               </div>
               <p className="text-lg text-gray-300 leading-relaxed">
                 To democratize AI-powered customer support, making it accessible, affordable, and effective for businesses of all sizes. 
-                We believe exceptional customer support shouldn't require a massive team or endless resources. We're building the future where every company can provide instant, intelligent, and personalized support—without the complexity or cost of traditional solutions.
+                We believe exceptional customer support shouldn't require a massive team or endless resources. We&apos;re building the future where every company can provide instant, intelligent, and personalized support—without the complexity or cost of traditional solutions.
               </p>
             </motion.div>
             <motion.div 
@@ -314,7 +315,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-white">Customer-First Always</h3>
               <p className="text-gray-300">
-                Every feature we build starts with one question: "Does this help our customers serve their customers better?" If the answer isn't a clear yes, we don't build it.
+                Every feature we build starts with one question: "Does this help our customers serve their customers better?" If the answer isn't a clear yes, we don&apos;t build it.
               </p>
             </motion.div>
             <motion.div 
@@ -326,7 +327,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-white">Speed Matters</h3>
               <p className="text-gray-300">
-                In customer support, every second counts. We're obsessed with reducing response times, simplifying workflows, and helping businesses move faster.
+                In customer support, every second counts. We&apos;re obsessed with reducing response times, simplifying workflows, and helping businesses move faster.
               </p>
             </motion.div>
             <motion.div 
@@ -338,7 +339,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-white">Simplicity Through Innovation</h3>
               <p className="text-gray-300">
-                The best technology is invisible. We build powerful AI that's incredibly easy to use, so you can focus on growing your business, not managing complex tools.
+                The best technology is invisible. We build powerful AI that&apos;s incredibly easy to use, so you can focus on growing your business, not managing complex tools.
               </p>
             </motion.div>
             <motion.div 
@@ -350,7 +351,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-white">Partnership, Not Just Software</h3>
               <p className="text-gray-300">
-                We're not just a software provider—we're your growth partner. Your success is our success, and we're committed to helping you achieve your support goals.
+                We&apos;re not just a software provider—we&apos;re your growth partner. Your success is our success, and we&apos;re committed to helping you achieve your support goals.
               </p>
             </motion.div>
             <motion.div 
@@ -362,7 +363,7 @@ export default function AboutPage() {
             </div>
               <h3 className="text-xl font-semibold mb-3 text-white">Continuous Improvement</h3>
               <p className="text-gray-300">
-                The AI landscape evolves daily. We're constantly learning, iterating, and improving our platform to deliver cutting-edge capabilities.
+                The AI landscape evolves daily. We&apos;re constantly learning, iterating, and improving our platform to deliver cutting-edge capabilities.
               </p>
             </motion.div>
             <motion.div 
@@ -400,7 +401,7 @@ export default function AboutPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            With a passion for AI innovation and a commitment to creating lasting impact, we're actively shaping the future of customer support.
+            With a passion for AI innovation and a commitment to creating lasting impact, we&apos;re actively shaping the future of customer support.
           </motion.p>
           <motion.div 
             className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto"
@@ -540,7 +541,7 @@ export default function AboutPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            VeloceAI is built by a team of customer support veterans and AI engineers who've spent years solving support challenges at high-growth companies. We've experienced the pain of scaling support firsthand—and now we're using that experience to build solutions that actually work.
+            VeloceAI is built by a team of customer support veterans and AI engineers who've spent years solving support challenges at high-growth companies. We've experienced the pain of scaling support firsthand—and now we&apos;re using that experience to build solutions that actually work.
           </motion.p>
           <motion.div 
             className="max-w-4xl mx-auto text-center"
@@ -550,19 +551,19 @@ export default function AboutPage() {
             viewport={{ once: true }}
           >
             <p className="text-lg text-gray-300 leading-relaxed mb-6">
-              We combine expertise in natural language processing, machine learning, user experience design, and enterprise software to deliver a chatbot platform that's both powerful and practical.
+              We combine expertise in natural language processing, machine learning, user experience design, and enterprise software to deliver a chatbot platform that&apos;s both powerful and practical.
             </p>
             <p className="text-lg text-gray-300 leading-relaxed mb-6">
-              As problem-solvers, innovators, and customer advocates, we're united by a common goal: making exceptional customer support accessible to every business, regardless of size or budget.
+              As problem-solvers, innovators, and customer advocates, we&apos;re united by a common goal: making exceptional customer support accessible to every business, regardless of size or budget.
             </p>
             <p className="text-lg text-gray-300 leading-relaxed">
-              <strong className="text-white">Interested in joining the journey?</strong> We're always looking for talented individuals who share our passion for AI innovation and customer success as VeloceAI grows.
+              <strong className="text-white">Interested in joining the journey?</strong> We&apos;re always looking for talented individuals who share our passion for AI innovation and customer success as VeloceAI grows.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* What We're Good At Section */}
+      {/* What We&apos;re Good At Section */}
       <section className="py-24 bg-gradient-to-br from-slate-700 to-slate-800 text-white">
         <div className="container mx-auto px-6">
           <motion.h2 
@@ -572,7 +573,7 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            What We're Good At
+            What We&apos;re Good At
           </motion.h2>
           <motion.div 
             className="max-w-4xl mx-auto text-center mb-16"
@@ -585,10 +586,10 @@ export default function AboutPage() {
               We build intelligent AI chatbot solutions that transform your customer support by automating processes, streamlining operations, and creating exceptional customer experiences.
             </p>
             <p className="text-lg text-gray-300 leading-relaxed mb-6">
-              Our unique approach combines cutting-edge natural language processing with practical business solutions. We don't just provide technology—we deliver complete support transformation that drives real business results.
+              Our unique approach combines cutting-edge natural language processing with practical business solutions. We don&apos;t just provide technology—we deliver complete support transformation that drives real business results.
             </p>
             <p className="text-lg text-gray-300 leading-relaxed">
-              Whether you're a startup looking to scale support from day one, an e-commerce brand managing seasonal peaks, or an established SaaS company optimizing operations, we help you harness the power of AI to:
+              Whether you&apos;re a startup looking to scale support from day one, an e-commerce brand managing seasonal peaks, or an established SaaS company optimizing operations, we help you harness the power of AI to:
             </p>
           </motion.div>
           <motion.div 
