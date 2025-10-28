@@ -61,12 +61,6 @@ const Header = () => {
           href: '/web-development-services', 
           description: 'Fast, scalable, intelligent websites',
           icon: Globe
-        },
-        { 
-          name: 'Custom Development', 
-          href: '/contact', 
-          description: 'Tailored AI solutions',
-          icon: Settings
         }
       ]
     },
