@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Mail, Linkedin } from 'lucide-react'
+import { Mail, Linkedin, MapPin, Phone } from 'lucide-react'
 import Logo from './Logo'
 
 const Footer = () => {
@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white">
       <div className="container mx-auto px-6 py-12">
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-5 gap-8">
           {/* Brand Section */}
           <div className="md:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
@@ -83,6 +83,40 @@ const Footer = () => {
               <li className="text-gray-300">Agentic Workflows</li>
               <li className="text-gray-300">Custom AI Solutions</li>
             </ul>
+          </div>
+
+          {/* Business Office */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Business Office</h4>
+            <div className="space-y-3">
+              <div className="flex items-start space-x-3">
+                <MapPin className="w-4 h-4 text-blue-400 mt-1 flex-shrink-0" />
+                <div>
+                  <p className="text-gray-300 text-sm font-medium">VeloceAI LLC</p>
+                  <p className="text-gray-300 text-sm">4539 N 22nd St, Ste R</p>
+                  <p className="text-gray-300 text-sm">Phoenix, AZ 85016</p>
+                  <p className="text-gray-300 text-sm">United States</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Phone className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                <a 
+                  href="tel:+14806394580" 
+                  className="text-gray-300 hover:text-blue-400 transition-colors text-sm"
+                >
+                  +1 (480) 639-4580
+                </a>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Mail className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                <a 
+                  href="mailto:massab@veloceai.co" 
+                  className="text-gray-300 hover:text-blue-400 transition-colors text-sm"
+                >
+                  massab@veloceai.co
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
