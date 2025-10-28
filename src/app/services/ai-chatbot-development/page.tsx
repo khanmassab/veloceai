@@ -172,14 +172,13 @@ const HeroSection = ({ onBookNow }: { onBookNow: () => void }) => {
             className="space-y-8"
           >
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight">
-              AI Chatbot{' '}
-              <span className="text-3xl sm:text-4xl lg:text-5xl text-gray-300 align-middle">|</span>{' '}
+              AI Chatbot Development{' '}
               <GradientText 
                 className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent glow-text"
                 gradient="linear-gradient(45deg, #3b82f6, #06b6d4, #8b5cf6, #3b82f6)"
                 duration={3}
               >
-                Development
+                Services
               </GradientText>
             </h1>
             
@@ -838,7 +837,7 @@ const KeyBenefitsSection = () => {
       <div className="container mx-auto px-6 relative z-10">
         <Reveal direction="up" distance={60}>
           <h2 className="text-5xl font-bold text-center mb-6">
-            Benefits of AI Chatbot App Development Services
+            Benefits of AI Chatbot Development Services
           </h2>
         </Reveal>
         

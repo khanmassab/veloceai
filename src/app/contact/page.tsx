@@ -29,7 +29,7 @@ const ContactInfo = () => {
       icon: Mail,
       title: "Email Us",
       description: "Get in touch via email",
-      value: "massab@veloceai.co"
+      value: "hello@veloceai.co"
     },
     {
       icon: Phone,

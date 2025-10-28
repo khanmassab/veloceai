@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Calendar, ChevronDown, Network, MessageSquare, Settings } from 'lucide-react'
+import { Menu, X, Calendar, ChevronDown, Network, MessageSquare, Settings, Globe } from 'lucide-react'
 import BookingModal from './BookingModal'
 
 const Header = () => {
@@ -46,16 +46,22 @@ const Header = () => {
       dropdownItems: [
         { 
           name: 'AI Integration', 
-          href: '/services/ai-integration', 
+          href: '/ai-integration-services', 
           description: 'Connect your systems intelligently',
           icon: Network
         },
             {
               name: 'Chatbot Solutions',
-              href: '/services/ai-chatbot-development',
+              href: '/ai-chatbot-development-services',
               description: '24/7 AI customer support',
               icon: MessageSquare
             },
+        { 
+          name: 'Web Development', 
+          href: '/web-development-services', 
+          description: 'Fast, scalable, intelligent websites',
+          icon: Globe
+        },
         { 
           name: 'Custom Development', 
           href: '/contact', 

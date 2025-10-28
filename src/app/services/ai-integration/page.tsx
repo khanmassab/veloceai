@@ -174,7 +174,6 @@ const HeroSection = ({ onBookNow }: { onBookNow: () => void }) => {
           >
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight">
               AI Integration{' '}
-              <span className="text-3xl sm:text-4xl lg:text-5xl text-gray-300 align-middle">|</span>{' '}
               <GradientText 
                 className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent glow-text"
                 gradient="linear-gradient(45deg, #3b82f6, #06b6d4, #8b5cf6, #3b82f6)"

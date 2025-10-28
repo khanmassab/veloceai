@@ -26,7 +26,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a 
-                href="mailto:massab@veloceai.co" 
+                href="mailto:hello@veloceai.co" 
                 className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
                 aria-label="Email"
               >
@@ -65,7 +65,7 @@ const Footer = () => {
               </li>
               <li>
                 <a 
-                  href="mailto:massab@veloceai.co" 
+                  href="mailto:hello@veloceai.co" 
                   className="text-gray-300 hover:text-blue-400 transition-colors"
                 >
                   Contact
@@ -110,10 +110,10 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-blue-400 flex-shrink-0" />
                 <a 
-                  href="mailto:massab@veloceai.co" 
+                  href="mailto:hello@veloceai.co" 
                   className="text-gray-300 hover:text-blue-400 transition-colors text-sm"
                 >
-                  massab@veloceai.co
+                  hello@veloceai.co
                 </a>
               </div>
             </div>
