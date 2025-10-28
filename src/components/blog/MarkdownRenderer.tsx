@@ -37,18 +37,18 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
     html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-400 hover:text-blue-300 underline decoration-blue-400 hover:decoration-blue-300 transition-all duration-300 font-medium" target="_blank" rel="noopener noreferrer">$1</a>')
 
     // Convert paragraphs
-    html = html.replace(/^(?!<[h1-6]|<ul|<ol|<li|<blockquote)(.*)$/gim, '<p class="text-gray-200 leading-relaxed mb-8 text-lg md:text-xl font-light">$1</p>')
+    html = html.replace(/^(?!<[h1-6]|<ul|<ol|<li|<blockquote)(.*)$/gim, '<p class="text-white leading-relaxed mb-8 text-lg md:text-xl font-light">$1</p>')
 
     // Convert lists
-    html = html.replace(/^\* (.*)$/gim, '<li class="text-gray-200 leading-relaxed flex items-start"><span class="w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mt-3 mr-4 flex-shrink-0"></span><span class="flex-1">$1</span></li>')
-    html = html.replace(/(<li class="text-gray-200 leading-relaxed flex items-start"><span class="w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mt-3 mr-4 flex-shrink-0"><\/span><span class="flex-1">.*?<\/span><\/li>)/s, '<ul class="list-none text-gray-200 mb-8 space-y-4 text-lg md:text-xl font-light">$1</ul>')
+    html = html.replace(/^\* (.*)$/gim, '<li class="text-white leading-relaxed flex items-start"><span class="w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mt-3 mr-4 flex-shrink-0"></span><span class="flex-1">$1</span></li>')
+    html = html.replace(/(<li class="text-white leading-relaxed flex items-start"><span class="w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mt-3 mr-4 flex-shrink-0"><\/span><span class="flex-1">.*?<\/span><\/li>)/s, '<ul class="list-none text-white mb-8 space-y-4 text-lg md:text-xl font-light">$1</ul>')
 
     // Convert numbered lists
-    html = html.replace(/^\d+\. (.*)$/gim, '<li class="text-gray-200 leading-relaxed flex items-start"><span class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 flex-shrink-0 mt-1"></span><span class="flex-1">$1</span></li>')
-    html = html.replace(/(<li class="text-gray-200 leading-relaxed flex items-start"><span class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 flex-shrink-0 mt-1"><\/span><span class="flex-1">.*?<\/span><\/li>)/s, '<ol class="list-none text-gray-200 mb-8 space-y-4 text-lg md:text-xl font-light">$1</ol>')
+    html = html.replace(/^\d+\. (.*)$/gim, '<li class="text-white leading-relaxed flex items-start"><span class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 flex-shrink-0 mt-1"></span><span class="flex-1">$1</span></li>')
+    html = html.replace(/(<li class="text-white leading-relaxed flex items-start"><span class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 flex-shrink-0 mt-1"><\/span><span class="flex-1">.*?<\/span><\/li>)/s, '<ol class="list-none text-white mb-8 space-y-4 text-lg md:text-xl font-light">$1</ol>')
 
     // Convert blockquotes
-    html = html.replace(/^> (.*)$/gim, '<blockquote class="border-l-4 border-gradient-to-b from-blue-500 to-purple-500 bg-gradient-to-r from-slate-800/50 to-slate-700/50 pl-8 py-8 my-12 text-gray-200 italic rounded-r-xl shadow-xl"><div class="text-xl leading-relaxed font-light"><span class="text-4xl text-blue-400 mr-2">"</span>$1<span class="text-4xl text-blue-400 ml-2">"</span></div></blockquote>')
+    html = html.replace(/^> (.*)$/gim, '<blockquote class="border-l-4 border-gradient-to-b from-blue-500 to-purple-500 bg-gradient-to-r from-slate-800/50 to-slate-700/50 pl-8 py-8 my-12 text-white italic rounded-r-xl shadow-xl"><div class="text-xl leading-relaxed font-light"><span class="text-4xl text-blue-400 mr-2">"</span>$1<span class="text-4xl text-blue-400 ml-2">"</span></div></blockquote>')
 
     // Remove FAQ section from HTML since we'll render it separately
     html = html.replace(/## FAQ\s*\n(.*?)(?=\n## |$)/gs, '')

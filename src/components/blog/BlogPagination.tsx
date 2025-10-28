@@ -7,16 +7,26 @@ import { useRouter, useSearchParams } from 'next/navigation'
 interface BlogPaginationProps {
   currentPage: number
   totalPages: number
-  baseUrl: string
+  baseUrl?: string
+  onPageChange?: (page: number) => void
 }
 
-export default function BlogPagination({ currentPage, totalPages, baseUrl }: BlogPaginationProps) {
+export default function BlogPagination({ currentPage, totalPages, baseUrl, onPageChange }: BlogPaginationProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   
   if (totalPages <= 1) return null
 
   const handlePageChange = (page: number) => {
+    // If onPageChange callback is provided, use it (client-side pagination)
+    if (onPageChange) {
+      onPageChange(page)
+      return
+    }
+    
+    // Otherwise, use router-based navigation (URL-based pagination)
+    if (!baseUrl) return
+    
     const params = new URLSearchParams(searchParams.toString())
     if (page === 1) {
       params.delete('page')
