@@ -194,10 +194,10 @@ export default function AboutPage() {
                 <span className="text-blue-400 font-semibold">VeloceAI was born from a simple frustration: watching great companies struggle to scale their customer support.</span>
               </p>
               <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-                We saw startups losing customers because they couldn't respond fast enough. E-commerce brands drowning in repetitive questions during peak seasons. Growing SaaS companies choosing between hiring expensive support teams or disappointing their users.
+                We saw startups losing customers because they couldn&apos;t respond fast enough. E-commerce brands drowning in repetitive questions during peak seasons. Growing SaaS companies choosing between hiring expensive support teams or disappointing their users.
               </p>
               <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-                The existing solutions were either too complex, too expensive, or simply didn't work. Enterprise chatbot platforms required months of implementation and six-figure budgets. DIY tools left businesses with clunky bots that frustrated customers more than helped them.
+                The existing solutions were either too complex, too expensive, or simply didn&apos;t work. Enterprise chatbot platforms required months of implementation and six-figure budgets. DIY tools left businesses with clunky bots that frustrated customers more than helped them.
               </p>
               <p className="text-lg text-gray-300 mb-6 leading-relaxed font-semibold text-cyan-400">
                 We knew there had to be a better way to make AI support accessible to every business.
@@ -254,7 +254,7 @@ export default function AboutPage() {
               </div>
               <p className="text-lg text-gray-300 leading-relaxed">
                 To democratize AI-powered customer support, making it accessible, affordable, and effective for businesses of all sizes. 
-                We believe exceptional customer support shouldn't require a massive team or endless resources. We&apos;re building the future where every company can provide instant, intelligent, and personalized support—without the complexity or cost of traditional solutions.
+                We believe exceptional customer support shouldn&apos;t require a massive team or endless resources. We&apos;re building the future where every company can provide instant, intelligent, and personalized support—without the complexity or cost of traditional solutions.
               </p>
             </motion.div>
             <motion.div 
@@ -671,7 +671,7 @@ export default function AboutPage() {
             viewport={{ once: true }}
           >
             Join hundreds of businesses already using VeloceAI to deliver exceptional customer experiences. 
-            Let's discuss how we can help you build intelligent, scalable support solutions that grow with your business.
+            Let&apos;s discuss how we can help you build intelligent, scalable support solutions that grow with your business.
           </motion.p>
           <motion.div 
             className="flex justify-center"
