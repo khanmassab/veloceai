@@ -105,23 +105,18 @@ export default function FAQSection({ faqs, title = "FAQ" }: FAQSectionProps) {
 export function parseFAQContent(content: string): FAQItem[] {
   const faqs: FAQItem[] = []
   
-  console.log('parseFAQContent - input content:', content.substring(0, 500))
-  
   // Split content by FAQ section - look for any H2 with FAQ
   const faqSectionMatch = content.match(/## FAQ\s*\n(.*?)(?=\n## |$)/s)
   if (!faqSectionMatch) {
-    console.log('No FAQ section found in content')
     return faqs
   }
   
   const faqContent = faqSectionMatch[1]
-  console.log('FAQ content found:', faqContent.substring(0, 300))
   
   // Split by question headers (###)
   const questionMatches = faqContent.match(/### (.+?)\n\n(.+?)(?=\n### |$)/gs)
   
   if (questionMatches) {
-    console.log('Found question matches:', questionMatches.length)
     questionMatches.forEach((match, index) => {
       const lines = match.trim().split('\n')
       if (lines.length >= 2) {
@@ -130,15 +125,11 @@ export function parseFAQContent(content: string): FAQItem[] {
         
         if (question && answer) {
           faqs.push({ question, answer })
-          console.log(`Added FAQ ${index + 1}:`, question)
         }
       }
     })
-  } else {
-    console.log('No question matches found in FAQ content')
   }
   
-  console.log('Final FAQs array:', faqs.length)
   return faqs
 }
 

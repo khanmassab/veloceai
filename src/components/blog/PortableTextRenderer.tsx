@@ -35,9 +35,7 @@ const components = {
                   if (block.style === 'h2') {
                     return (
                       <h2 key={index} className="text-3xl md:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-300 to-cyan-300 mb-6 leading-tight">
-                        <span className="drop-shadow-xl shadow-blue-400/30">
-                          {block.children?.map((child: any) => child.text).join('')}
-                        </span>
+                        {block.children?.map((child: any) => child.text).join('')}
                       </h2>
                     )
                   }
@@ -45,7 +43,7 @@ const components = {
                   // Normal paragraph
                   if (block.style === 'normal' && !block.listItem) {
                     return (
-                      <p key={index} className="text-xl md:text-2xl text-white mb-6 font-light leading-relaxed">
+                      <p key={index} className="text-xl md:text-2xl text-white mb-6 leading-relaxed">
                         {block.children?.map((child: any) => child.text).join('')}
                       </p>
                     )
@@ -136,12 +134,12 @@ const components = {
     codeBlock: ({ value }: any) => (
       <div className="my-8">
         {value.filename && (
-          <div className="bg-slate-800 text-gray-300 px-4 py-2 text-sm font-mono border-b border-slate-700 rounded-t-lg">
+          <div className="bg-slate-800 text-white px-4 py-2 text-sm font-mono border-b border-slate-700 rounded-t-lg">
             {value.filename}
           </div>
         )}
         <pre className="bg-slate-900 border border-slate-700 rounded-lg p-6 overflow-x-auto">
-          <code className={`text-sm text-gray-300 language-${value.language || 'javascript'}`}>
+          <code className={`text-sm text-white language-${value.language || 'javascript'}`}>
             {value.code}
           </code>
         </pre>
@@ -176,7 +174,7 @@ const components = {
               {value.alt && (
                 <div className="space-y-4">
                   <div className="w-12 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
-                  <p className="text-white text-lg leading-relaxed font-light">
+                  <p className="text-white text-lg leading-relaxed">
                     {value.alt}
                   </p>
                 </div>
@@ -187,13 +185,10 @@ const components = {
       )
     },
     faqSection: ({ value }: any) => {
-      console.log('Rendering FAQ section:', value)
       const faqs = parseFAQContent(value.content || '')
-      console.log('Parsed FAQs:', faqs)
       
       // If parsing failed, try to create FAQs from the structured data
       if (faqs.length === 0 && value.faqs && Array.isArray(value.faqs)) {
-        console.log('Using structured FAQ data:', value.faqs)
         return <FAQSection faqs={value.faqs} title={value.title || 'FAQ'} />
       }
       
@@ -227,9 +222,7 @@ const components = {
               {h3Sections.map((section: any, index: number) => (
                 <div key={index} className="group">
                   <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-300 mb-4 leading-tight relative pl-6 border-l-4 border-blue-400/50 hover:border-blue-400 transition-all duration-300">
-                    <span className="drop-shadow-lg shadow-blue-300/20 group-hover:shadow-blue-300/40 transition-all duration-300">
-                      {section.title}
-                    </span>
+                    {section.title}
                     <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-blue-400 to-purple-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </h3>
                   <div className="ml-6 pl-6 border-l-2 border-slate-600/30 hover:border-slate-500/50 transition-colors duration-300">
@@ -262,9 +255,7 @@ const components = {
                 <div key={index} className="group bg-slate-800/40 rounded-2xl border border-slate-700/50 hover:border-blue-400/50 transition-all duration-300 overflow-hidden shadow-lg hover:shadow-xl hover:shadow-blue-500/20 flex flex-col h-full">
                   <div className="p-6 flex-1">
                     <h3 className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-300 mb-4 leading-tight">
-                      <span className="drop-shadow-lg shadow-blue-300/20 group-hover:shadow-blue-300/40 transition-all duration-300">
-                        {section.title}
-                      </span>
+                      {section.title}
                     </h3>
                     <div className="text-white leading-relaxed">
                       <PortableText value={section.content} components={components} />
@@ -287,9 +278,7 @@ const components = {
                 <div key={index} className="group flex flex-col bg-gradient-to-r from-slate-800/30 to-slate-700/30 rounded-xl border border-slate-600/50 hover:border-blue-400/50 transition-all duration-300 overflow-hidden shadow-lg hover:shadow-xl hover:shadow-blue-500/20">
                   <div className="p-6 border-b border-slate-600/30 bg-gradient-to-br from-blue-500/10 to-cyan-500/10">
                     <h3 className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-300 leading-tight">
-                      <span className="drop-shadow-lg shadow-blue-300/20 group-hover:shadow-blue-300/40 transition-all duration-300">
-                        {section.title}
-                      </span>
+                      {section.title}
                     </h3>
                   </div>
                   <div className="p-6">
@@ -315,9 +304,7 @@ const components = {
                   <div className="relative p-6 flex-1">
                     <div className="absolute top-4 right-4 w-2 h-2 bg-blue-400/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <h3 className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-300 mb-4 leading-tight pr-8">
-                      <span className="drop-shadow-lg shadow-blue-300/20 group-hover:shadow-blue-300/40 transition-all duration-300">
-                        {section.title}
-                      </span>
+                      {section.title}
                     </h3>
                     <div className="text-white leading-relaxed">
                       <PortableText value={section.content} components={components} />
@@ -338,9 +325,7 @@ const components = {
             {h3Sections.map((section: any, index: number) => (
               <div key={index} className="group">
                 <h3 className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-300 mb-4 leading-tight pl-6 border-l-4 border-blue-400/50 hover:border-blue-400 transition-all duration-300">
-                  <span className="drop-shadow-lg shadow-blue-300/20 group-hover:shadow-blue-300/40 transition-all duration-300">
-                    {section.title}
-                  </span>
+                  {section.title}
                 </h3>
                 <div className="ml-6 pl-6 border-l-2 border-slate-600/30 hover:border-slate-500/50 transition-colors duration-300">
                   <PortableText value={section.content} components={components} />
@@ -376,7 +361,7 @@ const components = {
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-transparent to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
                   {image.alt && (
-                    <p className="mt-3 text-sm text-gray-400 text-center italic">
+                    <p className="mt-3 text-sm text-white text-center italic">
                       {image.alt}
                     </p>
                   )}
@@ -391,31 +376,23 @@ const components = {
   block: {
     h1: ({ children }: any) => (
       <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 mb-12 mt-16 first:mt-0 leading-tight tracking-tight">
-        <span className="drop-shadow-2xl shadow-blue-500/50">
-          {children}
-        </span>
+        {children}
       </h1>
     ),
     h2: ({ children }: any) => (
       <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-300 mb-8 mt-12 leading-tight tracking-tight">
-        <span className="drop-shadow-xl shadow-blue-400/30">
-          {children}
-        </span>
+        {children}
       </h2>
     ),
         h3: ({ children }: any) => (
           <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-300 mb-4 mt-8 leading-tight relative pl-6 border-l-4 border-blue-400/50 hover:border-blue-400 transition-all duration-300 group">
-            <span className="drop-shadow-lg shadow-blue-300/20 group-hover:shadow-blue-300/40 transition-all duration-300">
-              {children}
-            </span>
+            {children}
             <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-blue-400 to-purple-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </h3>
         ),
     h4: ({ children }: any) => (
-      <h4 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-5 mt-8 leading-tight">
-        <span className="text-blue-200 drop-shadow-md">
-          {children}
-        </span>
+      <h4 className="text-xl md:text-2xl lg:text-3xl font-bold text-blue-200 mb-5 mt-8 leading-tight">
+        {children}
       </h4>
     ),
     h5: ({ children }: any) => (
@@ -429,13 +406,13 @@ const components = {
       </h6>
     ),
         normal: ({ children }: any) => (
-          <p className="text-white leading-relaxed mb-8 text-lg md:text-xl font-light">
+          <p className="text-white leading-relaxed mb-8 text-lg md:text-xl">
             {children}
           </p>
         ),
     blockquote: ({ children }: any) => (
       <blockquote className="border-l-4 border-gradient-to-b from-blue-500 to-purple-500 bg-gradient-to-r from-slate-800/50 to-slate-700/50 pl-8 py-8 my-12 text-white italic rounded-r-xl shadow-xl">
-        <div className="text-xl leading-relaxed font-light">
+        <div className="text-xl leading-relaxed">
           <span className="text-4xl text-blue-400 mr-2">"</span>
           {children}
           <span className="text-4xl text-blue-400 ml-2">"</span>
@@ -445,12 +422,12 @@ const components = {
   },
   list: {
     bullet: ({ children }: any) => (
-      <ul className="list-none text-white mb-8 space-y-4 text-lg md:text-xl font-light">
+      <ul className="list-none text-white mb-8 space-y-4 text-lg md:text-xl">
         {children}
       </ul>
     ),
     number: ({ children }: any) => (
-      <ol className="list-none text-white mb-8 space-y-4 text-lg md:text-xl font-light">
+      <ol className="list-none text-white mb-8 space-y-4 text-lg md:text-xl">
         {children}
       </ol>
     ),
@@ -478,7 +455,7 @@ const components = {
       </strong>
     ),
     em: ({ children }: any) => (
-      <em className="italic text-blue-200 font-light">{children}</em>
+      <em className="italic text-blue-200">{children}</em>
     ),
     code: ({ children }: any) => (
       <code className="bg-gradient-to-r from-slate-800 to-slate-700 text-blue-300 px-3 py-1 rounded-lg text-sm font-mono border border-slate-600 shadow-lg">
@@ -519,8 +496,6 @@ function ContentWithGroupedSections({ content }: { content: any[] }) {
       const isCTA = (h2Text.includes('ready') || h2Text.includes('ship') || h2Text.includes('contact') || h2Text.includes('get started'))
       
       if (isCTA) {
-        console.log('Found CTA section at index:', i)
-        
         // Collect all content until the end or next H2
         const ctaContent = [block]
         let currentIndex = i + 1
@@ -552,8 +527,6 @@ function ContentWithGroupedSections({ content }: { content: any[] }) {
         block.children[0]?.text && 
         block.children[0].text.toLowerCase().includes('faq')) {
       
-      console.log('Found FAQ section at index:', i, '- skipping H2-H3 grouping')
-      
       // Find all h3 blocks that follow this h2 (FAQ questions)
       const faqBlocks = []
       let currentIndex = i + 1
@@ -569,7 +542,6 @@ function ContentWithGroupedSections({ content }: { content: any[] }) {
             
             if (question && answer) {
               faqBlocks.push({ question, answer })
-              console.log('Added FAQ:', question)
             }
             currentIndex += 2 // Skip both question and answer
           } else {
@@ -584,7 +556,6 @@ function ContentWithGroupedSections({ content }: { content: any[] }) {
       }
       
       if (faqBlocks.length > 0) {
-        console.log('Creating FAQ section with', faqBlocks.length, 'items')
         // Add FAQ section component with structured data
         processedContent.push({
           _type: 'faqSection',
