@@ -1375,10 +1375,10 @@ const CTASection = ({ onBookNow }: { onBookNow: () => void }) => {
           <p className="text-gray-300 text-center mt-8">
             Have questions? Contact us at{' '}
             <a 
-              href="mailto:massab@veloceai.co" 
+              href="mailto:hello@veloceai.co" 
               className="text-blue-400 hover:text-cyan-400 transition-colors duration-300 hover:underline font-semibold"
             >
-              massab@veloceai.co
+              hello@veloceai.co
             </a>
             {' '}| We respond within 24 hours
           </p>
