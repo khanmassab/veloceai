@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight, Clock } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 import { BlogPostMeta } from '@/lib/blog'
@@ -32,10 +33,11 @@ const RelatedPosts = ({ posts, currentPostSlug }: RelatedPostsProps) => {
                 {/* Cover Image */}
                 {post.coverImage && (
                   <div className="aspect-video bg-gradient-to-br from-blue-900/20 to-cyan-900/20 relative overflow-hidden">
-                    <img
+                    <Image
                       src={post.coverImage}
                       alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                   </div>

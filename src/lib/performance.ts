@@ -217,8 +217,9 @@ export const useAnimationCleanup = () => {
   }, [])
 
   useEffect(() => {
+    const currentCleanups = cleanupRef.current
     return () => {
-      cleanupRef.current.forEach(cleanup => cleanup())
+      currentCleanups.forEach(cleanup => cleanup())
     }
   }, [])
 
@@ -244,7 +245,7 @@ export const useOptimizedScroll = (callback: (scrollY: number) => void, deps: an
         }
       })
     }, 16), // ~60fps
-    deps
+    [callback, ...deps]
   )
 
   useEffect(() => {

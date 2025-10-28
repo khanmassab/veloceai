@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { User, Mail, Linkedin, Github, Globe } from 'lucide-react'
 import { Author } from '@/lib/blog'
 
@@ -20,9 +21,11 @@ const AuthorCard = ({ author, showBio = true }: AuthorCardProps) => {
         {/* Avatar */}
         <div className="flex-shrink-0">
           {author.avatar ? (
-            <img
+            <Image
               src={author.avatar}
               alt={author.name}
+              width={64}
+              height={64}
               className="w-16 h-16 rounded-full object-cover border-2 border-white/20"
             />
           ) : (

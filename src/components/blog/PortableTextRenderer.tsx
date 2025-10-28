@@ -1,6 +1,7 @@
 'use client'
 
 import { PortableText } from '@portabletext/react'
+import Image from 'next/image'
 import { getImageUrl } from '@/lib/sanity.image'
 
 interface PortableTextRendererProps {
@@ -28,11 +29,12 @@ const components = {
       if (!imageUrl) return null
       
       return (
-        <div className="my-6">
-          <img
+        <div className="my-6 relative w-full h-96">
+          <Image
             src={imageUrl}
             alt={value.alt || ''}
-            className="w-full rounded-lg shadow-lg"
+            fill
+            className="object-cover rounded-lg shadow-lg"
           />
         </div>
       )

@@ -120,7 +120,7 @@ export const useKeyboardNavigation = () => {
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [focusNext, focusPrevious])
+  }, [focusNext, focusPrevious, focusableElements])
 }
 
 // High contrast mode detection
