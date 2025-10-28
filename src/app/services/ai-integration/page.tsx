@@ -189,7 +189,7 @@ const HeroSection = ({ onBookNow }: { onBookNow: () => void }) => {
             </p>
             
             <p className="text-lg sm:text-xl text-gray-300 leading-relaxed max-w-5xl mx-auto">
-              Disconnected tools slow businesses down. VeloceAI's AI Integration Services unify your data, chatbots, and automation platforms into one intelligent system that works seamlessly across every touchpoint.
+              Disconnected tools slow businesses down. VeloceAI's AI Integration Services unify your data, systems, and automation platforms into one intelligent ecosystem that works seamlessly across every touchpoint.
             </p>
           </motion.div>
 
@@ -534,9 +534,9 @@ const AIIntegrationCapabilitiesSection = () => {
   const integrations = [
     {
       number: 1,
-      title: "Chatbot & Platform Integration",
-      description: "Deploy your AI chatbot across websites, CRMs, and messaging tools, and watch it sync effortlessly with your existing systems.",
-      details: "Connect VeloceAI's AI Customer Chatbot to automate customer interactions, track engagement, and deliver consistent service everywhere.",
+      title: "AI-Powered Platform Integration",
+      description: "Deploy intelligent AI solutions across websites, CRMs, and messaging tools, and watch them sync effortlessly with your existing systems.",
+      details: "Connect VeloceAI's AI solutions to automate customer interactions, track engagement, and deliver consistent service everywhere.",
       icon: MessageSquare,
       color: "from-blue-500 to-cyan-500"
     },
@@ -986,7 +986,7 @@ const ProcessSection = () => {
     {
       number: 2,
       title: "Integration & Optimization",
-      description: "Our team connects your systems (chatbots, CRMs, APIs, or eCommerce) into a single, intelligent network. We test, refine, and optimize for performance.",
+      description: "Our team connects your systems (AI tools, CRMs, APIs, or eCommerce) into a single, intelligent network. We test, refine, and optimize for performance.",
       icon: Settings,
       color: "from-cyan-500 to-teal-500"
     },
@@ -1235,11 +1235,11 @@ export default function AIIntegrationPage() {
       
       const metaDescription = document.querySelector('meta[name="description"]')
       if (metaDescription) {
-        metaDescription.setAttribute('content', 'Streamline your operations with VeloceAI\'s AI integration services. Connect chatbots, CRMs, and automation tools to deliver intelligent, real-time customer experiences.')
+        metaDescription.setAttribute('content', 'Streamline your operations with VeloceAI\'s AI integration services. Connect AI systems, CRMs, and automation tools to deliver intelligent, real-time customer experiences.')
       } else {
         const meta = document.createElement('meta')
         meta.name = 'description'
-        meta.content = 'Streamline your operations with VeloceAI\'s AI integration services. Connect chatbots, CRMs, and automation tools to deliver intelligent, real-time customer experiences.'
+        meta.content = 'Streamline your operations with VeloceAI\'s AI integration services. Connect AI systems, CRMs, and automation tools to deliver intelligent, real-time customer experiences.'
         document.head.appendChild(meta)
       }
     }
