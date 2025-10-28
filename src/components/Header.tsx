@@ -1,16 +1,18 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Calendar } from 'lucide-react'
+import { Menu, X, Calendar, ChevronDown, Network, MessageSquare, Settings } from 'lucide-react'
 import BookingModal from './BookingModal'
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isBookingOpen, setIsBookingOpen] = useState(false)
+  const [isServicesOpen, setIsServicesOpen] = useState(false)
+  const servicesButtonRef = useRef<HTMLButtonElement>(null)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -21,8 +23,47 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isServicesOpen && servicesButtonRef.current && !servicesButtonRef.current.contains(event.target as Node)) {
+        setIsServicesOpen(false)
+      }
+    }
+
+    if (isServicesOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isServicesOpen])
+
   const navItems = [
     { name: 'Home', href: '/' },
+    { 
+      name: 'Services', 
+      href: '#', 
+      hasDropdown: true,
+      dropdownItems: [
+        { 
+          name: 'AI Integration', 
+          href: '/services/ai-integration', 
+          description: 'Connect your systems intelligently',
+          icon: Network
+        },
+            {
+              name: 'Chatbot Solutions',
+              href: '/services/ai-chatbot-development',
+              description: '24/7 AI customer support',
+              icon: MessageSquare
+            },
+        { 
+          name: 'Custom Development', 
+          href: '/contact', 
+          description: 'Tailored AI solutions',
+          icon: Settings
+        }
+      ]
+    },
     { name: 'Blog', href: '/blog' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
@@ -36,13 +77,18 @@ const Header = () => {
     return pathname.startsWith(href)
   }
 
+  // Helper function to check if services dropdown should be active
+  const isServicesActive = () => {
+    return pathname.startsWith('/services/')
+  }
+
   return (
     <>
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 relative overflow-hidden ${
+        className={`fixed top-0 left-0 right-0 z-[9998] transition-all duration-300 relative ${
           isScrolled 
             ? 'bg-slate-900/90 backdrop-blur-xl border-b border-blue-500/20 shadow-lg shadow-blue-500/10' 
             : 'bg-slate-900/70 backdrop-blur-sm'
@@ -110,25 +156,93 @@ const Header = () => {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 ${
-                    isActive(item.href)
-                      ? 'text-blue-400'
-                      : 'text-white/80 hover:text-white'
-                  }`}
-                >
-                  {item.name}
-                  {isActive(item.href) && (
-                    <motion.div
-                      layoutId="activeTab"
-                      className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 rounded-lg shadow-lg shadow-blue-500/20"
-                      initial={false}
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                    />
+                <div key={item.name} className="relative">
+                  {item.hasDropdown ? (
+                    <div
+                      className="relative"
+                      onMouseEnter={() => setIsServicesOpen(true)}
+                      onMouseLeave={() => setIsServicesOpen(false)}
+                    >
+                      <button
+                        ref={servicesButtonRef}
+                        className={`flex items-center space-x-1 px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                          isServicesActive()
+                            ? 'text-blue-400'
+                            : 'text-white/80 hover:text-white'
+                        }`}
+                      >
+                        <span>{item.name}</span>
+                        <ChevronDown className="w-4 h-4" />
+                      </button>
+                      {isServicesActive() && (
+                        <motion.div
+                          layoutId="activeTab"
+                          className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 rounded-lg shadow-lg shadow-blue-500/20"
+                          initial={false}
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
+                      
+                      {/* Services Dropdown */}
+                      <AnimatePresence>
+                        {isServicesOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-0 mt-2 w-80 bg-slate-900/95 backdrop-blur-xl border border-blue-500/20 rounded-xl shadow-2xl shadow-blue-500/10 overflow-hidden"
+                            style={{ zIndex: 9999 }}
+                          >
+                            <div className="p-4">
+                              <h3 className="text-sm font-semibold text-blue-400 mb-3">Our Services</h3>
+                              <div className="space-y-2">
+                                {item.dropdownItems?.map((dropdownItem) => (
+                                  <Link
+                                    key={dropdownItem.name}
+                                    href={dropdownItem.href}
+                                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-white/5 transition-colors duration-200 group"
+                                  >
+                                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
+                                      <dropdownItem.icon className="w-5 h-5 text-blue-400" />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <h4 className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors duration-200">
+                                        {dropdownItem.name}
+                                      </h4>
+                                      <p className="text-xs text-gray-400 mt-1">
+                                        {dropdownItem.description}
+                                      </p>
+                                    </div>
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                        isActive(item.href)
+                          ? 'text-blue-400'
+                          : 'text-white/80 hover:text-white'
+                      }`}
+                    >
+                      {item.name}
+                      {isActive(item.href) && (
+                        <motion.div
+                          layoutId="activeTab"
+                          className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 rounded-lg shadow-lg shadow-blue-500/20"
+                          initial={false}
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
+                    </Link>
                   )}
-                </Link>
+                </div>
               ))}
             </nav>
 
@@ -193,18 +307,71 @@ const Header = () => {
               <div className="container mx-auto px-6 py-4 relative z-10">
                 <nav className="flex flex-col space-y-4">
                   {navItems.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${
-                        isActive(item.href)
-                          ? 'text-blue-400'
-                          : 'text-white/80 hover:text-white'
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
+                    <div key={item.name}>
+                      {item.hasDropdown ? (
+                        <div>
+                          <button
+                            onClick={() => setIsServicesOpen(!isServicesOpen)}
+                            className={`flex items-center justify-between w-full px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                              isServicesActive()
+                                ? 'text-blue-400'
+                                : 'text-white/80 hover:text-white'
+                            }`}
+                          >
+                            <span>{item.name}</span>
+                            <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} />
+                          </button>
+                          
+                          <AnimatePresence>
+                            {isServicesOpen && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="ml-4 mt-2 space-y-2"
+                              >
+                                {item.dropdownItems?.map((dropdownItem) => (
+                                  <Link
+                                    key={dropdownItem.name}
+                                    href={dropdownItem.href}
+                                    onClick={() => {
+                                      setIsMobileMenuOpen(false)
+                                      setIsServicesOpen(false)
+                                    }}
+                                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-white/5 transition-colors duration-200 group"
+                                  >
+                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                                      <dropdownItem.icon className="w-4 h-4 text-blue-400" />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <h4 className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors duration-200">
+                                        {dropdownItem.name}
+                                      </h4>
+                                      <p className="text-xs text-gray-400 mt-1">
+                                        {dropdownItem.description}
+                                      </p>
+                                    </div>
+                                  </Link>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      ) : (
+                        <Link
+                          href={item.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                            isActive(item.href)
+                              ? 'text-blue-400'
+                              : 'text-white/80 hover:text-white'
+                          }`}
+                        >
+                          {item.name}
+                        </Link>
+                      )}
+                    </div>
                   ))}
                   <button
                     onClick={() => {
