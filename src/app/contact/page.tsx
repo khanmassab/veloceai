@@ -49,13 +49,13 @@ const ContactInfo = () => {
     <div className="space-y-8">
       <ScrollAnimation direction="up" distance={40}>
         <h2 className="text-5xl font-bold text-white mb-6 leading-tight">
-          Let's create a great{' '}
+          Let's create great tailored{' '}
           <GradientText 
             className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent"
             gradient="linear-gradient(45deg, #3b82f6, #06b6d4, #3b82f6)"
             duration={2}
           >
-            AI solution
+            AI Solutions
           </GradientText>{' '}
           together!
         </h2>

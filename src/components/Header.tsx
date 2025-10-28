@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Calendar, ChevronDown, Network, MessageSquare, Settings, Globe } from 'lucide-react'
+import { Menu, X, Calendar, ChevronDown, Network, Bot, Settings, Globe } from 'lucide-react'
 import BookingModal from './BookingModal'
 
 const Header = () => {
@@ -51,10 +51,10 @@ const Header = () => {
           icon: Network
         },
             {
-              name: 'Chatbot Solutions',
+              name: 'AI Chatbot Development',
               href: '/ai-chatbot-development-services',
               description: '24/7 AI customer support',
-              icon: MessageSquare
+              icon: Bot
             },
         { 
           name: 'Web Development', 
