@@ -600,17 +600,17 @@ const WhyChooseVeloceAISection = () => {
           {benefits.map((benefit, index) => (
             <StaggerItem key={index} className="group">
               <motion.div
-                className="bg-slate-800/50 border border-slate-700/50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                className="bg-slate-800/50 border border-slate-700/50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col"
                 whileHover={shouldReduceMotion ? {} : { y: -5, scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className={`w-12 h-12 bg-gradient-to-br ${benefit.color} bg-opacity-20 border border-blue-500/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`w-12 h-12 bg-gradient-to-br ${benefit.color} bg-opacity-20 border border-blue-500/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
                   <benefit.icon className="w-6 h-6 text-blue-400" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-3 group-hover:text-blue-400 transition-colors duration-300">
+                <h3 className="text-lg font-bold text-white mb-3 group-hover:text-blue-400 transition-colors duration-300 flex-shrink-0">
                   {benefit.title}
                 </h3>
-                <p className="text-gray-300 text-sm leading-relaxed">
+                <p className="text-gray-300 text-sm leading-relaxed flex-grow flex items-start">
                   {benefit.description}
                 </p>
               </motion.div>
@@ -806,17 +806,6 @@ const HowToGetStartedSection = ({ onBookNow }: { onBookNow: () => void }) => {
           ))}
         </StaggerContainer>
 
-        <Reveal direction="up" distance={30} delay={0.4}>
-          <div className="text-center">
-            <MagneticButton
-              onClick={onBookNow}
-              className="px-12 py-6 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold text-xl rounded-2xl hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/25"
-            >
-              <Calendar className="w-6 h-6 mr-3" />
-              Start Your Project Today
-            </MagneticButton>
-          </div>
-        </Reveal>
       </div>
     </section>
   )
@@ -830,11 +819,11 @@ export default function WebDevelopmentPage() {
     // Add meta description
     const meta = document.querySelector('meta[name="description"]')
     if (meta) {
-      meta.setAttribute('content', 'Custom web development with AI integration. Fast, scalable websites built for SaaS, eCommerce, and business growth. Modern tech stack. Production-ready code. Ship in weeks.')
+      meta.setAttribute('content', 'Build fast, scalable, and intelligent websites with VeloceAI. Our web development services combine modern design, AI automation, and performance optimization to help businesses grow online.')
     } else {
       const meta = document.createElement('meta')
       meta.name = 'description'
-      meta.content = 'Custom web development with AI integration. Fast, scalable websites built for SaaS, eCommerce, and business growth. Modern tech stack. Production-ready code. Ship in weeks.'
+      meta.content = 'Build fast, scalable, and intelligent websites with VeloceAI. Our web development services combine modern design, AI automation, and performance optimization to help businesses grow online.'
       document.head.appendChild(meta)
     }
   }, [])

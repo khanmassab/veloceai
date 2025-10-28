@@ -1020,7 +1020,7 @@ const ProcessSection = () => {
           {steps.map((step, index) => (
             <StaggerItem key={index} className="group">
               <motion.div
-                className="glass-dark rounded-xl p-8 group hover:bg-white/10 transition-all duration-300 relative overflow-hidden text-center"
+                className="glass-dark rounded-xl p-8 group hover:bg-white/10 transition-all duration-300 relative overflow-hidden text-center h-full flex flex-col"
                 initial={{ opacity: 0, y: 50, scale: 0.9 }}
                 animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 50, scale: 0.9 }}
                 transition={{ 
@@ -1043,19 +1043,19 @@ const ProcessSection = () => {
                   }}
                 />
                 
-                <div className="relative z-10">
+                <div className="relative z-10 flex flex-col h-full">
                   {/* Number Badge */}
-                  <div className="flex justify-center mb-6">
+                  <div className="flex justify-center mb-6 flex-shrink-0">
                     <div className={`w-20 h-20 bg-gradient-to-br ${step.color} bg-opacity-20 border border-blue-500/30 rounded-full flex items-center justify-center transition-all duration-300`}>
                       <span className="text-2xl font-bold text-white">{step.number}</span>
                     </div>
                   </div>
                   
-                  <h3 className="text-xl font-semibold mb-4 text-white">
+                  <h3 className="text-xl font-semibold mb-4 text-white flex-shrink-0">
                     {step.title}
                   </h3>
                   
-                  <p className="text-gray-300 leading-relaxed">
+                  <p className="text-gray-300 leading-relaxed flex-grow flex items-start justify-center">
                     {step.description}
                   </p>
                 </div>
@@ -1161,7 +1161,7 @@ const HowToGetStartedSection = ({ onBookNow }: { onBookNow: () => void }) => {
           {steps.map((step, index) => (
             <StaggerItem key={index} className="group">
               <motion.div
-                className="glass-dark rounded-xl p-8 group hover:bg-white/10 transition-all duration-300 relative overflow-hidden"
+                className="glass-dark rounded-xl p-8 group hover:bg-white/10 transition-all duration-300 relative overflow-hidden h-full flex flex-col"
                 initial={{ opacity: 0, y: 50, scale: 0.9 }}
                 animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 50, scale: 0.9 }}
                 transition={{ 
@@ -1184,20 +1184,20 @@ const HowToGetStartedSection = ({ onBookNow }: { onBookNow: () => void }) => {
                   }}
                 />
                 
-                <div className="relative z-10">
+                <div className="relative z-10 flex flex-col h-full">
                   {/* Number Badge */}
-                  <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center justify-between mb-6 flex-shrink-0">
                     <div className={`w-12 h-12 bg-gradient-to-br ${step.color} bg-opacity-20 border border-blue-500/30 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300`}>
                       <span className="text-xl font-bold text-white">{step.number}</span>
                     </div>
                     <step.icon className="w-8 h-8 text-blue-400" />
                   </div>
                   
-                  <h3 className="text-xl font-semibold mb-4 text-white">
+                  <h3 className="text-xl font-semibold mb-4 text-white flex-shrink-0">
                     {step.title}
                   </h3>
                   
-                  <p className="text-gray-300 leading-relaxed">
+                  <p className="text-gray-300 leading-relaxed flex-grow flex items-start">
                     {step.description}
                   </p>
                 </div>
