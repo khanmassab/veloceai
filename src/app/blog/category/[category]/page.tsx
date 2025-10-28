@@ -130,11 +130,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
               <BlogPagination
                 currentPage={currentPage}
                 totalPages={totalPages}
-                onPageChange={(page) => {
-                  const url = new URL(window.location.href)
-                  url.searchParams.set('page', page.toString())
-                  window.location.href = url.toString()
-                }}
+                baseUrl={`/blog/category/${category}`}
               />
             </ScrollAnimation>
           )}

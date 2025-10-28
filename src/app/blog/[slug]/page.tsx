@@ -6,6 +6,7 @@ import AuthorCard from '@/components/blog/AuthorCard'
 import RelatedPosts from '@/components/blog/RelatedPosts'
 import SyntaxHighlighter from '@/components/SyntaxHighlighter'
 import PortableTextRenderer from '@/components/blog/PortableTextRenderer'
+import MarkdownRenderer from '@/components/blog/MarkdownRenderer'
 import { Calendar, Clock, User, Share2, Twitter, Linkedin, Facebook } from 'lucide-react'
 import { PageWrapper } from '@/components/NeuralNetworkBackground'
 import { ScrollAnimation, StaggerContainer, StaggerItem, GradientText } from '@/components/ScrollAnimations'
@@ -92,14 +93,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <PageWrapper backgroundVariant="full" className="min-h-screen neural-bg">
       <SyntaxHighlighter />
-      {/* Hero Section */}
-      <section className="pt-24 pb-24 neural-bg text-white dark">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
+      {/* Hero Section with Cover Image Background */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Cover Image Background */}
+        {post.coverImage && (
+          <div className="absolute inset-0">
+            <img
+              src={post.coverImage}
+              alt={post.title}
+              className="w-full h-full object-cover"
+            />
+            {/* Blur overlay for text readability */}
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+            {/* Gradient overlays for better text contrast */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/60"></div>
+          </div>
+        )}
+        
+        {/* Content Overlay */}
+        <div className="relative z-10 container mx-auto px-6 pt-24 pb-16">
+          <div className="max-w-4xl mx-auto text-center">
             {/* Breadcrumb */}
             <ScrollAnimation direction="up" distance={30}>
               <nav className="mb-8">
-                <ol className="flex items-center space-x-2 text-sm text-gray-300">
+                <ol className="flex items-center justify-center space-x-2 text-sm text-gray-200">
                   <li><a href="/" className="hover:text-white transition-colors">Home</a></li>
                   <li>/</li>
                   <li><a href="/blog" className="hover:text-white transition-colors">Blog</a></li>
@@ -111,11 +128,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             {/* Categories */}
             <ScrollAnimation direction="up" distance={30} delay={0.1}>
-              <div className="flex flex-wrap gap-2 mb-6">
+              <div className="flex flex-wrap justify-center gap-2 mb-6">
                 {post.categories.map((category) => (
                   <span
                     key={category}
-                    className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm font-medium"
+                    className="px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full text-sm font-medium border border-white/30"
                   >
                     {category}
                   </span>
@@ -125,29 +142,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             {/* Title */}
             <ScrollAnimation direction="up" distance={50} delay={0.2}>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-                <GradientText 
-                  className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent"
-                  gradient="linear-gradient(45deg, #3b82f6, #06b6d4, #3b82f6)"
-                  duration={3}
-                >
-                  {post.title}
-                </GradientText>
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-white drop-shadow-2xl">
+                {post.title}
               </h1>
             </ScrollAnimation>
 
             {/* Meta Info */}
             <ScrollAnimation direction="up" distance={30} delay={0.3}>
-              <div className="flex flex-wrap items-center gap-6 text-gray-300 mb-8">
-                <div className="flex items-center">
+              <div className="flex flex-wrap justify-center items-center gap-8 text-gray-200 mb-8">
+                <div className="flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
                   <User className="w-5 h-5 mr-2" />
                   <span>{post.author}</span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
                   <Calendar className="w-5 h-5 mr-2" />
                   <span>{formatDate(post.date)}</span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
                   <Clock className="w-5 h-5 mr-2" />
                   <span>{post.readTime} min read</span>
                 </div>
@@ -156,34 +167,34 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             {/* Social Share */}
             <ScrollAnimation direction="up" distance={30} delay={0.4}>
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-300">Share:</span>
+              <div className="flex items-center justify-center space-x-4">
+                <span className="text-gray-200">Share:</span>
                 <a
                   href={socialUrls.twitter}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+                  className="p-3 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-lg transition-colors border border-white/30"
                   aria-label="Share on Twitter"
                 >
-                  <Twitter className="w-4 h-4" />
+                  <Twitter className="w-5 h-5" />
                 </a>
                 <a
                   href={socialUrls.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+                  className="p-3 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-lg transition-colors border border-white/30"
                   aria-label="Share on LinkedIn"
                 >
-                  <Linkedin className="w-4 h-4" />
+                  <Linkedin className="w-5 h-5" />
                 </a>
                 <a
                   href={socialUrls.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+                  className="p-3 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-lg transition-colors border border-white/30"
                   aria-label="Share on Facebook"
                 >
-                  <Facebook className="w-4 h-4" />
+                  <Facebook className="w-5 h-5" />
                 </a>
               </div>
             </ScrollAnimation>
@@ -191,34 +202,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
       </section>
 
-      {/* Cover Image */}
-      {post.coverImage && (
-        <ScrollAnimation direction="up" distance={30}>
-          <section className="py-8 bg-gradient-to-br from-slate-800 to-slate-900">
-            <div className="container mx-auto px-6">
-              <div className="max-w-4xl mx-auto">
-                <img
-                  src={post.coverImage}
-                  alt={post.title}
-                  className="w-full h-64 md:h-96 object-cover rounded-xl shadow-2xl border border-white/10"
-                />
-              </div>
-            </div>
-          </section>
-        </ScrollAnimation>
-      )}
-
       {/* Article Content */}
       <ScrollAnimation direction="up" distance={30}>
-        <section className="py-12 bg-gradient-to-br from-slate-800 to-slate-900 text-white">
-          <div className="container mx-auto px-6">
-            <div className="max-w-4xl mx-auto">
-              {post.source === 'sanity' ? (
-                <PortableTextRenderer content={post.content as any[]} />
+        <section className="py-12 bg-gradient-to-br from-slate-800 to-slate-900 text-white relative">
+          {/* Gradient overlay for better blending with cover image */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-800/80 to-transparent pointer-events-none"></div>
+          <div className="w-full px-4 md:px-8 lg:px-12">
+            <div className="max-w-7xl mx-auto blog-content">
+              {post.contentType === 'markdown' ? (
+                <MarkdownRenderer content={post.content as string} />
               ) : (
-                <div className="prose prose-lg max-w-none prose-invert prose-headings:text-white prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-gray-300 prose-p:leading-relaxed prose-strong:text-white prose-strong:font-semibold prose-code:text-blue-400 prose-code:bg-slate-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-pre:bg-slate-900 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-lg prose-blockquote:border-l-blue-400 prose-blockquote:bg-slate-800/50 prose-blockquote:border-l-4 prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg prose-ul:text-gray-300 prose-ol:text-gray-300 prose-li:text-gray-300 prose-a:text-blue-400 prose-a:no-underline hover:prose-a:text-blue-300 prose-table:text-gray-300 prose-th:bg-slate-800 prose-th:text-white prose-td:border-slate-700 prose-img:rounded-lg prose-img:shadow-lg">
-                  <div dangerouslySetInnerHTML={{ __html: post.content as string }} />
-                </div>
+                <PortableTextRenderer content={post.content as any[]} />
               )}
             </div>
           </div>

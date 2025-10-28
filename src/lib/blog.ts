@@ -33,7 +33,9 @@ export interface BlogPost {
     }
   }
   excerpt: string
+  contentType: 'portable' | 'markdown'
   content: string | any[] // Can be HTML string (markdown) or Portable Text array (Sanity)
+  markdownContent?: string // Raw markdown content
   tags: string[]
   categories: string[]
   coverImage?: string
@@ -54,7 +56,9 @@ export interface SanityBlogPost {
     avatar?: any
   }
   excerpt: string
+  contentType: 'portable' | 'markdown'
   content?: any[]
+  markdownContent?: string
   tags: Array<{ name: string; slug: { current: string } }>
   categories: Array<{ name: string; slug: { current: string } }>
   coverImage?: any
@@ -127,10 +131,12 @@ async function getSanityPosts(): Promise<BlogPostMeta[]> {
   try {
     // Check if Sanity is properly configured
     if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.NEXT_PUBLIC_SANITY_PROJECT_ID === 'your-project-id') {
+      console.warn('Sanity not configured - missing NEXT_PUBLIC_SANITY_PROJECT_ID')
       return []
     }
     
     const sanityPosts = await client.fetch(blogPostQuery)
+    console.log('Fetched Sanity posts:', sanityPosts.length)
     return sanityPosts.map(transformSanityPost)
   } catch (error) {
     console.error('Error reading Sanity posts:', error)
@@ -187,7 +193,9 @@ async function getSanityPostBySlug(slug: string): Promise<BlogPost | null> {
         social: sanityPost.author.social || {}
       },
       excerpt: sanityPost.excerpt,
-      content: sanityPost.content, // Portable text content
+      contentType: sanityPost.contentType || 'portable',
+      content: sanityPost.contentType === 'markdown' ? sanityPost.markdownContent || '' : sanityPost.content,
+      markdownContent: sanityPost.markdownContent,
       tags: sanityPost.tags?.map((tag: any) => tag.name) || [],
       categories: sanityPost.categories?.map((cat: any) => cat.name) || [],
       coverImage: getImageUrl(sanityPost.coverImage),

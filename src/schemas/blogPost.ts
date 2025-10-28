@@ -42,8 +42,22 @@ export const blogPost = defineType({
       validation: (Rule) => Rule.required().max(200),
     }),
     defineField({
+      name: 'contentType',
+      title: 'Content Type',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Portable Text (Rich Text)', value: 'portable' },
+          { title: 'Markdown', value: 'markdown' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'portable',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'content',
-      title: 'Content',
+      title: 'Content (Portable Text)',
       type: 'array',
       of: [
         {
@@ -148,6 +162,13 @@ export const blogPost = defineType({
           ],
         },
       ],
+      hidden: ({ parent }) => parent?.contentType !== 'portable',
+    }),
+    defineField({
+      name: 'markdownContent',
+      title: 'Content (Markdown)',
+      type: 'markdown',
+      hidden: ({ parent }) => parent?.contentType !== 'markdown',
     }),
     defineField({
       name: 'tags',

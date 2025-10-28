@@ -2,15 +2,32 @@
 
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 interface BlogPaginationProps {
   currentPage: number
   totalPages: number
-  onPageChange: (page: number) => void
+  baseUrl: string
 }
 
-export default function BlogPagination({ currentPage, totalPages, onPageChange }: BlogPaginationProps) {
+export default function BlogPagination({ currentPage, totalPages, baseUrl }: BlogPaginationProps) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  
   if (totalPages <= 1) return null
+
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString())
+    if (page === 1) {
+      params.delete('page')
+    } else {
+      params.set('page', page.toString())
+    }
+    
+    const queryString = params.toString()
+    const url = queryString ? `${baseUrl}?${queryString}` : baseUrl
+    router.push(url)
+  }
 
   const getVisiblePages = () => {
     const delta = 2
@@ -44,7 +61,7 @@ export default function BlogPagination({ currentPage, totalPages, onPageChange }
     <div className="flex items-center justify-center space-x-2 mt-12">
       {/* Previous Button */}
       <motion.button
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
         className={`flex items-center px-4 py-2 rounded-lg transition-all duration-200 ${
           currentPage === 1
@@ -66,7 +83,7 @@ export default function BlogPagination({ currentPage, totalPages, onPageChange }
               <span className="px-3 py-2 text-gray-400">...</span>
             ) : (
               <motion.button
-                onClick={() => onPageChange(page as number)}
+                onClick={() => handlePageChange(page as number)}
                 className={`px-3 py-2 rounded-lg transition-all duration-200 ${
                   currentPage === page
                     ? 'bg-blue-500 text-white'
@@ -84,7 +101,7 @@ export default function BlogPagination({ currentPage, totalPages, onPageChange }
 
       {/* Next Button */}
       <motion.button
-        onClick={() => onPageChange(currentPage + 1)}
+        onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         className={`flex items-center px-4 py-2 rounded-lg transition-all duration-200 ${
           currentPage === totalPages

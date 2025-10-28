@@ -40,7 +40,9 @@ export const blogPostBySlugQuery = groq`
       social
     },
     excerpt,
+    contentType,
     content,
+    markdownContent,
     tags[]->{
       name,
       slug

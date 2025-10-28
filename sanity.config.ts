@@ -1,13 +1,14 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
+import { markdownSchema } from 'sanity-plugin-markdown'
 import { schemaTypes } from './src/schemas'
 
 export default defineConfig({
   name: 'veloce-blog',
   title: 'VeloceAI Blog CMS',
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || '',
   plugins: [
     structureTool({
       structure: (S) =>
@@ -45,6 +46,7 @@ export default defineConfig({
           ]),
     }),
     visionTool(),
+    markdownSchema(),
   ],
   schema: {
     types: schemaTypes,
