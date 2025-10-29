@@ -1484,6 +1484,33 @@ li[style*="counter-increment"] > span:first-child::after {
   margin-bottom: 0.5rem !important;
 }
 
+/* Fix Chrome blurry gradient text rendering */
+.blog-content strong,
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4,
+.blog-content h5,
+.blog-content h6 {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Fix for gradient text specifically */
+.blog-content strong[class*="bg-clip-text"],
+.blog-content h1[class*="bg-clip-text"],
+.blog-content h2[class*="bg-clip-text"],
+.blog-content h3[class*="bg-clip-text"] {
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  paint-order: stroke fill;
+}
+
 /* Image orientation handling - contain for better aspect ratio preservation */
 .blog-content img {
   display: block;
