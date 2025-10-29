@@ -65,8 +65,17 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
       return tableHtml
     })
 
-    // Convert horizontal rules (thematic breaks) - before headers to avoid conflicts
-    html = html.replace(/^[\s]*[-*_]{3,}[\s]*$/gim, '<hr class="my-12 border-0 h-px bg-gradient-to-r from-transparent via-blue-400/50 to-transparent" />')
+    // Convert side-by-side sections (content + image between ---)
+    // Store them temporarily with unique markers
+    const sxsPattern = /---\s*\n([\s\S]*?)!\[([^\]]*)\]\(([^\s)]+)(?:\s+"([^"]+)")?\)\s*\n---/g
+    html = html.replace(sxsPattern, (match, contentPart, alt, url, title) => {
+      // Use base64 encoding to preserve special characters
+      const encodedContent = Buffer.from(contentPart.trim()).toString('base64')
+      return `__SXS_START__${encodedContent}__SXS_IMG__${alt}__SXS_URL__${url}__SXS_TITLE__${title || alt}__SXS_END__`
+    })
+
+    // Convert remaining horizontal rules (any --- not part of side-by-side sections)
+    html = html.replace(/---/g, '<hr class="my-12 border-0 h-px bg-gradient-to-r from-transparent via-blue-400/50 to-transparent" />')
 
     // Convert headers
     html = html.replace(/^### (.*$)/gim, '<h3 class="text-xl md:text-2xl lg:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-300 mb-4 mt-8 leading-tight relative pl-6 border-l-4 border-blue-400/50 hover:border-blue-400 transition-all duration-300 group"><span class="drop-shadow-lg shadow-blue-300/20 group-hover:shadow-blue-300/40 transition-all duration-300">$1</span><div class="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-blue-400 to-purple-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div></h3>')
@@ -80,7 +89,13 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
     // Convert code
     html = html.replace(/`(.*?)`/g, '<code class="bg-gradient-to-r from-slate-800 to-slate-700 text-blue-300 px-3 py-1 rounded-lg text-sm font-mono border border-slate-600 shadow-lg">$1</code>')
 
-    // Convert links
+    // Convert standalone images to full-width display (NOT in --- blocks)
+    html = html.replace(/!\[([^\]]*)\]\(([^\s)]+)(?:\s+"([^"]+)")?\)/g, (match, alt, url, title) => {
+      const displayText = title || alt
+      return `<div class="my-8 w-full"><div class="relative overflow-hidden rounded-2xl shadow-xl border border-slate-700/50"><img src="${url}" alt="${alt}" class="w-full h-auto object-contain max-h-[500px]" loading="lazy" /></div>${displayText ? `<p class="mt-3 text-center text-sm text-gray-400 italic">${displayText}</p>` : ''}</div>`
+    })
+    
+    // Convert links (after images)
     html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-400 hover:text-blue-300 underline decoration-blue-400 hover:decoration-blue-300 transition-all duration-300 font-medium" target="_blank" rel="noopener noreferrer">$1</a>')
 
     // Convert blockquotes (before paragraphs)
@@ -100,11 +115,57 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
 
     // Convert paragraphs (LAST - after all other block elements)
     // Skip empty lines or lines that are only whitespace
-    html = html.replace(/^(?!<[h1-6]|<ul|<ol|<li|<blockquote|<div|<table|<hr)(.+)$/gim, '<p class="text-white leading-relaxed mb-8 text-lg md:text-xl font-light">$1</p>')
+    html = html.replace(/^(?!<[h1-6]|<ul|<ol|<li|<blockquote|<div|<table|<hr|<img|.*__SXS)(.+)$/gim, '<p class="text-white leading-relaxed mb-8 text-lg md:text-xl font-light">$1</p>')
     
     // Remove empty paragraphs
     html = html.replace(/<p class="[^"]*">\s*<\/p>/g, '')
-
+    
+    // Now process side-by-side sections (after ALL markdown is converted)
+    html = html.replace(/__SXS_START__(.*?)__SXS_IMG__(.*?)__SXS_URL__(.*?)__SXS_TITLE__(.*?)__SXS_END__/g, (match, encodedContent, alt, url, title) => {
+      // Decode the content
+      const decodedContent = Buffer.from(encodedContent, 'base64').toString('utf-8')
+      
+      // Convert the decoded markdown content to HTML
+      let convertedContent = decodedContent
+      
+      // Remove any stray --- markers first
+      convertedContent = convertedContent.replace(/^---\s*$/gm, '')
+      
+      // Bold and italic (FIRST - process inline formatting before block elements)
+      convertedContent = convertedContent.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-300">$1</strong>')
+      convertedContent = convertedContent.replace(/\*([^*\n]+)\*/g, '<em class="italic text-blue-200">$1</em>')
+      
+      // Links (before other block conversions)
+      convertedContent = convertedContent.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-400 hover:text-blue-300 underline decoration-blue-400 hover:decoration-blue-300 transition-all duration-300 font-medium" target="_blank" rel="noopener noreferrer">$1</a>')
+      
+      // Headers
+      convertedContent = convertedContent.replace(/^### (.*$)/gim, '<h3 class="text-xl md:text-2xl lg:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-300 mb-4 mt-0 leading-tight relative pl-6 border-l-4 border-blue-400/50 hover:border-blue-400 transition-all duration-300 group"><span class="drop-shadow-lg shadow-blue-300/20 group-hover:shadow-blue-300/40 transition-all duration-300">$1</span></h3>')
+      convertedContent = convertedContent.replace(/^## (.*$)/gim, '<h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-300 mb-4 mt-0 leading-tight tracking-tight"><span class="drop-shadow-xl shadow-blue-400/30">$1</span></h2>')
+      
+      // Blockquotes
+      convertedContent = convertedContent.replace(/^> (.*)$/gim, '<blockquote class="border-l-4 border-gradient-to-b from-blue-500 to-purple-500 bg-gradient-to-r from-slate-800/50 to-slate-700/50 pl-6 py-4 my-4 text-white italic rounded-r-xl shadow-xl"><div class="text-base leading-relaxed font-light"><span class="text-2xl text-blue-400 mr-2">"</span>$1<span class="text-2xl text-blue-400 ml-2">"</span></div></blockquote>')
+      
+      // Numbered lists
+      convertedContent = convertedContent.replace(/^(\d+)\.\s+(.*)$/gim, '<li class="text-white leading-relaxed flex items-start"><span class="w-7 h-7 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xs mr-3 flex-shrink-0 mt-1">$1</span><span class="flex-1">$2</span></li>')
+      convertedContent = convertedContent.replace(/(<li class="text-white leading-relaxed flex items-start"><span class="w-7 h-7 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xs mr-3 flex-shrink-0 mt-1">\d+<\/span><span class="flex-1">.*?<\/span><\/li>\n?)+/gs, (match) => {
+        return `<ol class="list-none text-white mb-4 space-y-2 text-base">${match}</ol>`
+      })
+      
+      // Bullet lists
+      convertedContent = convertedContent.replace(/^- (.*$)/gim, '<li class="text-white leading-relaxed flex items-start"><span class="w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mt-2 mr-3 flex-shrink-0"></span><span class="flex-1">$1</span></li>')
+      convertedContent = convertedContent.replace(/(<li class="text-white leading-relaxed flex items-start"><span class="w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mt-2 mr-3 flex-shrink-0"><\/span><span class="flex-1">.*?<\/span><\/li>\n?)+/gs, (match) => {
+        return `<ul class="list-none text-white mb-4 space-y-2 text-base">${match}</ul>`
+      })
+      
+      // Paragraphs (LAST - only wrap lines that aren't already HTML)
+      convertedContent = convertedContent.replace(/^(?!<)(.+)$/gim, '<p class="text-white leading-relaxed mb-4 text-base">$1</p>')
+      
+      // Remove empty paragraphs
+      convertedContent = convertedContent.replace(/<p class="[^"]*">\s*<\/p>/g, '')
+      
+      return `<div class="my-12 w-full"><div class="flex flex-col lg:flex-row gap-8 items-start"><div class="w-full lg:w-1/2 flex flex-col justify-center"><div class="sxs-content-area">${convertedContent}</div></div><div class="w-full lg:w-1/2 relative group"><div class="relative overflow-hidden rounded-2xl shadow-xl"><img src="${url}" alt="${alt}" class="w-full h-auto object-contain max-h-[600px] transition-all duration-500 group-hover:scale-105" loading="lazy" /></div>${title ? `<p class="mt-4 text-center text-sm text-gray-400 italic">${title}</p>` : ''}</div></div></div>`
+    })
+    
     // Remove FAQ section from HTML since we'll render it separately
     html = html.replace(/## FAQ\s*\n(.*?)(?=\n## |$)/gs, '')
 
