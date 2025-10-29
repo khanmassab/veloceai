@@ -1493,6 +1493,52 @@ li[style*="counter-increment"] > span:first-child::after {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* CTA Section Styling - Subtle and Organic */
+.blog-content .cta-content {
+  text-align: center !important;
+  backdrop-filter: none !important;
+}
+
+.blog-content .cta-content h2 {
+  font-size: 1.75rem !important;
+  margin-bottom: 0.75rem !important;
+  margin-top: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .blog-content .cta-content h2 {
+    font-size: 2rem !important;
+  }
+}
+
+.blog-content .cta-content p {
+  font-size: 1rem !important;
+  color: #cbd5e1 !important;
+  margin-bottom: 0.5rem !important;
+  line-height: 1.6 !important;
+}
+
+.blog-content .cta-content a {
+  color: #60a5fa !important;
+  text-decoration: underline !important;
+  text-decoration-color: #60a5fa !important;
+  text-underline-offset: 2px !important;
+  transition: all 0.2s ease !important;
+  font-weight: 500 !important;
+}
+
+.blog-content .cta-content a:hover {
+  color: #93c5fd !important;
+  text-decoration-color: #93c5fd !important;
+}
+
+.blog-content .cta-content strong {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
 /* Image orientation handling - contain for better aspect ratio preservation */
 .blog-content img {
   display: block;

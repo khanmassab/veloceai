@@ -81,6 +81,13 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
     html = html.replace(/^### (.*$)/gim, '<h3 class="text-xl md:text-2xl lg:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-300 mb-4 mt-8 leading-tight relative pl-6 border-l-4 border-blue-400/50 hover:border-blue-400 transition-all duration-300 group"><span>$1</span><div class="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-blue-400 to-purple-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div></h3>')
     html = html.replace(/^## (.*$)/gim, '<h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-300 mb-8 mt-12 leading-tight tracking-tight"><span>$1</span></h2>')
     html = html.replace(/^# (.*$)/gim, '<h1 class="text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 mb-12 mt-16 first:mt-0 leading-tight tracking-tight"><span>$1</span></h1>')
+    
+    // Detect and wrap CTA sections (AFTER headers are converted)
+    // Pattern: <h2>Ready to ... or <h2>Contact or <h2>Get Started
+    const ctaPattern = /(<h2[^>]*>(?:Ready|Contact|Get Started|Ship|Let's|Start)[\s\S]*?<\/h2>[\s\S]*?)(?=<h2|$)/gi
+    html = html.replace(ctaPattern, (match) => {
+      return `__CTA_START__${match}__CTA_END__`
+    })
 
     // Convert bold and italic
     html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-300">$1</strong>')
@@ -114,11 +121,28 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
     })
 
     // Convert paragraphs (LAST - after all other block elements)
-    // Skip empty lines or lines that are only whitespace
-    html = html.replace(/^(?!<[h1-6]|<ul|<ol|<li|<blockquote|<div|<table|<hr|<img|.*__SXS)(.+)$/gim, '<p class="text-white leading-relaxed mb-8 text-lg md:text-xl font-light">$1</p>')
+    // Skip empty lines or lines that are only whitespace or markers
+    html = html.replace(/^(?!<[h1-6]|<ul|<ol|<li|<blockquote|<div|<table|<hr|<img|.*__SXS|.*__CTA)(.+)$/gim, '<p class="text-white leading-relaxed mb-8 text-lg md:text-xl font-light">$1</p>')
     
     // Remove empty paragraphs
     html = html.replace(/<p class="[^"]*">\s*<\/p>/g, '')
+    
+    // Process CTA sections (after markdown conversion, before side-by-side)
+    html = html.replace(/__CTA_START__([\s\S]*?)__CTA_END__/g, (match, content) => {
+      // Remove the ## marker if it's still there
+      const cleanContent = content.replace(/^##\s+/gm, '')
+      
+      return `<div class="my-12 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-cyan-500/5 rounded-2xl"></div>
+        <div class="relative bg-slate-800/30 backdrop-blur-sm rounded-2xl border border-slate-700/30 shadow-xl p-6 md:p-8">
+          <div class="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full blur-3xl -z-10"></div>
+          <div class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-cyan-500/10 to-blue-500/10 rounded-full blur-3xl -z-10"></div>
+          <div class="max-w-3xl mx-auto cta-content space-y-4">
+            ${cleanContent}
+          </div>
+        </div>
+      </div>`
+    })
     
     // Now process side-by-side sections (after ALL markdown is converted)
     html = html.replace(/__SXS_START__(.*?)__SXS_IMG__(.*?)__SXS_URL__(.*?)__SXS_TITLE__(.*?)__SXS_END__/g, (match, encodedContent, alt, url, title) => {
