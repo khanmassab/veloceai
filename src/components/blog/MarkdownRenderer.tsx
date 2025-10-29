@@ -129,16 +129,13 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
     
     // Process CTA sections (after markdown conversion, before side-by-side)
     html = html.replace(/__CTA_START__([\s\S]*?)__CTA_END__/g, (match, content) => {
-      // Remove the ## marker if it's still there
-      const cleanContent = content.replace(/^##\s+/gm, '')
-      
       return `<div class="my-12 relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-cyan-500/5 rounded-2xl"></div>
-        <div class="relative bg-slate-800/30 backdrop-blur-sm rounded-2xl border border-slate-700/30 shadow-xl p-6 md:p-8">
-          <div class="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full blur-3xl -z-10"></div>
-          <div class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-cyan-500/10 to-blue-500/10 rounded-full blur-3xl -z-10"></div>
-          <div class="max-w-3xl mx-auto cta-content space-y-4">
-            ${cleanContent}
+        <div class="relative bg-slate-800/20 rounded-2xl border border-slate-700/20 shadow-lg p-6 md:p-8">
+          <div class="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-blue-500/8 to-purple-500/8 rounded-full blur-3xl -z-10"></div>
+          <div class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-cyan-500/8 to-blue-500/8 rounded-full blur-3xl -z-10"></div>
+          <div class="max-w-3xl mx-auto cta-content space-y-3">
+            ${content}
           </div>
         </div>
       </div>`
