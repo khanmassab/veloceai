@@ -372,6 +372,55 @@ const components = {
         </div>
       )
     },
+    table: ({ value }: any) => {
+      const rows = value.rows || []
+      if (!rows.length) return null
+      
+      // Separate header rows from body rows
+      const headerRows = rows.filter((row: any) => row.isHeader)
+      const bodyRows = rows.filter((row: any) => !row.isHeader)
+      
+      return (
+        <div className="my-12 overflow-x-auto rounded-xl shadow-2xl border border-slate-700/50">
+          <div className="inline-block min-w-full align-middle">
+            <table className="min-w-full divide-y divide-slate-700/50">
+              {headerRows.length > 0 && (
+                <thead className="bg-gradient-to-r from-slate-800/90 to-slate-700/90">
+                  {headerRows.map((row: any, rowIndex: number) => (
+                    <tr key={rowIndex}>
+                      {row.cells?.map((cell: string, cellIndex: number) => (
+                        <th
+                          key={cellIndex}
+                          className="px-6 py-4 text-left text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-300 uppercase tracking-wider border-b-2 border-blue-400/30"
+                        >
+                          {cell}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+              )}
+              {bodyRows.length > 0 && (
+                <tbody className="bg-slate-900/40 divide-y divide-slate-700/30">
+                  {bodyRows.map((row: any, rowIndex: number) => (
+                    <tr key={rowIndex} className="hover:bg-slate-800/50 transition-colors duration-200">
+                      {row.cells?.map((cell: string, cellIndex: number) => (
+                        <td
+                          key={cellIndex}
+                          className="px-6 py-4 text-base text-white leading-relaxed"
+                        >
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+            </table>
+          </div>
+        </div>
+      )
+    },
   },
   block: {
     h1: ({ children }: any) => (
@@ -419,6 +468,9 @@ const components = {
         </div>
       </blockquote>
     ),
+    hr: () => (
+      <hr className="my-12 border-0 h-px bg-gradient-to-r from-transparent via-blue-400/50 to-transparent" />
+    ),
   },
   list: {
     bullet: ({ children }: any) => (
@@ -427,7 +479,7 @@ const components = {
       </ul>
     ),
     number: ({ children }: any) => (
-      <ol className="list-none text-white mb-8 space-y-4 text-lg md:text-xl">
+      <ol className="list-decimal text-white mb-8 space-y-4 text-lg md:text-xl [counter-reset:item] pl-0">
         {children}
       </ol>
     ),
@@ -440,10 +492,7 @@ const components = {
       </li>
     ),
     number: ({ children }: any) => (
-      <li className="text-white leading-relaxed flex items-start">
-        <span className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 flex-shrink-0 mt-1">
-          {/* This will be replaced by the actual number */}
-        </span>
+      <li className="text-white leading-relaxed flex items-start list-none [counter-increment:item] before:content-[counter(item)] before:w-8 before:h-8 before:bg-gradient-to-r before:from-blue-500 before:to-purple-500 before:rounded-full before:flex before:items-center before:justify-center before:text-white before:font-bold before:text-sm before:mr-4 before:shrink-0 before:mt-1 before:inline-flex">
         <span className="flex-1">{children}</span>
       </li>
     ),
@@ -473,6 +522,41 @@ const components = {
       </a>
     ),
   },
+  // Add table support for markdown tables
+  table: ({ children }: any) => (
+    <div className="my-12 overflow-x-auto rounded-xl shadow-2xl border border-slate-700/50">
+      <div className="inline-block min-w-full align-middle">
+        <table className="min-w-full divide-y divide-slate-700/50">
+          {children}
+        </table>
+      </div>
+    </div>
+  ),
+  thead: ({ children }: any) => (
+    <thead className="bg-gradient-to-r from-slate-800/90 to-slate-700/90">
+      {children}
+    </thead>
+  ),
+  tbody: ({ children }: any) => (
+    <tbody className="bg-slate-900/40 divide-y divide-slate-700/30">
+      {children}
+    </tbody>
+  ),
+  tr: ({ children }: any) => (
+    <tr className="hover:bg-slate-800/50 transition-colors duration-200">
+      {children}
+    </tr>
+  ),
+  th: ({ children }: any) => (
+    <th className="px-6 py-4 text-left text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-300 uppercase tracking-wider border-b-2 border-blue-400/30">
+      {children}
+    </th>
+  ),
+  td: ({ children }: any) => (
+    <td className="px-6 py-4 text-base text-white leading-relaxed">
+      {children}
+    </td>
+  ),
 }
 
 // Custom component to handle H3 sections with content grouping and H2-based styling

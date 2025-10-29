@@ -161,13 +161,59 @@ export const blogPost = defineType({
             },
           ],
         },
+        {
+          type: 'object',
+          title: 'Table',
+          name: 'table',
+          fields: [
+            {
+              name: 'rows',
+              type: 'array',
+              title: 'Table Rows',
+              of: [
+                {
+                  type: 'object',
+                  title: 'Row',
+                  fields: [
+                    {
+                      name: 'cells',
+                      type: 'array',
+                      title: 'Cells',
+                      of: [{ type: 'string' }],
+                    },
+                    {
+                      name: 'isHeader',
+                      type: 'boolean',
+                      title: 'Header Row',
+                      initialValue: false,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          preview: {
+            select: {
+              rows: 'rows',
+            },
+            prepare(selection) {
+              const { rows } = selection
+              const rowCount = rows?.length || 0
+              return {
+                title: 'Table',
+                subtitle: `${rowCount} row${rowCount !== 1 ? 's' : ''}`,
+              }
+            },
+          },
+        },
       ],
       hidden: ({ parent }) => parent?.contentType !== 'portable',
     }),
     defineField({
       name: 'markdownContent',
       title: 'Content (Markdown)',
-      type: 'markdown',
+      type: 'text',
+      rows: 20,
       hidden: ({ parent }) => parent?.contentType !== 'markdown',
     }),
     defineField({

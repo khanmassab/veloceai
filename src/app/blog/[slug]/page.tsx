@@ -203,21 +203,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       </section>
 
       {/* Article Content */}
-      <ScrollAnimation direction="up" distance={30}>
-        <section className="py-12 bg-gradient-to-br from-slate-800 to-slate-900 text-white relative">
-          {/* Gradient overlay for better blending with cover image */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-800/80 to-transparent pointer-events-none"></div>
-          <div className="w-full px-4 md:px-8 lg:px-12">
-            <div className="max-w-7xl mx-auto blog-content">
-              {post.contentType === 'markdown' ? (
-                <MarkdownRenderer content={post.content as string} />
-              ) : (
-                <PortableTextRenderer content={post.content as any[]} />
-              )}
-            </div>
+      <section className="py-12 bg-gradient-to-br from-slate-800 to-slate-900 text-white relative">
+        <div className="w-full px-4 md:px-8 lg:px-12">
+          <div className="max-w-7xl mx-auto blog-content">
+            {post.contentType === 'markdown' ? (
+              <MarkdownRenderer content={post.content as string} />
+            ) : (
+              <PortableTextRenderer content={post.content as any[]} />
+            )}
           </div>
-        </section>
-      </ScrollAnimation>
+        </div>
+      </section>
 
       {/* Tags */}
       {post.tags.length > 0 && (
